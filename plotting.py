@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -10,3 +11,8 @@ def plot_data(processed_data):
     plt.imshow(processed_data)
     plt.savefile('change_this_later.pdf')
     pass
+=======
+"""
+Hello Henry
+"""
+>>>>>>> 5242807fd8ae6497a00251df4152b821ecad851f
