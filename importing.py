@@ -31,5 +31,5 @@ def get_file(filename):
 
     
 #Testing functionality
-#test=get_file('test.dat')
+test=get_file('test.dat')
 test2=get_file('mock_fits_file.fits')
