@@ -1,7 +1,6 @@
 import numpy as np
 from astropy.io import fits
 import sys
-
 import os
 
 def get_file(filename):
