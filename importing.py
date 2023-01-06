@@ -13,7 +13,7 @@ def get_file(filename):
         filename (str): name of the fits file that the user wants an image of. 
 
     Returns:
-        fits_data (FITS data structure): the raw FITS data from the file given. If a file is given that is unreadable (i.e not a FITS file), return a warning to the user
+        fits_data (FITS data structure): the raw FITS data from the file given. Note: the code will not return this if an improper input file is given.
     """
     path='data/'
 
