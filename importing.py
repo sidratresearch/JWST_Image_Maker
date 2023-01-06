@@ -1,5 +1,6 @@
 import numpy as np
 from astropy.io import fits
+import sys
 
 import os
 
@@ -16,17 +17,19 @@ def get_file(filename):
     """
     path='data/'
 
-    if filename.endswith('.fits')==True:
+    #Checking extension of user input file
+    ext = os.path.splitext(filename)[-1].lower()
+
+    if ext == '.fits':
         fits_data=fits.open(path+filename)
         return fits_data
 
     else:
-        ext = os.path.splitext(filename)[-1].lower()
         print("ERROR: Input file must have a .FITS extension.")
         print('Input File extension is:',ext)
-        return 0
+        sys.exit()  #tells code to stop running 
 
     
-
+#Testing functionality
 #test=get_file('test.dat')
 test2=get_file('mock_fits_file.fits')
