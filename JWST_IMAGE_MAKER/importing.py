@@ -7,9 +7,8 @@ path = "JWST_IMAGE_MAKER/data/"
 
 
 def get_file(filename):
-    """
-    This function imports the file provided by the user and converts it to a np.array. If the given file does not have a .fits extension, the code will send an error
-    to the user and will not attempt to open the file.
+    """This function imports the file provided by the user and converts it to a np.array.
+    If the given file does not have a .fits extension, the code will send an error to the user and will not attempt to open the file.
 
     Args:
         filename (str): name of the fits file that the user wants an image of.
@@ -40,13 +39,13 @@ def get_file(filename):
 
 
 def check_extension(filename):
-    """_summary_
+    """This function checks the extension of a provided data file
 
     Args:
-        filename (_type_): _description_
+        filename (str): name of the specified data file
 
     Returns:
-        _type_: _description_
+        void: Stops code if the file is not a .fits file, nothing otherwise
     """
     ext = os.path.splitext(filename)[-1].lower()
     # if the user input file has extension .fits, the code will continue with no problem
