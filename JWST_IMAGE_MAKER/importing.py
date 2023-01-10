@@ -3,7 +3,7 @@ from astropy.io import fits
 import sys
 import os
 
-path = "JWST_IMAGE_MAKER/JWST_IMAGE_MAKER/data/"
+#path = "JWST_IMAGE_MAKER/JWST_IMAGE_MAKER/data/"
 
 
 def get_file(filename):
@@ -30,7 +30,7 @@ def get_file(filename):
     for i in range(len(filename)):
         check_extension(filename[i])
         # Importing fits file
-        fits_data = fits.open(path + filename[i])
+        fits_data = fits.open(filename[i])
         # Converting data from HDUList to np.array
         array_data = fits_data[1].data
         full_dataset[:, :, i] = array_data
@@ -68,7 +68,7 @@ def check_size(filename):
     returns:
         xdim, ydim (int) : The x and y dimensions of the given .fits files
     """
-    fits_data = fits.open(path + filename)
+    fits_data = fits.open(filename)
     # Converting data from HDUList to np.array
     array_data = fits_data[1].data
     xdim = len(array_data[:, 0])
