@@ -30,6 +30,6 @@ file_name = [
     "jw02739-o002_t001_miri_f1500w_i2d.fits",
     "jw02739-o002_t001_miri_f1130w_i2d.fits",
 ]
-test = make_image(file_name, save_image=True)
+make_image(file_name, save_image=True)
 
 '''
