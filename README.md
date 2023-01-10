@@ -1,4 +1,4 @@
-# Description of Software Package #
+# Description #
 This software package allows a user to create and save images from data gathered by JWST. 
 
 ## Installation
