@@ -3,8 +3,6 @@ from astropy.io import fits
 import sys
 import os
 
-path = "JWST_IMAGE_MAKER/data/"
-
 
 def get_files(filenames):
     """This function calls get_file for every user-input filename.
@@ -34,11 +32,18 @@ def get_file(filename):
     """
     check_extension(filename)
     file = fits.open(os.getcwd() + filename)
-    img = np.array([])
+    img = []
+    dim = np.array((file[1].header["NAXIS1"], file[1].header["NAXIS2"]))
     for hdu in file:
-        if hdu.header["NAXIS"] is not None and hdu.header["NAXIS"] == (2,):
-            np.append(img, hdu.data)
-    return img
+        if (
+            hdu.header["NAXIS"] is not None
+            and hdu.header["NAXIS"] == 2
+            and np.array_equal(
+                np.array((hdu.header["NAXIS1"], hdu.header["NAXIS2"])), dim
+            )
+        ):
+            img.append(hdu.data)
+    return np.array(img)
 
 
 def check_extension(filename):
@@ -60,3 +65,7 @@ def check_extension(filename):
         print("ERROR: Input file must have a .FITS extension.")
         print("Input File extension is:", ext)
         sys.exit()  # tells code to stop running
+
+
+data = get_file("/JWST_IMAGE_MAKER/data/test_data_eagle.fits")
+print(data)
