@@ -20,7 +20,8 @@ def plot_data(processed_data,filename,save_image):
         if save_image==True:
             name = os.path.splitext(filename[i])[0].lower()
             new_ext='.pdf'
-            plt.savefig(name+new_ext,format='pdf',dpi=1200,bbox_inches='tight')
+            path='Figures/'
+            plt.savefig(path+name+new_ext,format='pdf',dpi=1200,bbox_inches='tight')
         plt.show()
 
 
