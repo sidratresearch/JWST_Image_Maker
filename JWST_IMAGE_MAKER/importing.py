@@ -3,7 +3,7 @@ from astropy.io import fits
 import sys
 import os
 
-path = "JWST_IMAGE_MAKER/data/"
+path = "JWST_IMAGE_MAKER/JWST_IMAGE_MAKER/data/"
 
 
 def get_file(filename):

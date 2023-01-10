@@ -22,14 +22,14 @@ def make_image(filenames, save_image):
     plot_data(processed_data, filenames, save_image)  # this will also save the image
     pass
 
-'''
-Testing the code:
+
+#Testing the code:
 
 file_name = [
     "jw02739-o002_t001_miri_f770w_i2d.fits",
     "jw02739-o002_t001_miri_f1500w_i2d.fits",
     "jw02739-o002_t001_miri_f1130w_i2d.fits",
 ]
-make_image(file_name, save_image=True)
+make_image(file_name, save_image=False)
 
-'''
+
