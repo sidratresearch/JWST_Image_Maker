@@ -10,7 +10,7 @@ def get_files(filenames):
     """This function calls get_file for every user-input filename.
 
     Args:
-        filenames (str): list of user-input filenames
+        filenames (list of str): list of user-input filenames
 
     Returns:
         img_book (np.array): array of image collections corresponding to each
