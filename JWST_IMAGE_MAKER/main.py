@@ -1,6 +1,6 @@
-from importing import get_file
-from processing import process_file
-from plotting import plot_data
+from JWST_IMAGE_MAKER.importing import get_file
+from JWST_IMAGE_MAKER.processing import process_file
+from JWST_IMAGE_MAKER.plotting import plot_data
 
 # make_image is the function that the user will call
 # This function will then call all of the other modules
@@ -22,6 +22,8 @@ def make_image(filenames, save_image):
     plot_data(processed_data, filenames, save_image)  # this will also save the image
     pass
 
+'''
+Testing the code:
 
 file_name = [
     "jw02739-o002_t001_miri_f770w_i2d.fits",
@@ -29,3 +31,5 @@ file_name = [
     "jw02739-o002_t001_miri_f1130w_i2d.fits",
 ]
 test = make_image(file_name, save_image=True)
+
+'''
