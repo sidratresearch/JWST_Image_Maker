@@ -24,7 +24,7 @@ def make_image(filenames, save_image):
 
 
 #Testing the code:
-
+'''
 file_name = [
     "jw02739-o002_t001_miri_f770w_i2d.fits",
     "jw02739-o002_t001_miri_f1500w_i2d.fits",
@@ -32,4 +32,4 @@ file_name = [
 ]
 make_image(file_name, save_image=False)
 
-
+'''
