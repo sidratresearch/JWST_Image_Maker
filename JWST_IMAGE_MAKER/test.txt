@@ -1,0 +1,1320 @@
+new
+SIMPLE:	conforms to FITS standard
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+EXTEND:	
+DATE:	UTC date file created
+ORIGIN:	Organization responsible for creating file
+TIMESYS:	principal time system for time-related keywords
+TIMEUNIT:	Default unit applicable to all time values
+FILENAME:	Name of the file
+SDP_VER:	Data processing software version number
+PRD_VER:	S&OC PRD version number used in data processing
+OSS_VER:	Observatory Scheduling Software (OSS) version n
+CAL_VER:	Calibration software version number
+CAL_VCS:	Calibration software version control sys number
+DATAMODL:	Type of data model
+TELESCOP:	Telescope used to acquire the data
+HGA_MOVE:	High Gain Antenna moved during data collection
+PWFSEET:	Previous WFS exposure end time
+NWFSEST:	Next WFS exposure start time
+COMPRESS:	On-board data compression was used (T/F)
+:	
+:	
+:	
+ASNPOOL:	Name of the ASN pool
+ASNTABLE:	Name of the ASN
+:	
+:	
+:	
+TITLE:	Proposal title
+PI_NAME:	Principal investigator name
+CATEGORY:	Program category
+:	
+:	
+:	
+DATE-OBS:	[yyyy-mm-dd] UTC date at start of exposure
+TIME-OBS:	[hh:mm:ss.sss] UTC time at start of exposure
+DATE-BEG:	Date-time start of exposure
+DATE-END:	Date-time end of exposure
+OBS_ID:	Programmatic observation identifier
+VISIT_ID:	Visit identifier
+PROGRAM:	Program number
+OBSERVTN:	Observation number
+VISIT:	Visit number
+VISITGRP:	Visit group identifier
+SEQ_ID:	Parallel sequence identifier
+ACT_ID:	Activity identifier
+EXPOSURE:	Exposure request number
+BKGDTARG:	Background target
+TEMPLATE:	Observation template used
+OBSLABEL:	Proposer label for the observation
+OBSFOLDR:	Name of the APT observation folder
+:	
+:	
+:	
+ENG_QUAL:	Engineering data quality indicator from EngDB
+ENGQLPTG:	Quality of pointing information from En
+VISITYPE:	Visit type
+VSTSTART:	UTC visit start time
+VISITSTA:	Status of a visit
+NEXPOSUR:	Total number of planned exposures in visit
+INTARGET:	At least one exposure in visit is internal
+TARGOOPP:	Visit scheduled as target of opportunity
+TSOVISIT:	Time Series Observation visit indicator
+EXP_ONLY:	Special commanding without SI configuration
+CROWDFLD:	Are the FGSes in a crowded field?
+:	
+:	
+:	
+TARGPROP:	Proposer's name for the target
+TARGNAME:	Standard astronomical catalog name for target
+TARGTYPE:	Type of target (fixed, moving, generic)
+TARG_RA:	Target RA at mid time of exposure
+TARG_DEC:	Target Dec at mid time of exposure
+TARGURA:	Target RA uncertainty
+TARGUDEC:	Target Dec uncertainty
+MU_RA:	Target proper motion in RA
+MU_DEC:	Target proper motion in Dec
+MU_EPOCH:	Target proper motion epoch
+PROP_RA:	Proposer's target RA
+PROP_DEC:	Proposer's target Dec
+:	
+:	
+:	
+INSTRUME:	Instrument used to acquire the data
+DETECTOR:	Name of detector used to acquire the data
+FILTER:	Name of the filter element used
+FPE_SIDE:	Active side for FPE (A or B)
+ICE_SIDE:	Active side for ICE (A or B)
+CCCSTATE:	Contamination control cover state
+LAMP:	Internal lamp state
+OPMODE:	Lamp operating mode
+:	
+:	
+:	
+EXPCOUNT:	Running count of exposures in visit
+EXPRIPAR:	Prime or parallel exposure
+EXP_TYPE:	Type of data in the exposure
+EXPSTART:	[d] exposure start time in MJD
+EXPMID:	[d] exposure mid time in MJD
+EXPEND:	[d] exposure end time in MJD
+OSF_FILE:	Observatory Status File name coverin
+READPATT:	Readout pattern
+NOUTPUTS:	Number of detector outputs used
+NINTS:	Number of integrations in exposure
+NGROUPS:	Number of groups in integration
+NFRAMES:	Number of frames per group
+FRMDIVSR:	Divisor applied to frame-averaged groups
+GROUPGAP:	Number of frames dropped between groups
+DRPFRMS1:	Frames dropped prior to first integration
+DRPFRMS3:	Frames dropped between integrations
+NSAMPLES:	Number of A/D samples per pixel
+TSAMPLE:	[us] Time between samples
+TFRAME:	[s] Time between frames
+TGROUP:	[s] Time between groups
+EFFINTTM:	[s] Effective integration time
+EFFEXPTM:	[s] Effective exposure time
+DURATION:	[s] Total duration of exposure
+NRSTSTRT:	Number of resets at start of exposure
+NRESETS:	Number of resets between integrations
+ZEROFRAM:	Zero frame was downlinked separately
+DATAPROB:	Science telemetry indicated a problem
+SCA_NUM:	Sensor Chip Assembly number
+DATAMODE:	post-processing method used in FPAP
+SCTARATE:	[ms/s] Spacecraft Clock Time Adjust RATE
+:	
+:	
+:	
+SUBARRAY:	Subarray used
+SUBSTRT1:	Starting pixel in axis 1 direction
+SUBSTRT2:	Starting pixel in axis 2 direction
+SUBSIZE1:	Number of pixels in axis 1 direction
+SUBSIZE2:	Number of pixels in axis 2 direction
+FASTAXIS:	Fast readout axis direction
+SLOWAXIS:	Slow readout axis direction
+:	
+:	
+:	
+PATTTYPE:	Primary dither pattern type
+PATT_NUM:	Position number within dither pattern
+PATTSTRT:	Starting point in pattern
+NUMDTHPT:	Total number of points in pattern
+PATTNPTS:	Number of points in CYCLING pattern
+PATTSIZE:	Primary dither pattern size
+XOFFSET:	x offset from pattern starting position
+YOFFSET:	y offset from pattern starting position
+:	
+:	
+:	
+APERNAME:	PRD science aperture used
+PPS_APER:	original AperName supplied by PPS
+:	
+:	
+:	
+VA_RA:	[deg] Velocity aberrated apparent reference RA
+VA_DEC:	[deg] Velocity aberrated apparent reference Dec
+:	
+:	
+:	
+BARTDELT:	Barycentric time correction
+BSTRTIME:	[d] Barycentric exposure start time in MJD
+BENDTIME:	[d] Barycentric exposure end time in MJD
+BMIDTIME:	[d] Barycentric exposure mid time in MJD
+HELIDELT:	Heliocentric time correction
+HSTRTIME:	[d] Heliocentric exposure start time in MJD
+HENDTIME:	[d] Heliocentric exposure end time in MJD
+HMIDTIME:	[d] Heliocentric exposure mid time in MJD
+:	
+:	
+:	
+GS_ORDER:	index of guide star within list of selected gui
+GSSTRTTM:	UTC time when guide star activity star
+GSENDTIM:	UTC time when guide star activity comp
+GDSTARID:	guide star identifier
+GS_RA:	guide star right ascension
+GS_DEC:	guide star declination
+GS_URA:	guide star right ascension uncertainty
+GS_UDEC:	guide star declination uncertainty
+GS_MAG:	guide star magnitude in FGS detector
+GS_UMAG:	guide star magnitude uncertainty
+GS_V3_PA:	V3 Position Angle of guide star for science
+PCS_MODE:	Pointing Control System mode
+VISITEND:	Observatory UTC time when the visit co
+:	
+:	
+:	
+:	
+:	
+:	
+CRDS_VER:	Version of CRDS file selection software used
+CRDS_CTX:	CRDS context (.pmap) used to select ref files
+:	
+:	
+:	
+R_AREA:	Pixel area reference file name
+:	
+:	
+:	
+R_CAMERA:	Nirspec Camera reference file name
+:	
+:	
+:	
+R_COLLIM:	Nirspec Collimator reference file name
+:	
+:	
+:	
+R_DARK:	Dark reference file name
+:	
+:	
+:	
+R_DISPER:	Disperser reference file name
+:	
+:	
+:	
+R_DISTOR:	Distortion reference file na
+:	
+:	
+:	
+R_DRZPAR:	Drizzle parameters reference f
+:	
+:	
+:	
+R_FILOFF:	Filter Offset reference fi
+:	
+:	
+:	
+R_FLAT:	Flat reference file name
+:	
+:	
+:	
+R_DFLAT:	DFlat reference file name
+:	
+:	
+:	
+R_FFLAT:	FFlat reference file name
+:	
+:	
+:	
+R_SFLAT:	SFlat reference file name
+:	
+:	
+:	
+R_FORE:	Nirspec FORE Model reference file name
+:	
+:	
+:	
+R_FPA:	Nirspec FPA Model reference file name
+:	
+:	
+:	
+R_GAIN:	Gain reference file name
+:	
+:	
+:	
+R_IFUFOR:	ifufore reference file name
+:	
+:	
+:	
+R_IFUPOS:	ifupost reference file name
+:	
+:	
+:	
+R_IFUSLI:	ifuslicer reference file name
+:	
+:	
+:	
+R_LINEAR:	Linearity reference file name
+:	
+:	
+:	
+R_MASK:	Mask reference file name
+:	
+:	
+:	
+R_MSA:	Nirspec MSA Model reference file name
+:	
+:	
+:	
+R_OTE:	Nirspec OTE Model reference file name
+:	
+:	
+:	
+R_PHOTOM:	Photometric reference file name
+:	
+:	
+:	
+R_READNO:	Read noise reference file nam
+:	
+:	
+:	
+R_REGION:	Regions reference file name
+:	
+:	
+:	
+R_RESET:	Reset reference file name
+:	
+:	
+:	
+R_RSCD:	RSCD reference file name
+:	
+:	
+:	
+R_SATURA:	Saturation reference file na
+:	
+:	
+:	
+R_SPCWCS:	Spectral distortion reference file name
+:	
+:	
+:	
+R_WAVRAN:	Wavelength Range reference file name
+:	
+:	
+:	
+S_WCS:	Assign World Coordinate System
+S_DARK:	Dark Subtraction
+S_DQINIT:	Data Quality Initialization
+S_FRSTFR:	First Frame Correction
+S_FLAT:	Flat Field Correction
+S_GANSCL:	Gain Scale Correction
+S_GRPSCL:	Group Scale Correction
+S_IPC:	Interpixel Capacitance Correction
+S_JUMP:	Jump Detection
+S_LASTFR:	Last Frame Correction
+S_LINEAR:	Linearity Correction
+S_OUTLIR:	Outlier Detection
+S_PHOTOM:	Photometric Calibration
+S_RAMP:	Ramp Fitting
+S_REFPIX:	Reference Pixel Correction
+S_RESAMP:	Image resampling
+S_RESET:	Reset Anomaly Correction
+S_RSCD:	RSCD Correction
+S_SATURA:	Saturation Checking
+S_SKYMAT:	Sky Background Equalization or Subtraction
+S_TWKREG:	Image Alignment via Astronomical Sources
+:	
+:	
+:	
+NDRIZ:	Number of groups/pointings included in resample
+TEXPTIME:	[s] Total exposure time for product
+RESWHT:	Type of drizzle weighting to use in resampling
+PIXFRAC:	Drizzle parameter describing pixel shrinking
+PXSCLRT:	Pixel scale ratio relative to native detector s
+:	
+:	
+:	
+BKGMETH:	Background computation method
+BKGLEVEL:	Computed/Matched constant background level
+BKGSUB:	Has background been subtracted from data?
+new
+XTENSION:	Image extension
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+NAXIS1:	
+NAXIS2:	
+PCOUNT:	number of parameters
+GCOUNT:	number of groups
+EXTNAME:	extension name
+MJD-BEG:	[d] exposure start time in MJD
+MJD-AVG:	[d] exposure mid-point in MJD
+MJD-END:	[d] exposure end time in MJD
+TDB-BEG:	[d] TDB time of exposure start in MJD
+TDB-MID:	[d] TDB time of exposure mid-point in MJD
+TDB-END:	[d] TDB time of exposure end in MJD
+XPOSURE:	[s] Effective exposure time
+TELAPSE:	[s] Total elapsed exposure time
+:	
+:	
+:	
+REFFRAME:	Ephemeris reference frame
+EPH_TYPE:	Definitive or Predicted
+EPH_TIME:	[d] MJD time of position and velocity vectors
+JWST_X:	[km] barycentric JWST X coordinate at MJD_AVG
+JWST_Y:	[km] barycentric JWST Y coordinate at MJD_AVG
+JWST_Z:	[km] barycentric JWST Z coordinate at MJD_AVG
+OBSGEO-X:	[m] geocentric JWST X coordinate at MJD_AVG
+OBSGEO-Y:	[m] geocentric JWST Y coordinate at MJD_AVG
+OBSGEO-Z:	[m] geocentric JWST Z coordinate at MJD_AVG
+JWST_DX:	[km/s] barycentric JWST X velocity at MJD_AVG
+JWST_DY:	[km/s] barycentric JWST Y velocity at MJD_AVG
+JWST_DZ:	[km/s] barycentric JWST Z velocity at MJD_AVG
+OBSGEODX:	[m/s] geocentric JWST X velocity at MJD_AVG
+OBSGEODY:	[m/s] geocentric JWST Y velocity at MJD_AVG
+OBSGEODZ:	[m/s] geocentric JWST Z velocity at MJD_AVG
+PA_APER:	[deg] Position angle of aperture used
+VA_SCALE:	Velocity aberration scale factor
+BUNIT:	physical units of the array values
+:	
+:	
+:	
+PHOTMJSR:	Flux density (MJy/steradian) producing 1 cps
+PHOTUJA2:	Flux density (uJy/arcsec2) producing 1 cps
+PIXAR_SR:	Nominal pixel area in steradians
+PIXAR_A2:	Nominal pixel area in arcsec^2
+:	
+:	
+:	
+RADESYS:	Name of the coordinate reference frame
+:	
+:	
+:	
+RA_V1:	[deg] RA of telescope V1 axis
+DEC_V1:	[deg] Dec of telescope V1 axis
+PA_V3:	[deg] Position angle of telescope V3 axis
+:	
+:	
+:	
+WCSAXES:	number of World Coordinate System axes
+CRPIX1:	axis 1 coordinate of the reference pixel
+CRPIX2:	axis 2 coordinate of the reference pixel
+CRVAL1:	first axis value at the reference pixel
+CRVAL2:	second axis value at the reference pixel
+CTYPE1:	Axis 1 type
+CTYPE2:	Axis 2 type
+CUNIT1:	Axis 1 units
+CUNIT2:	Axis 2 units
+CDELT1:	Axis 1 coordinate increment at reference point
+CDELT2:	Axis 2 coordinate increment at reference point
+PC1_1:	linear transformation matrix element
+PC1_2:	linear transformation matrix element
+PC2_1:	linear transformation matrix element
+PC2_2:	linear transformation matrix element
+S_REGION:	spatial extent of the observation
+VELOSYS:	[m/s] Barycentric correction to radial velocity
+EXTVER:	extension value
+new
+XTENSION:	Image extension
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+NAXIS1:	
+NAXIS2:	
+PCOUNT:	number of parameters
+GCOUNT:	number of groups
+EXTNAME:	extension name
+BUNIT:	physical units of the array values
+EXTVER:	extension value
+new
+XTENSION:	Image extension
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+NAXIS1:	
+NAXIS2:	
+NAXIS3:	
+PCOUNT:	number of parameters
+GCOUNT:	number of groups
+EXTNAME:	extension name
+EXTVER:	extension value
+new
+XTENSION:	Image extension
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+NAXIS1:	
+NAXIS2:	
+PCOUNT:	number of parameters
+GCOUNT:	number of groups
+EXTNAME:	extension name
+EXTVER:	extension value
+new
+XTENSION:	Image extension
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+NAXIS1:	
+NAXIS2:	
+PCOUNT:	number of parameters
+GCOUNT:	number of groups
+EXTNAME:	extension name
+EXTVER:	extension value
+new
+XTENSION:	Image extension
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+NAXIS1:	
+NAXIS2:	
+PCOUNT:	number of parameters
+GCOUNT:	number of groups
+EXTNAME:	extension name
+EXTVER:	extension value
+new
+XTENSION:	Image extension
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+NAXIS1:	
+NAXIS2:	
+PCOUNT:	number of parameters
+GCOUNT:	number of groups
+EXTNAME:	extension name
+EXTVER:	extension value
+new
+XTENSION:	binary table extension
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+NAXIS1:	length of dimension 1
+NAXIS2:	length of dimension 2
+PCOUNT:	number of group parameters
+GCOUNT:	number of groups
+TFIELDS:	number of table fields
+EXTNAME:	extension name
+EXTVER:	extension value
+TTYPE1:	
+TFORM1:	
+TTYPE2:	
+TFORM2:	
+TTYPE3:	
+TFORM3:	
+TTYPE4:	
+TFORM4:	
+TTYPE5:	
+TFORM5:	
+TTYPE6:	
+TFORM6:	
+TTYPE7:	
+TFORM7:	
+TTYPE8:	
+TFORM8:	
+TTYPE9:	
+TFORM9:	
+TTYPE10:	
+TFORM10:	
+TTYPE11:	
+TFORM11:	
+TTYPE12:	
+TFORM12:	
+TTYPE13:	
+TFORM13:	
+TTYPE14:	
+TFORM14:	
+TTYPE15:	
+TFORM15:	
+TTYPE16:	
+TFORM16:	
+TTYPE17:	
+TFORM17:	
+TTYPE18:	
+TFORM18:	
+TTYPE19:	
+TFORM19:	
+TTYPE20:	
+TFORM20:	
+TTYPE21:	
+TFORM21:	
+TTYPE22:	
+TFORM22:	
+TTYPE23:	
+TFORM23:	
+TTYPE24:	
+TFORM24:	
+TTYPE25:	
+TFORM25:	
+TTYPE26:	
+TFORM26:	
+TTYPE27:	
+TFORM27:	
+TTYPE28:	
+TFORM28:	
+TTYPE29:	
+TFORM29:	
+TTYPE30:	
+TFORM30:	
+TTYPE31:	
+TFORM31:	
+TTYPE32:	
+TFORM32:	
+TTYPE33:	
+TFORM33:	
+TTYPE34:	
+TFORM34:	
+TTYPE35:	
+TFORM35:	
+TTYPE36:	
+TFORM36:	
+TTYPE37:	
+TFORM37:	
+TTYPE38:	
+TFORM38:	
+TTYPE39:	
+TFORM39:	
+TTYPE40:	
+TFORM40:	
+TTYPE41:	
+TFORM41:	
+TTYPE42:	
+TFORM42:	
+TTYPE43:	
+TFORM43:	
+TTYPE44:	
+TFORM44:	
+TTYPE45:	
+TFORM45:	
+TTYPE46:	
+TFORM46:	
+TTYPE47:	
+TFORM47:	
+TTYPE48:	
+TFORM48:	
+TTYPE49:	
+TFORM49:	
+TTYPE50:	
+TFORM50:	
+TTYPE51:	
+TFORM51:	
+TTYPE52:	
+TFORM52:	
+TTYPE53:	
+TFORM53:	
+TTYPE54:	
+TFORM54:	
+TTYPE55:	
+TFORM55:	
+TTYPE56:	
+TFORM56:	
+TTYPE57:	
+TFORM57:	
+TTYPE58:	
+TFORM58:	
+TTYPE59:	
+TFORM59:	
+TTYPE60:	
+TFORM60:	
+TTYPE61:	
+TFORM61:	
+TTYPE62:	
+TFORM62:	
+TTYPE63:	
+TFORM63:	
+TTYPE64:	
+TFORM64:	
+TTYPE65:	
+TFORM65:	
+TTYPE66:	
+TFORM66:	
+TTYPE67:	
+TFORM67:	
+TTYPE68:	
+TFORM68:	
+TTYPE69:	
+TFORM69:	
+TTYPE70:	
+TFORM70:	
+TTYPE71:	
+TFORM71:	
+TTYPE72:	
+TFORM72:	
+TTYPE73:	
+TFORM73:	
+TTYPE74:	
+TFORM74:	
+TTYPE75:	
+TFORM75:	
+TTYPE76:	
+TFORM76:	
+TTYPE77:	
+TFORM77:	
+TTYPE78:	
+TFORM78:	
+TTYPE79:	
+TFORM79:	
+TTYPE80:	
+TFORM80:	
+TTYPE81:	
+TFORM81:	
+TTYPE82:	
+TFORM82:	
+TTYPE83:	
+TFORM83:	
+TTYPE84:	
+TFORM84:	
+TTYPE85:	
+TFORM85:	
+TTYPE86:	
+TFORM86:	
+TTYPE87:	
+TFORM87:	
+TTYPE88:	
+TFORM88:	
+TTYPE89:	
+TFORM89:	
+TTYPE90:	
+TFORM90:	
+TTYPE91:	
+TFORM91:	
+TTYPE92:	
+TFORM92:	
+TTYPE93:	
+TFORM93:	
+TTYPE94:	
+TFORM94:	
+TTYPE95:	
+TFORM95:	
+TTYPE96:	
+TFORM96:	
+TTYPE97:	
+TFORM97:	
+TTYPE98:	
+TFORM98:	
+TTYPE99:	
+TFORM99:	
+TTYPE100:	
+TFORM100:	
+TTYPE101:	
+TFORM101:	
+TTYPE102:	
+TFORM102:	
+TTYPE103:	
+TFORM103:	
+TTYPE104:	
+TFORM104:	
+TTYPE105:	
+TFORM105:	
+TTYPE106:	
+TFORM106:	
+TTYPE107:	
+TFORM107:	
+TTYPE108:	
+TFORM108:	
+TTYPE109:	
+TFORM109:	
+TTYPE110:	
+TFORM110:	
+TTYPE111:	
+TFORM111:	
+TTYPE112:	
+TFORM112:	
+TTYPE113:	
+TFORM113:	
+TTYPE114:	
+TFORM114:	
+TTYPE115:	
+TFORM115:	
+TTYPE116:	
+TFORM116:	
+TTYPE117:	
+TFORM117:	
+TTYPE118:	
+TFORM118:	
+TTYPE119:	
+TFORM119:	
+TTYPE120:	
+TFORM120:	
+TTYPE121:	
+TFORM121:	
+TTYPE122:	
+TFORM122:	
+TTYPE123:	
+TFORM123:	
+TTYPE124:	
+TFORM124:	
+TTYPE125:	
+TFORM125:	
+TTYPE126:	
+TFORM126:	
+TTYPE127:	
+TFORM127:	
+TTYPE128:	
+TFORM128:	
+TTYPE129:	
+TFORM129:	
+TTYPE130:	
+TFORM130:	
+TTYPE131:	
+TFORM131:	
+TTYPE132:	
+TFORM132:	
+TTYPE133:	
+TFORM133:	
+TTYPE134:	
+TFORM134:	
+TTYPE135:	
+TFORM135:	
+TTYPE136:	
+TFORM136:	
+TTYPE137:	
+TFORM137:	
+TTYPE138:	
+TFORM138:	
+TTYPE139:	
+TFORM139:	
+TTYPE140:	
+TFORM140:	
+TTYPE141:	
+TFORM141:	
+TTYPE142:	
+TFORM142:	
+TTYPE143:	
+TFORM143:	
+TTYPE144:	
+TFORM144:	
+TTYPE145:	
+TFORM145:	
+TTYPE146:	
+TFORM146:	
+TTYPE147:	
+TFORM147:	
+TTYPE148:	
+TFORM148:	
+TTYPE149:	
+TFORM149:	
+TTYPE150:	
+TFORM150:	
+TTYPE151:	
+TFORM151:	
+TTYPE152:	
+TFORM152:	
+TTYPE153:	
+TFORM153:	
+TTYPE154:	
+TFORM154:	
+TTYPE155:	
+TFORM155:	
+TTYPE156:	
+TFORM156:	
+TTYPE157:	
+TFORM157:	
+TTYPE158:	
+TFORM158:	
+TTYPE159:	
+TFORM159:	
+TTYPE160:	
+TFORM160:	
+TTYPE161:	
+TFORM161:	
+TTYPE162:	
+TFORM162:	
+TTYPE163:	
+TFORM163:	
+TTYPE164:	
+TFORM164:	
+TTYPE165:	
+TFORM165:	
+TTYPE166:	
+TFORM166:	
+TTYPE167:	
+TFORM167:	
+TTYPE168:	
+TFORM168:	
+TTYPE169:	
+TFORM169:	
+TTYPE170:	
+TFORM170:	
+TTYPE171:	
+TFORM171:	
+TTYPE172:	
+TFORM172:	
+TTYPE173:	
+TFORM173:	
+TTYPE174:	
+TFORM174:	
+TTYPE175:	
+TFORM175:	
+TTYPE176:	
+TFORM176:	
+TTYPE177:	
+TFORM177:	
+TTYPE178:	
+TFORM178:	
+TTYPE179:	
+TFORM179:	
+TTYPE180:	
+TFORM180:	
+TTYPE181:	
+TFORM181:	
+TTYPE182:	
+TFORM182:	
+TTYPE183:	
+TFORM183:	
+TTYPE184:	
+TFORM184:	
+TTYPE185:	
+TFORM185:	
+TTYPE186:	
+TFORM186:	
+TTYPE187:	
+TFORM187:	
+TTYPE188:	
+TFORM188:	
+TTYPE189:	
+TFORM189:	
+TTYPE190:	
+TFORM190:	
+TTYPE191:	
+TFORM191:	
+TTYPE192:	
+TFORM192:	
+TTYPE193:	
+TFORM193:	
+TTYPE194:	
+TFORM194:	
+TTYPE195:	
+TFORM195:	
+TTYPE196:	
+TFORM196:	
+TTYPE197:	
+TFORM197:	
+TTYPE198:	
+TFORM198:	
+TTYPE199:	
+TFORM199:	
+TTYPE200:	
+TFORM200:	
+TTYPE201:	
+TFORM201:	
+TTYPE202:	
+TFORM202:	
+TTYPE203:	
+TFORM203:	
+TTYPE204:	
+TFORM204:	
+TTYPE205:	
+TFORM205:	
+TTYPE206:	
+TFORM206:	
+TTYPE207:	
+TFORM207:	
+TTYPE208:	
+TFORM208:	
+TTYPE209:	
+TFORM209:	
+TTYPE210:	
+TFORM210:	
+TTYPE211:	
+TFORM211:	
+TTYPE212:	
+TFORM212:	
+TTYPE213:	
+TFORM213:	
+TTYPE214:	
+TFORM214:	
+TTYPE215:	
+TFORM215:	
+TTYPE216:	
+TFORM216:	
+TTYPE217:	
+TFORM217:	
+TTYPE218:	
+TFORM218:	
+TTYPE219:	
+TFORM219:	
+TTYPE220:	
+TFORM220:	
+TTYPE221:	
+TFORM221:	
+TTYPE222:	
+TFORM222:	
+TTYPE223:	
+TFORM223:	
+TTYPE224:	
+TFORM224:	
+TTYPE225:	
+TFORM225:	
+TTYPE226:	
+TFORM226:	
+TTYPE227:	
+TFORM227:	
+TTYPE228:	
+TFORM228:	
+TTYPE229:	
+TFORM229:	
+TTYPE230:	
+TFORM230:	
+TTYPE231:	
+TFORM231:	
+TTYPE232:	
+TFORM232:	
+TTYPE233:	
+TFORM233:	
+TTYPE234:	
+TFORM234:	
+TTYPE235:	
+TFORM235:	
+TTYPE236:	
+TFORM236:	
+TTYPE237:	
+TFORM237:	
+TTYPE238:	
+TFORM238:	
+TTYPE239:	
+TFORM239:	
+TTYPE240:	
+TFORM240:	
+TTYPE241:	
+TFORM241:	
+TTYPE242:	
+TFORM242:	
+TTYPE243:	
+TFORM243:	
+TTYPE244:	
+TFORM244:	
+TTYPE245:	
+TFORM245:	
+TTYPE246:	
+TFORM246:	
+TTYPE247:	
+TFORM247:	
+TTYPE248:	
+TFORM248:	
+TTYPE249:	
+TFORM249:	
+TTYPE250:	
+TFORM250:	
+TTYPE251:	
+TFORM251:	
+TTYPE252:	
+TFORM252:	
+TTYPE253:	
+TFORM253:	
+TTYPE254:	
+TFORM254:	
+TTYPE255:	
+TFORM255:	
+TTYPE256:	
+TFORM256:	
+TTYPE257:	
+TFORM257:	
+TTYPE258:	
+TFORM258:	
+TTYPE259:	
+TFORM259:	
+TTYPE260:	
+TFORM260:	
+TTYPE261:	
+TFORM261:	
+TTYPE262:	
+TFORM262:	
+TTYPE263:	
+TFORM263:	
+TTYPE264:	
+TFORM264:	
+TTYPE265:	
+TFORM265:	
+TTYPE266:	
+TFORM266:	
+TTYPE267:	
+TFORM267:	
+TTYPE268:	
+TFORM268:	
+TTYPE269:	
+TFORM269:	
+TTYPE270:	
+TFORM270:	
+TTYPE271:	
+TFORM271:	
+TTYPE272:	
+TFORM272:	
+TTYPE273:	
+TFORM273:	
+TTYPE274:	
+TFORM274:	
+TTYPE275:	
+TFORM275:	
+TTYPE276:	
+TFORM276:	
+TTYPE277:	
+TFORM277:	
+TTYPE278:	
+TFORM278:	
+TTYPE279:	
+TFORM279:	
+TTYPE280:	
+TFORM280:	
+TTYPE281:	
+TFORM281:	
+TTYPE282:	
+TFORM282:	
+TTYPE283:	
+TFORM283:	
+TTYPE284:	
+TFORM284:	
+TTYPE285:	
+TFORM285:	
+TTYPE286:	
+TFORM286:	
+TTYPE287:	
+TFORM287:	
+TTYPE288:	
+TFORM288:	
+TTYPE289:	
+TFORM289:	
+TTYPE290:	
+TFORM290:	
+TTYPE291:	
+TFORM291:	
+TTYPE292:	
+TFORM292:	
+TTYPE293:	
+TFORM293:	
+TTYPE294:	
+TFORM294:	
+TTYPE295:	
+TFORM295:	
+TTYPE296:	
+TFORM296:	
+TTYPE297:	
+TFORM297:	
+TTYPE298:	
+TFORM298:	
+TTYPE299:	
+TFORM299:	
+TTYPE300:	
+TFORM300:	
+TTYPE301:	
+TFORM301:	
+TTYPE302:	
+TFORM302:	
+TTYPE303:	
+TFORM303:	
+TTYPE304:	
+TFORM304:	
+TTYPE305:	
+TFORM305:	
+TTYPE306:	
+TFORM306:	
+TTYPE307:	
+TFORM307:	
+TTYPE308:	
+TFORM308:	
+TTYPE309:	
+TFORM309:	
+TTYPE310:	
+TFORM310:	
+TTYPE311:	
+TFORM311:	
+TTYPE312:	
+TFORM312:	
+TTYPE313:	
+TFORM313:	
+TTYPE314:	
+TFORM314:	
+TTYPE315:	
+TFORM315:	
+TTYPE316:	
+TFORM316:	
+TTYPE317:	
+TFORM317:	
+TTYPE318:	
+TFORM318:	
+TTYPE319:	
+TFORM319:	
+TTYPE320:	
+TFORM320:	
+TTYPE321:	
+TFORM321:	
+TTYPE322:	
+TFORM322:	
+TTYPE323:	
+TFORM323:	
+TTYPE324:	
+TFORM324:	
+TTYPE325:	
+TFORM325:	
+TTYPE326:	
+TFORM326:	
+TTYPE327:	
+TFORM327:	
+TTYPE328:	
+TFORM328:	
+TTYPE329:	
+TFORM329:	
+TTYPE330:	
+TFORM330:	
+TTYPE331:	
+TFORM331:	
+TTYPE332:	
+TFORM332:	
+TTYPE333:	
+TFORM333:	
+TTYPE334:	
+TFORM334:	
+TTYPE335:	
+TFORM335:	
+TTYPE336:	
+TFORM336:	
+TTYPE337:	
+TFORM337:	
+TTYPE338:	
+TFORM338:	
+TTYPE339:	
+TFORM339:	
+TTYPE340:	
+TFORM340:	
+TTYPE341:	
+TFORM341:	
+TTYPE342:	
+TFORM342:	
+TTYPE343:	
+TFORM343:	
+TTYPE344:	
+TFORM344:	
+TTYPE345:	
+TFORM345:	
+TTYPE346:	
+TFORM346:	
+TTYPE347:	
+TFORM347:	
+TTYPE348:	
+TFORM348:	
+TTYPE349:	
+TFORM349:	
+TTYPE350:	
+TFORM350:	
+TTYPE351:	
+TFORM351:	
+TTYPE352:	
+TFORM352:	
+TTYPE353:	
+TFORM353:	
+TTYPE354:	
+TFORM354:	
+TTYPE355:	
+TFORM355:	
+TTYPE356:	
+TFORM356:	
+TTYPE357:	
+TFORM357:	
+TTYPE358:	
+TFORM358:	
+TTYPE359:	
+TFORM359:	
+TTYPE360:	
+TFORM360:	
+TTYPE361:	
+TFORM361:	
+TTYPE362:	
+TFORM362:	
+TTYPE363:	
+TFORM363:	
+TTYPE364:	
+TFORM364:	
+TTYPE365:	
+TFORM365:	
+TTYPE366:	
+TFORM366:	
+TTYPE367:	
+TFORM367:	
+TTYPE368:	
+TFORM368:	
+TTYPE369:	
+TFORM369:	
+TTYPE370:	
+TFORM370:	
+TTYPE371:	
+TFORM371:	
+TTYPE372:	
+TFORM372:	
+TTYPE373:	
+TFORM373:	
+TTYPE374:	
+TFORM374:	
+TTYPE375:	
+TFORM375:	
+TTYPE376:	
+TFORM376:	
+TTYPE377:	
+TFORM377:	
+TTYPE378:	
+TFORM378:	
+TTYPE379:	
+TFORM379:	
+TTYPE380:	
+TFORM380:	
+TTYPE381:	
+TFORM381:	
+TTYPE382:	
+TFORM382:	
+TTYPE383:	
+TFORM383:	
+TTYPE384:	
+TFORM384:	
+TTYPE385:	
+TFORM385:	
+TTYPE386:	
+TFORM386:	
+TTYPE387:	
+TFORM387:	
+TTYPE388:	
+TFORM388:	
+TTYPE389:	
+TFORM389:	
+TTYPE390:	
+TFORM390:	
+TTYPE391:	
+TFORM391:	
+TTYPE392:	
+TFORM392:	
+TTYPE393:	
+TFORM393:	
+TTYPE394:	
+TFORM394:	
+TTYPE395:	
+TFORM395:	
+TTYPE396:	
+TFORM396:	
+TTYPE397:	
+TFORM397:	
+TTYPE398:	
+TFORM398:	
+TTYPE399:	
+TFORM399:	
+TTYPE400:	
+TFORM400:	
+TTYPE401:	
+TFORM401:	
+TTYPE402:	
+TFORM402:	
+TTYPE403:	
+TFORM403:	
+TTYPE404:	
+TFORM404:	
+TTYPE405:	
+TFORM405:	
+new
+XTENSION:	binary table extension
+BITPIX:	array data type
+NAXIS:	number of array dimensions
+NAXIS1:	length of dimension 1
+NAXIS2:	length of dimension 2
+PCOUNT:	number of group parameters
+GCOUNT:	number of groups
+TFIELDS:	number of table fields
+TTYPE1:	
+TFORM1:	
+EXTNAME:	extension name
