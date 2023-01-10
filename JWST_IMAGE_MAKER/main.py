@@ -7,7 +7,7 @@ from JWST_IMAGE_MAKER.plotting import plot_data
 
 
 def make_image(filenames, save_image):
-    """_summary_
+    """This function creates an image from raw JWST data by calling all of the other modules within this package.
 
     Args:
         filename (list of strings): list containing the name(s) of the fits file(s) used to construct an image. If only one .fits file
@@ -16,6 +16,9 @@ def make_image(filenames, save_image):
 
 
         save_image(T/F): Specifies whether the user wants to save the image to their computer
+
+    Returns:
+        This function will never return a variable. It will produce an image and save one to the users directory if desired. The code for this can be found in the plotting module.
     """
     file_data = get_file(filenames)
     processed_data = process_file(file_data)

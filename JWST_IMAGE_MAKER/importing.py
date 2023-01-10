@@ -11,7 +11,7 @@ def get_file(filename):
     If the given file does not have a .fits extension, the code will send an error to the user and will not attempt to open the file.
 
     Args:
-        filename (str): name of the fits file that the user wants an image of.
+        filename (list of strings): A list that contains the name(s) of the fits file(s) that the user wants an image of.
 
     Returns:
         array_data (np.array): A 3D array containing all of the data for every single .fits file given
@@ -39,13 +39,13 @@ def get_file(filename):
 
 
 def check_extension(filename):
-    """This function checks the extension of a provided data file
+    """This function checks the extension of a provided data file to ensure it is a .fits
 
     Args:
         filename (str): name of the specified data file
 
     Returns:
-        void: Stops code if the file is not a .fits file, nothing otherwise
+        void: Stops code if the file is not a .fits file, does nothing otherwise
     """
     ext = os.path.splitext(filename)[-1].lower()
     # if the user input file has extension .fits, the code will continue with no problem
