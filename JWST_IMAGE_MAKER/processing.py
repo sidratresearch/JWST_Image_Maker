@@ -29,6 +29,14 @@ def curve(image):
     Returns:
         np.array: adjusted image with brightness "normalized"
     """
+
+    alpha, beta, gamma = 1.0, 0.0, 1.0
+
+    scale = 255 / np.max(image)
+    dist = np.hist(image * scale, bins=255, range=(0, 255))
+
+    plt.show()
+
     return image_curved
 
 
@@ -45,3 +53,6 @@ def process_file(data):
     """
 
     return data_pro
+
+
+get_files("/data/test_data_eagle.fits")

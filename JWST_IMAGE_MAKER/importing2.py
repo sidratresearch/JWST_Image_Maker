@@ -16,6 +16,7 @@ def get_files(filenames):
     """
     images = np.array([])
     for filename in filenames:
+        print(filename)
         np.append(images, get_file(filename))
     return images
 
