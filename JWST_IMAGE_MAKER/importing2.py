@@ -14,11 +14,13 @@ def get_files(filenames):
         np.array: array of image collections corresponding to each
         user-input filename
     """
-    images = np.array([])
-    for filename in filenames:
-        print(filename)
-        np.append(images, get_file(filename))
-    return images
+    images = []
+    if isinstance(filenames, str):
+        images.append(get_file(filenames))
+    else:
+        for filename in filenames:
+            images.append(get_file(filename))
+    return np.array(images)
 
 
 def get_file(filename):
@@ -32,8 +34,8 @@ def get_file(filename):
         np.array: array of 2D image data corresponding to passed filename
     """
     check_extension(filename)
-    file = fits.open(os.getcwd() + filename)
     image = []
+    file = fits.open(os.getcwd() + filename)
     dim = np.array((file[1].header["NAXIS1"], file[1].header["NAXIS2"]))
     for hdu in file:
         if (
