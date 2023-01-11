@@ -11,13 +11,13 @@ def get_files(filenames):
         filenames (list of str): list of user-input filenames
 
     Returns:
-        img_book (np.array): array of image collections corresponding to each
+        np.array: array of image collections corresponding to each
         user-input filename
     """
-    img_book = np.array([])
+    images = np.array([])
     for filename in filenames:
-        np.append(img_book, get_file(filename))
-    return img_book
+        np.append(images, get_file(filename))
+    return images
 
 
 def get_file(filename):
@@ -28,11 +28,11 @@ def get_file(filename):
         filename (str): user-input .fits file name
 
     Returns:
-        set (np.array): array of 2D image data corresponding to passed filename
+        np.array: array of 2D image data corresponding to passed filename
     """
     check_extension(filename)
     file = fits.open(os.getcwd() + filename)
-    img = []
+    image = []
     dim = np.array((file[1].header["NAXIS1"], file[1].header["NAXIS2"]))
     for hdu in file:
         if (
@@ -42,8 +42,8 @@ def get_file(filename):
                 np.array((hdu.header["NAXIS1"], hdu.header["NAXIS2"])), dim
             )
         ):
-            img.append(hdu.data)
-    return np.array(img)
+            image.append(hdu.data)
+    return np.array(image)
 
 
 def check_extension(filename):
@@ -51,9 +51,6 @@ def check_extension(filename):
 
     Args:
         filename (str): name of the specified data file
-
-    Returns:
-        void: Stops code if the file is not a .fits file, nothing otherwise
     """
     ext = os.path.splitext(filename)[-1].lower()
     # if the user input file has extension .fits, the code will continue with no problem
@@ -65,7 +62,3 @@ def check_extension(filename):
         print("ERROR: Input file must have a .FITS extension.")
         print("Input File extension is:", ext)
         sys.exit()  # tells code to stop running
-
-
-data = get_file("/JWST_IMAGE_MAKER/data/test_data_eagle.fits")
-print(data)
