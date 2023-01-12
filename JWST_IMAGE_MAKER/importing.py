@@ -16,6 +16,10 @@ def get_file(filename):
     Returns:
         array_data (np.array): A 3D array containing all of the data for every single .fits file given
     """
+    #Checking that input filename(s) are given as a list
+    if not isinstance(filename, list):
+        raise TypeError(f"was expecting command to be a list, but got a {type(filename)}")
+
 
     # Checking the extension and size of the first filename given by the user
     # Note: this code assumes all given .fits files have the same size
