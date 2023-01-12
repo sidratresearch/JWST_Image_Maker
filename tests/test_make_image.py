@@ -1,4 +1,9 @@
 from JWST_IMAGE_MAKER import make_image
+import builtins
+import time
+
+def enter():
+    pass
 
 def test_checkfiles(capsys,monkeypatch):
     #This function basically checks the entire package by running make_image (which calls every other function)
@@ -9,14 +14,9 @@ def test_checkfiles(capsys,monkeypatch):
         path+"jw02739-o002_t001_miri_f1500w_i2d.fits",
         path+"jw02739-o002_t001_miri_f1130w_i2d.fits",
     ]
-    #setattr('JWST_IMAGE_MAKER.plotting.plot_data','input', 'enter')
-    monkeypatch.setattr('JWST_IMAGE_MAKER.plotting.plot_data','input', 'enter')  #Both this line and the one below result in "no attribute input in str"
-    #monkeypatch.setattr('JWST_IMAGE_MAKER.plotting.plot_data.input', lambda: 'enter')  # "JWST...plot_data has no attribute input" even though that is what I'm hoping this line will do!!
+    #monkeypatch.setattr('JWST_IMAGE_MAKER.plotting.plot_data','input', enter)  #Why this line doesn't work: it looks for a function named input in the plot_data function and tried to get the code to execute the enter function instead (which doesn't even exist)
+    monkeypatch.setattr(builtins,'input', lambda x : time.sleep(3))  # This looks for anytime the builtin function 'input' is used and instead of running that line, it executes time.sleep(3)
     make_image(file_name, save_image=False)
     pass
 
-# def test_prompt(capsys, monkeypatch):
-#     #This function checks 
-#     monkeypatch.setattr('JWST_IMAGE_MAKER.plotting.plot_data', lambda: 'no')
-#     val = make_image(file_name, save_image=False)
-#     assert not val
+
