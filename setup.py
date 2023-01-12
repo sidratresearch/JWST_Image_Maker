@@ -11,23 +11,21 @@ URL = 'https://github.com/henrywhite2727/JWST_Image_Maker'
 
 LICENSE = 'Apache License 2.0'
 DESCRIPTION = 'Creates images from raw JWST data'
-LONG_DESCRIPTION = (HERE / "README.md").read_text()
-LONG_DESC_TYPE = "text/markdown"
+#LONG_DESCRIPTION = (HERE / "README.md").read_text()
+#LONG_DESC_TYPE = "text/markdown"
 
 INSTALL_REQUIRES = [
       'numpy',
-      'astropy.io.fits',
-      'sys',
-      'os',
-      'matplotlib.pyplot' #maybe remove .pyplot later
+      'astropy',
+      'matplotlib' #maybe remove .pyplot later
 
 ]
 
 setup(name=PACKAGE_NAME,
       version=VERSION,
       description=DESCRIPTION,
-      long_description=LONG_DESCRIPTION,
-      long_description_content_type=LONG_DESC_TYPE,
+      #long_description=LONG_DESCRIPTION,
+      #long_description_content_type=LONG_DESC_TYPE,
       author=AUTHOR,
       license=LICENSE,
       author_email=AUTHOR_EMAIL,

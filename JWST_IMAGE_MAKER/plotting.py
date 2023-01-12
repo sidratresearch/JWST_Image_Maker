@@ -21,9 +21,15 @@ def plot_data(processed_data,filename,save_image):
             name = os.path.splitext(filename[i])[0].lower()
             new_ext='.pdf'
             plt.savefig(name+new_ext,format='pdf',dpi=1200,bbox_inches='tight')
-        plt.show()
+        
+        if save_image==False:
+            plt.show(block=False)
+            plt.pause(1)  #This pause allows the tester to briefly see the images (it is not really necessary for the code though)
 
-
-
+    #Putting in a user input so that images stay visible for as long as the user wants
+    if save_image==False:
+        input("Press [enter] to close all figures.")
+    
     pass
+
 
