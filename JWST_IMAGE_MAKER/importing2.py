@@ -1,3 +1,15 @@
+'''
+This file has many abilities that importing.py does not. The most important being that 
+it can accept both strings and lists of strings. However, when we try to test it, it just runs
+forever and never passes or fails.
+
+I think this is due to incompatibility with my plotting script. We will try to get this
+importing file to be usable later.
+
+
+'''
+
+
 import numpy as np
 from astropy.io import fits
 import sys
