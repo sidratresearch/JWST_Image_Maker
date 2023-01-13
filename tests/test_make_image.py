@@ -7,5 +7,5 @@ def test_checkfiles():
         path+"jw02739-o002_t001_miri_f1500w_i2d.fits",
         path+"jw02739-o002_t001_miri_f1130w_i2d.fits",
     ]
-    make_image(file_name, save_image=False)
+    make_image(file_name, save_image=True)
     
