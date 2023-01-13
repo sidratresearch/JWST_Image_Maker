@@ -42,7 +42,7 @@ def plot_data(processed_data,filename,save_image):
 def stack_images(processed_data):
     #Generating basic stacked image by taking the average of the pixels across the slices in the processed_data array.
     #Note that each slice in the processed_data array refers to data from a different wavelength filter (and thus different .fits file)
-    sum_data=np.zeros((len(processed_data[:,0]),len(processed_data[0,:])))
+    sum_data=np.zeros((len(processed_data[:,0,0]),len(processed_data[0,:,0])))
     
     #summing the slices in the array
     for i in range(len(processed_data[0,0,:])):
