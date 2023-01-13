@@ -16,7 +16,11 @@ def curves(images):
         information within middle of displayed spectrum
     """
 
-    return images_curved
+    adjusted = []
+    for image in images:
+        adjusted.append(curve(image))
+
+    return adjusted
 
 
 def curve(image):
@@ -24,7 +28,7 @@ def curve(image):
     well-spread in the context of being visualized by a 1D colour space.
 
     Currently, the optimum brightness is so that the mean of the distribution is
-    at halfway in the brightness spectrum, the standard deviation is 1/8th of
+    at 1/4th of the brightness spectrum, the standard deviation is 1/16th of
     the spectrum, and the max and min are at the max and min of the spectrum.
 
     Args:
@@ -33,54 +37,73 @@ def curve(image):
     Returns:
         np.array: adjusted image with brightness "normalized"
     """
-    min, max = 0, 255
-    mu_curve, sigma_curve = max / 2.0, max / 8.0
-    mu, sigma = np.mean(image.flatten()), np.std(image.flatten())
-    scaled = image.flatten() * max / np.max(image)
+    # Setting the desired image constants
+    scale = 255.0
+    mu_curve, sigma_curve = scale / 8, scale / 16
 
-    curved = gamma(image, gamma=sigma / sigma_curve)
+    # Scaling and clipping the image then calculating mean and standard deviation
+    scaled = np.clip(scale * image / np.max(image), 0.0, scale)
+    mu, sigma = np.mean(scaled.flatten()), np.std(scaled.flatten())
+
+    curved = np.copy(scaled)
+
+    # Adjusting the brightness nonlinearly by gamma correction
+    while not delta(mu, mu_curve):
+        curved = gamma(curved, mu / mu_curve)
+        mu = np.mean(curved.flatten())
+
+    # Adjusting the contrast linearly by alpha correction (gain)
     while not delta(sigma, sigma_curve):
-        print(sigma)
+        curved = alpha(curved, sigma_curve / sigma)
         sigma = np.std(curved.flatten())
-        curved = gamma(image, gamma=sigma / sigma_curve)
-        plt.imshow(curved)
-        plt.show()
 
-    # TODO delete
-    dist = np.histogram(scaled, bins=max, range=(0, max))
+    # Adjusting the brightness linearly by beta correction (bias)
+    while not delta(mu, mu_curve):
+        curved = beta(
+            curved, np.sign(mu / mu_curve - 1.0) * np.abs(mu_curve / mu) * mu_curve
+        )
+        mu = np.mean(curved.flatten())
 
-    plt.hist(image.flatten(), bins=np.linspace(min, max, 100))
-    plt.yscale("log")
+    plt.figure(figsize=(15, 8))
+    plt.subplot(121)
+    plt.imshow(scaled, cmap="gray")
+    plt.subplot(122)
+    plt.imshow(curved, cmap="gray")
     plt.show()
-    # end of delete
 
-    return image
+    plt.hist(scaled.flatten(), bins=100, alpha=0.5)
+    plt.hist(curved.flatten(), bins=100, alpha=0.5)
+    plt.show()
+
+    return curved
 
 
-def alpha(image, alpha=1.0):
+def alpha(image, alpha=1.0, scale=255.0):
     """Adjusts an image's contrast by multiplying pixel values by a constant value.
 
     Args:
         image (np.array): array of pixel values
         alpha (float, optional): contrast value, defaults to 1.0
+        scale (float, optional): max brightness value, defaults to 255.0
 
     Returns:
         np.array: adjusted image
     """
-    return alpha * image
+    return np.clip(alpha * image, 0.0, scale)
 
 
-def beta(image, beta=0.0):
+def beta(image, beta=0.0, scale=255.0):
     """Adjusts an image's brightness by increasing pixel values by a constant value.
 
     Args:
         image (np.array): array of pixel values
         beta (float, optional): brightness value, defaults to 0.0
+        scale (float, optional): max brightness value, defaults to 255.0
 
     Returns:
         np.array: adjusted image
     """
-    return beta * image
+    return np.clip(image + beta, 0.0, scale)
 
 
 def gamma(image, gamma=1.0, scale=255.0):
@@ -95,7 +118,7 @@ def gamma(image, gamma=1.0, scale=255.0):
     Returns:
         np.array: adjusted image
     """
-    return np.power(image / scale, gamma) / scale
+    return np.clip(scale * np.power(image / scale, gamma), 0.0, scale)
 
 
 def delta(value, constant, delta=0.1):
@@ -125,7 +148,8 @@ def process_file(data):
         np.array: the processed data
     """
 
-    return data_pro
+    adjusted = curves(data)
+    return adjusted
 
 
 data = get_files("/JWST_IMAGE_MAKER/data/test_data_eagle.fits")
