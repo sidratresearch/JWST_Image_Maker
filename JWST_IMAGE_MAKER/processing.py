@@ -1,7 +1,9 @@
 import numpy as np
 from astropy.io import fits
 from matplotlib import pyplot as plt
+from PIL import Image
 from importing2 import get_files  # TODO REMOVE
+import os
 
 
 def curves(images):
@@ -20,7 +22,7 @@ def curves(images):
     for image in images:
         adjusted.append(curve(image))
 
-    return adjusted
+    return np.array(adjusted)
 
 
 def curve(image, scale=255.0, mean_div=8.0, stddev_div=16.0):
@@ -147,39 +149,54 @@ def process_file(data):
     return adjusted
 
 
+data = get_files("/JWST_IMAGE_MAKER/data/test_data_eagle.fits")
+image = curve(data[0][0], mean_div=10.0, stddev_div=20.0)
+print(np.min(image.flatten()), np.max(image.flatten()))
+
+
+# im_pil = Image.fromarray(image, mode="F").convert("RGB")
+# im_pil.save("JWST_IMAGE_MAKER/figures/test_figures/eagle.jpg")
+
 # TODO DELETE, TESTING AREA
 
 
-def plot_test(sp, image, md, sd):
-    curved = curve(image, mean_div=md, stddev_div=sd)
-    plt.subplot(sp)
-    plt.imshow(curved, cmap="bone")
-    plt.title(
-        f"mean={np.mean(curved.flatten()):.1f} ({md:.0f} divisions) \n stddev={np.std(curved.flatten()):.1f} ({sd:.0f} divisions)"
-    )
-    return curved
+# def plot_test(sp, image, md, sd):
+#     curved = curve(image, mean_div=md, stddev_div=sd)
+#     plt.subplot(sp)
+#     plt.imshow(curved, cmap="bone")
+#     plt.title(
+#         f"mean={np.mean(curved.flatten()):.1f} ({md:.0f} divisions) \n stddev={np.std(curved.flatten()):.1f} ({sd:.0f} divisions)"
+#     )
+#     return curved
 
 
-data = get_files("/JWST_IMAGE_MAKER/data/test_data_eagle.fits")
+# data = get_files("/JWST_IMAGE_MAKER/data/test_data_eagle.fits")
 
-image = data[0][0]
-scale = 255.0
-scaled = np.clip(scale * image / np.max(image), 0.0, scale)
+# image = data[0][0]
+# scale = 255.0
+# scaled = np.clip(scale * image / np.max(image), 0.0, scale)
 
-plt.figure(figsize=(16, 8))
-plt.subplot(241)
-plt.imshow(scaled, cmap="bone")
-plt.title(
-    f"mean={np.mean(scaled.flatten()):.2f} stddev={np.std(scaled.flatten()):.2f}\noriginal"
-)
-c1 = plot_test(242, image, 9.0, 12.0)
-c2 = plot_test(243, image, 8.0, 13.0)
-c3 = plot_test(244, image, 7.0, 14.0)
-c4 = plot_test(245, image, 6.0, 15.0)
-c5 = plot_test(246, image, 5.0, 16.0)
-c6 = plot_test(247, image, 4.0, 17.0)
-c7 = plot_test(248, image, 3.0, 18.0)
-plt.show()
+# plt.figure(figsize=(16, 8))
+# plt.subplot(241)
+# plt.imshow(scaled, cmap="bone")
+# plt.title(
+#     f"mean={np.mean(scaled.flatten()):.2f} stddev={np.std(scaled.flatten()):.2f}\noriginal"
+# )
+# c1 = plot_test(242, image, 9.0, 12.0)
+# c2 = plot_test(243, image, 8.0, 13.0)
+# c3 = plot_test(244, image, 7.0, 14.0)
+# c4 = plot_test(245, image, 6.0, 15.0)
+# c5 = plot_test(246, image, 5.0, 16.0)
+# c6 = plot_test(247, image, 4.0, 17.0)
+# c7 = plot_test(248, image, 3.0, 18.0)
+# # plt.show()
+
+# images = []
+# count = 1
+# for im in [c1, c2, c3, c4, c5, c6, c7]:
+#     images.append(Image.fromarray(im))
+#     images[-1].save("/figures/test_figures/" + str(count) + ".png")
+#     count += 1
 
 # plt.hist(scaled.flatten(), bins=100, alpha=0.2)
 # plt.hist(c1.flatten(), bins=100, alpha=0.2)
