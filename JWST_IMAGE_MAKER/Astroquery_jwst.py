@@ -2,6 +2,8 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord
 from astroquery.esa.jwst import Jwst
 import numpy as np
+import shutil
+import os
 
 #Querying all JWST data files related to the desired target name
 target_name = 'M16'
@@ -22,15 +24,21 @@ for i in range(len(result)):
 #The relevant file is the one containing i2d at the end (these are 2D images, for more info see https://jwst-pipeline.readthedocs.io/en/stable/jwst/data_products/science_products.html#i2d)
 
 
-#   ****    Right now, this code is just looking at the first 5 observations ID, this should be updated once bones of code are in place  *****
+#   ****    Right now, this code is just looking at the first two observation IDs, this should be updated once bones of code are in place  *****
 
-for ID in miri_obsid[:5]:
+#Creating a new folder for data from Query
+newpath = './Query_Data/'+target_name
+if not os.path.exists(newpath):
+    os.makedirs(newpath)
+
+#Looping over all MIRI observation IDs 
+for ID in miri_obsid[:2]:
     product_list=Jwst.get_product_list(observation_id=ID, product_type='science')
+    #Looping over data products to find file ending in 'i2d.fits'
     for name in product_list['filename']:
         if 'i2d' in name:
-            print(name[0])
-            output_file=Jwst.get_product(name[0])
+            output_file=Jwst.get_product(file_name=name)
+            shutil.move(output_file,newpath+output_file)
 
-print(output_file)
 
 
