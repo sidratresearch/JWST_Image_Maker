@@ -4,5 +4,7 @@ JWST_IMAGE_MAKER.egg-info
 
 JWST_IMAGE_MAKER/__pycache__
 
+JWST_IMAGE_MAKER/tests/__pycache__
+
 JWST_IMAGE_MAKER/data/jw02739-o001_t001_nircam_clear-f187n_i2d.fits
 JWST_IMAGE_MAKER/data/jw02739-o001_t001_nircam_clear-f200w_i2d.fits 
