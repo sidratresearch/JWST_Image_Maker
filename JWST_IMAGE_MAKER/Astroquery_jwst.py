@@ -50,7 +50,6 @@ def get_MIRI_data(query_result,object_name):
     miri_obsid=[]
     for i in range(len(query_result)):
         if 'mirimage' in query_result[i][1]:
-            #print(result[i][1])
             miri_obsid.extend([query_result[i][1]])
 
     #Downloading relevant fits files from the MIRI observation ID's 
@@ -65,7 +64,7 @@ def get_MIRI_data(query_result,object_name):
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 
-    #Looping over all MIRI observation IDs 
+    #Looping over very first observation ID (this is only to make runtime quicker and needs to be updated in future)
     for ID in miri_obsid[:1]:
         product_list=Jwst.get_product_list(observation_id=ID, product_type='science')
         #Looping over data products to find file ending in 'i2d.fits'
