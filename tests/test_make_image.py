@@ -13,21 +13,26 @@ def test_checkfiles(monkeypatch):
         path + "jw02739-o002_t001_miri_f1500w_i2d.fits",
         path + "jw02739-o002_t001_miri_f1130w_i2d.fits",
     ]
-    # monkeypatch.setattr('JWST_IMAGE_MAKER.plotting.plot_data','input', enter)  #Why this line doesn't work: it looks for a function named input in the plot_data function and tried to get the code to execute the enter function instead (which doesn't even exist)
-    monkeypatch.setattr(
-        builtins, "input", lambda x: time.sleep(3)
-    )  # This looks for anytime the builtin function 'input' is used and instead of running that line, it executes time.sleep(3)
+    # monkeypatch.setattr('JWST_IMAGE_MAKER.plotting.plot_data','input', enter)
+    # #Why this line doesn't work: it looks for a function named input in the
+    # plot_data function and tried to get the code to execute the enter
+    # function instead (which doesn't even exist)
+    # This looks for anytime the builtin function 'input' is used and instead of
+    # running that line, it executes time.sleep(3)
+    monkeypatch.setattr(builtins, "input", lambda x: time.sleep(3))
     make_image(file_name, save_image=False)
 
 
 """
-I'm commenting this part out as the NIRCAM files are too big to be handled by the computer
+Commenting this part out as the NIRCAM files are too big to be handled by the computer
 
 def test_NIRCAMfiles():
-    #This checks the code's ability to provide plots of the NIRCAM images from JWST
+    # This checks the code's ability to provide plots of the NIRCAM images from JWST
 
-    #This test is currently failing because it says insufficient resources exist to store the fits data in an array
-    #it made a really pretty picture though so I think the code itself is solid, the NIRCAM data files are just too damn big
+    # This test is currently failing because it says insufficient resources exist
+    to store the fits data in an array
+    # It made a really pretty picture though so I think the code itself is
+    solid, the NIRCAM data files are just too damn big
 
 
     path="JWST_IMAGE_MAKER/data/"
