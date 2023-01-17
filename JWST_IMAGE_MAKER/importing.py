@@ -46,7 +46,7 @@ def get_file(filename):
         # Importing fits file
         fits_data = fits.open(filename[i])
         # Converting data from HDUList to np.array
-        array_data = fits_data[1].data
+        array_data = fits_data[1].data  # type:ignore
 
         if i != largest_index:
             array_data_pad = full_dataset[
@@ -93,7 +93,7 @@ def zeros_array_generator(filename):
 
     fits_data = fits.open(filename[largest_index])
     # Converting data from HDUList to np.array
-    array_data = fits_data[1].data
+    array_data = fits_data[1].data  # type:ignore
 
     xdim = len(array_data[:, 0])
     ydim = len(array_data[0, :])
@@ -135,7 +135,7 @@ def check_size(filename):
     """
     fits_data = fits.open(filename)
     # Converting data from HDUList to np.array
-    array_data = fits_data[1].data
+    array_data = fits_data[1].data  # type:ignore
     xdim = len(array_data[:, 0])
     ydim = len(array_data[0, :])
     return array_data, xdim, ydim

@@ -31,13 +31,14 @@ def make_image(query: bool, save_image: bool, **kwargs):
         save one to the users directory if desired. The code for this can be
         found in the plotting module.
     """
-    filenames: list = kwargs.get("filenames", None)
     object_name: str = kwargs.get("object_name", None)
 
-    checking_inputs(query, filenames, object_name)
+    if query == False:
+        filenames: list = kwargs.get("filenames", None)
+    else:
+        filenames = get_query_data(object_name)
 
-    if query == True:
-        filenames: list = get_query_data(object_name)
+    checking_inputs(query, filenames, object_name)
 
     file_data: np.ndarray = get_file(filenames)
 
