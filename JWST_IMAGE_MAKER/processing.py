@@ -1,11 +1,11 @@
 import numpy as np
 
 
-def process_file(images):
+def process_file(images: np.ndarray) -> np.ndarray:
     """Adjusts the brightness of each image within each HUD within each .fits so
     that the distribution is optimized within the displayed colour spectrum.
 
-    Args:_type_
+    Args:
         images (np.array): array containing data from JWST, collection of 2D flux values
 
     Returns:
@@ -20,7 +20,9 @@ def process_file(images):
     return np.array(adjusted)
 
 
-def curve(image, scale=255.0, p=(0.08, 0.998)):
+def curve(
+    image: np.ndarray, scale: float = 255.0, p: tuple = (0.08, 0.998)
+) -> np.ndarray:
     """Adjusts the brightness of an image so that the distribution is
      well-spread in the context of being visualized by a 1D colour space.
 
