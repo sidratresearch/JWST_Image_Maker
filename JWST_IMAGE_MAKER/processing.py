@@ -13,11 +13,14 @@ def process_file(images: np.ndarray) -> np.ndarray:
         information within middle of displayed spectrum
     """
 
-    adjusted = []
-    for image in images:
-        adjusted.append(curve(image))
+    if images.shape[2] == 1:
+        return np.array(curve(images[:, :, 0]))
+    else:
+        curved = []
+        for i in range(images.shape[2]):
+            curved.append(curve(image))
 
-    return np.array(adjusted)
+    return np.array(curved)
 
 
 def curve(
@@ -62,3 +65,12 @@ def curve(
     curved = np.clip(scale * np.power(curved / scale, gamma), 0.0, scale)
 
     return curved
+
+
+from importing import get_file
+from matplotlib import pyplot as plt
+
+data = get_file(["JWST_IMAGE_MAKER/data/test_ring.fits"])
+image = process_file(data)
+plt.imshow(image, cmap="afmhot")
+plt.show()
