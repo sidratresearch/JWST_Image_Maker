@@ -25,12 +25,12 @@ def curves(images):
     return np.array(adjusted)
 
 
-def curve(image, scale=255.0, mean_div=8.0, stddev_div=16.0):
+def curve(image, scale=255.0, mean=1.0 / 10, std=1.0 / 20):
     """Adjusts the brightness of an image so that the distribution is
     well-spread in the context of being visualized by a 1D colour space.
 
     Currently, the optimum brightness is so that the mean of the distribution is
-    at 1/8th of the brightness spectrum, the standard deviation is 1/16th of
+    at 1/8th of the brightness spectrum, the standard deviation is 1/14th of
     the spectrum, and the max and min are at the max and min of the spectrum.
 
     Intuitively, the greater the mean, the brighter the image, and the greater
@@ -39,15 +39,15 @@ def curve(image, scale=255.0, mean_div=8.0, stddev_div=16.0):
     Args:
         image (np.array): 2D image containing flux values to be adjusted
         scale (float, optional): max brightness value, defaults to 255.0
-        mean_div (float, optional): divisions to scale to equal mean, defaults to 8.0
-        stddev_div (float, optional): divisions to scale to equal stddev, defaults to 16.0
+        mean (float, optional): divisions to scale to equal mean, defaults to 8.0
+        stddev (float, optional): divisions to scale to equal stddev, defaults to 16.0
 
     Returns:
         np.array: adjusted image with brightness "normalized"
     """
     # Setting the desired image constants
     scale = scale
-    mu_curve, sigma_curve = scale / mean_div, scale / stddev_div
+    mu_curve, sigma_curve = scale * mean, scale * std
 
     # Scaling and clipping the image then calculating mean and standard deviation
     scaled = np.clip(scale * image / np.max(image), 0.0, scale)
@@ -57,13 +57,19 @@ def curve(image, scale=255.0, mean_div=8.0, stddev_div=16.0):
 
     # Adjusting the brightness nonlinearly by gamma correction
     while not delta(mu, mu_curve):
-        curved = gamma(curved, mu / mu_curve)
+        curved = gamma(curved, np.power(mu / mu_curve, 0.5))
         mu = np.mean(curved.flatten())
+        print(mu, mu_curve)
+
+    print("gamma check")
 
     # Adjusting the contrast linearly by alpha correction (gain)
     while not delta(sigma, sigma_curve):
         curved = alpha(curved, sigma_curve / sigma)
         sigma = np.std(curved.flatten())
+        print(sigma, sigma_curve)
+
+    print("alpha check")
 
     # Adjusting the brightness linearly by beta correction (bias)
     while not delta(mu, mu_curve):
@@ -71,6 +77,9 @@ def curve(image, scale=255.0, mean_div=8.0, stddev_div=16.0):
             curved, np.sign(mu / mu_curve - 1.0) * np.abs(mu_curve / mu) * mu_curve
         )
         mu = np.mean(curved.flatten())
+        print(mu, mu_curve)
+
+    print("beta check")
 
     return curved
 
@@ -149,9 +158,11 @@ def process_file(data):
     return adjusted
 
 
-data = get_files("/JWST_IMAGE_MAKER/data/test_data_eagle.fits")
-image = curve(data[0][0], mean_div=10.0, stddev_div=20.0)
+data = get_files("/JWST_IMAGE_MAKER/data/test_idk.fits")
+image = curve(data[0][0], mean=0.02, std=0.15)
 print(np.min(image.flatten()), np.max(image.flatten()))
+plt.imshow(image)
+plt.show()
 
 
 # im_pil = Image.fromarray(image, mode="F").convert("RGB")
