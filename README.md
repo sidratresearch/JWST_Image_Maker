@@ -11,6 +11,7 @@ or "python -m pip install --no-deps JWST-IMAGE-MAKER"
 6.	Note that you can put multiple files within this list. However, even if you are including 1 file, it must be in list format (not a string)
 7.	Run “make_image(Filename, save_Image={True/False})”
 8.	The saved image will appear in the same repository your input files are in
+9.  Enjoy
 
 ## Description of Algorithm
 
