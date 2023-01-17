@@ -3,6 +3,16 @@ from PIL import Image
 import numpy as np
 import os
 
+"""
+This module is responsible for plotting the processed data. It can either plot the average of multiple data sets from different filters
+(along with their separate images) or it can plot a layered image. Ultimately, the code should use the layering technique with a customized colour map.
+
+Thus, the next steps for improving this module are going to be:
+1. Adding the save_image feature to layer images
+2. Make layer_image the default option called in main
+2. Add **kwarg to make_image function in main.py that chooses between layering and averaging so that code can still do both in case it needs to
+"""
+
 
 def plot_data(processed_data, filename, save_image):
     """This module visualizes the processed data and saves it to the users computer if desired.
@@ -41,15 +51,30 @@ def plot_data(processed_data, filename, save_image):
 
         if save_image == False:
             plt.show(block=False)
-            plt.pause(
-                1
-            )  # This pause allows the tester to briefly see the images (it is not really necessary for the code though)
+            # This pause allows the tester to briefly see the images (it is not really necessary for the code though)
+            plt.pause(1)
 
     # Putting in a user input so that images stay visible for as long as the user wants
     if save_image == False:
         input("Press [enter] to close all figures.")
 
     pass
+
+
+def layer_images(processed_data: np.ndarray, filename: list, save_image: bool) -> None:
+    cmap_list = ["bone", "afmhot", "copper"]
+    x = processed_data[0, :, 0]
+    y = processed_data[:, 0, 0]
+    extent = 0, len(x), 0, len(y)
+    print(extent)
+
+    for i in range(len(processed_data[0, 0, :])):
+        Nslices = len(processed_data[0, 0, :])
+        alpha_val = 1 / Nslices  # alpha determines the opacity of each layer
+        plt.imshow(processed_data[:, :, i], cmap=cmap_list[i], alpha=0.5, extent=extent)
+
+    plt.show()
+    plt.savefig("Layering_test", format="pdf", dpi=1200, bbox_inches="tight")
 
 
 def stack_images(processed_data):
@@ -70,7 +95,7 @@ def stack_images(processed_data):
 
 
 def ignore_darkspots(processed_data, avg_data):
-    """This function does the following:
+    """    This function does the following:
     If a pixel in one of the pictures has a value of zero, do not let that contribute to the average
     i.e if the pixel at index [12,1011] has a value of zero in observations from wavelengths of 770 and 1130 microns,
     only use the information from 1500 micron observation
@@ -101,14 +126,12 @@ def ignore_darkspots(processed_data, avg_data):
                         N = 0
                         for h in range(len(processed_data[0, 0, :])):
                             if processed_data[i, j, h] != 0:
-                                sum = (
-                                    sum + processed_data[i, j, h]
-                                )  # sums the non-zero processed data
+                                # sums the non-zero processed data
+                                sum = sum + processed_data[i, j, h]
                                 N = (
                                     N + 1
                                 )  # N is a counter used to determine the number of non-zero items
 
-                        avg_data[i, j] = (
-                            sum / N
-                        )  # replaces the pixel in the avg_data array with one that is unaffected by dark spots (AKA pixels with a brightness value of zero)
+                        # replaces the pixel in the avg_data array with one that is unaffected by dark spots (AKA pixels with a brightness value of zero)
+                        avg_data[i, j] = sum / N
     return avg_data
