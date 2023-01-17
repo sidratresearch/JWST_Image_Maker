@@ -3,6 +3,16 @@ from PIL import Image
 import numpy as np
 import os
 
+'''
+This module is responsible for plotting the processed data. It can either plot the average of multiple data sets from different filters
+(along with their separate images) or it can plot a layered image. Ultimately, the code should use the layering technique with a customized colour map.
+
+Thus, the next steps for improving this module are going to be:
+1. Adding the save_image feature to layer images
+2. Make layer_image the default option called in main
+2. Add **kwarg to make_image function in main.py that chooses between layering and averaging so that code can still do both in case it needs to
+'''
+
 
 def plot_data(processed_data, filename, save_image):
     """This module visualizes the processed data and saves it to the users computer if desired.
@@ -50,6 +60,22 @@ def plot_data(processed_data, filename, save_image):
         input("Press [enter] to close all figures.")
 
     pass
+
+def layer_images(processed_data: np.ndarray, filename: list, save_image: bool) -> None:
+    cmap_list = ["bone", "afmhot", "copper"]
+    x = processed_data[0, :, 0]
+    y = processed_data[:, 0, 0]
+    extent = 0, len(x), 0, len(y)
+    print(extent)
+
+    for i in range(len(processed_data[0, 0, :])):
+        Nslices = len(processed_data[0, 0, :])
+        alpha_val = 1 / Nslices  # alpha determines the opacity of each layer
+        plt.imshow(processed_data[:, :, i], cmap=cmap_list[i], alpha=0.5, extent=extent)
+
+    plt.show()
+    plt.savefig("Layering_test", format="pdf", dpi=1200, bbox_inches="tight")
+
 
 
 def stack_images(processed_data):
