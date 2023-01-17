@@ -32,7 +32,7 @@ def curve(image, scale=255.0, p=(0.08, 0.998)):
      Args:
          image (np.array): 2D image containing flux values to be adjusted
          scale (float, optional): max brightness value, defaults to 255.0
-         p (tuple, optional): percentiles to clip to, defaults to 8% and 99.6%
+         p (tuple, optional): percentiles to clip to, defaults to 8% and 99.8%
 
      Returns:
          np.array: adjusted image with auto-optimized brightness and contrast
