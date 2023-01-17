@@ -1,30 +1,64 @@
 from JWST_IMAGE_MAKER.importing import get_file
+from JWST_IMAGE_MAKER.Astroquery_jwst import get_query_data
 from JWST_IMAGE_MAKER.processing import process_file
 from JWST_IMAGE_MAKER.plotting import plot_data
+import numpy as np
 
 # make_image is the function that the user will call
 # This function will then call all of the other modules
 
 
-def make_image(filenames, save_image):
+def make_image(query: bool, save_image: bool, **kwargs):
     """This function creates an image from raw JWST data by calling all of the
     other modules within this package.
 
     Args:
+        query (bool): Determines whether the user wants to gather data automatically by inputting their target object's name
+
+        save_image (bool): Specifies whether the user wants to save the image
+            to their computer
+
+    Kwargs:
         filename (list of strings): list containing the name(s) of the fits
             file(s) used to construct an image. If only one .fits file is given,
-            please store as a 1 element list
-        save_image (boolean): Specifies whether the user wants to save the image
-            to their computer
+            please store as a 1 element list. This must be specified if query=False
+
+        
+        object_name (str): string denoting the object's name. Must be specified if query=True so that the query can actually occur
 
     Returns:
         This function will never return a variable. It will produce an image and
         save one to the users directory if desired. The code for this can be
         found in the plotting module.
     """
-    file_data = get_file(filenames)
+    filenames: list = kwargs.get("filenames", None)
+    object_name: str = kwargs.get("object_name", None)
+
+    checking_inputs(query, filenames, object_name)
+
+    if query == True:
+        filenames: list = get_query_data(object_name)
+
+    file_data: np.ndarray = get_file(filenames)
+
     processed_data = process_file(file_data)
     plot_data(processed_data, filenames, save_image)  # this will also save the image
+    pass
+
+
+def checking_inputs(query: bool, filenames: list, object_name: str) -> None:
+    if query == True and type(object_name) != str:
+        print(
+            "ERROR: If query=True, then object_name must be given as a string. It is currently",
+            type(object_name),
+        )
+
+    if query == False and type(filenames) != list:
+        print(
+            "ERROR: If query=True, then filenames must be given as a list. It is currently",
+            type(filenames),
+        )
+
     pass
 
 
