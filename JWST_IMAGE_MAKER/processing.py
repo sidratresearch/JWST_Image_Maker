@@ -13,12 +13,9 @@ def process_file(images: np.ndarray) -> np.ndarray:
         information within middle of displayed spectrum
     """
 
-    if images.shape[2] == 1:
-        return np.array(curve(images[:, :, 0]))
-    else:
-        curved = []
-        for i in range(images.shape[2]):
-            curved.append(curve(image))
+    curved = []
+    for i in range(images.shape[2]):
+        curved.append(curve(images[:, :, i]))
 
     return np.array(curved)
 
