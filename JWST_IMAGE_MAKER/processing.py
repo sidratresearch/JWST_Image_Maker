@@ -52,7 +52,7 @@ def curve(
     # Adjusting the brightness linearly by alpha and beta correction
     alpha = (upper_opt - lower_opt) / (upper - lower)
     beta = -alpha * lower
-    curved = np.clip(alpha * scaled + beta, 0.0, scale)
+    curved: np.ndarray = np.clip(alpha * scaled + beta, 0.0, scale)
 
     # Adjusting the brightness nonlinearly by gamma correction
     gamma = np.log(np.mean(curved.flatten())) / np.log(scale)

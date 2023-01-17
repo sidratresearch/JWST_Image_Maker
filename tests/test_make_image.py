@@ -41,27 +41,17 @@ def test_NIRCAMfiles():
 
 
 def test_importing():
-    path1 = "JWST_IMAGE_MAKER/data/"
-    path2 = "/JWST_IMAGE_MAKER/data/"
+    path = "JWST_IMAGE_MAKER/data/"
 
     fitsnames = [
         "jw02739-o002_t001_miri_f770w_i2d.fits",
         "jw02739-o002_t001_miri_f1500w_i2d.fits",
         "jw02739-o002_t001_miri_f1130w_i2d.fits",
     ]
-    arr_filename1 = ["h", "h", "h"]
-    arr_filename2 = ["h", "h", "h"]
+    arr_filename = ["h", "h", "h"]
 
     for i in range(0, 3):
-        arr_filename1[i] = path1 + fitsnames[i]
-        arr_filename2[i] = path2 + fitsnames[i]
+        arr_filename[i] = path + fitsnames[i]
 
-    str_filename = path2 + "jw02739-o002_t001_miri_f770w_i2d.fits"
-
-    # full_array2=gf2(str_filename)  #this test passes works because Hansen's code accepts strings
-    full_array1 = get_file(
-        arr_filename1
-    )  # This test passes because my code accepts lists of strings
-    assert np.shape(full_array1) == np.shape(full_array2)
-
-    # full_array1=gf1(str_filename) #This test fails because my code does not accept strings (must be list of strings)
+    full_array = get_file(arr_filename)
+    assert isinstance(full_array, np.ndarray) and len(full_array.shape) == 3
