@@ -3,6 +3,8 @@ from astropy.io import fits
 import sys
 import os
 
+# Some headers of note: PI_NAME, DATE-OBS, TARGPROP, INSTRUME, DURATION
+
 
 def get_files(filenames):
     """This function calls get_file for every user-input filename.

@@ -25,61 +25,80 @@ def curves(images):
     return np.array(adjusted)
 
 
-def curve(image, scale=255.0, mean=1.0 / 10, std=1.0 / 20):
+def curve(image, scale=255.0, p=(0.08, 0.998)):
     """Adjusts the brightness of an image so that the distribution is
     well-spread in the context of being visualized by a 1D colour space.
 
-    Currently, the optimum brightness is so that the mean of the distribution is
-    at 1/8th of the brightness spectrum, the standard deviation is 1/14th of
-    the spectrum, and the max and min are at the max and min of the spectrum.
-
-    Intuitively, the greater the mean, the brighter the image, and the greater
-    the standard deviation, the more contrast the image has.
+    TODO Expand this descript
 
     Args:
         image (np.array): 2D image containing flux values to be adjusted
         scale (float, optional): max brightness value, defaults to 255.0
-        mean (float, optional): divisions to scale to equal mean, defaults to 8.0
-        stddev (float, optional): divisions to scale to equal stddev, defaults to 16.0
+        p (tuple, optional): percentiles to clip to, defaults to 8% and 99.6%
 
     Returns:
-        np.array: adjusted image with brightness "normalized"
+        np.array: adjusted image with auto-optimized brightness and contrast
     """
-    # Setting the desired image constants
-    scale = scale
-    mu_curve, sigma_curve = scale * mean, scale * std
 
-    # Scaling and clipping the image then calculating mean and standard deviation
+    # Scaling and clipping the image to account for error pixels
     scaled = np.clip(scale * image / np.max(image), 0.0, scale)
-    mu, sigma = np.mean(scaled.flatten()), np.std(scaled.flatten())
+    nonzero = scaled[np.where(scaled > 0)]
+    nonmax = nonzero[np.where(nonzero < scale)]
 
-    curved = np.copy(scaled)
+    # Calculating lower and upper percentiles
+    lower, upper = np.percentile(nonmax, p[0] * 100), np.percentile(nonmax, p[1] * 100)
+    lower_opt, upper_opt = scale * p[0], scale * p[1]
+
+    # Adjusting the brightness linearly by alpha and beta correction
+    alpha = (upper_opt - lower_opt) / (upper - lower)
+    beta = -alpha * lower
+    curved = np.clip(alpha * scaled + beta, 0.0, scale)
 
     # Adjusting the brightness nonlinearly by gamma correction
-    while not delta(mu, mu_curve):
-        curved = gamma(curved, np.power(mu / mu_curve, 0.5))
-        mu = np.mean(curved.flatten())
-        print(mu, mu_curve)
+    gamma = np.log(np.mean(curved.flatten())) / np.log(scale)
+    nonlin = np.clip(scale * np.power(curved / scale, gamma), 0.0, scale)
 
-    print("gamma check")
-
-    # Adjusting the contrast linearly by alpha correction (gain)
-    while not delta(sigma, sigma_curve):
-        curved = alpha(curved, sigma_curve / sigma)
-        sigma = np.std(curved.flatten())
-        print(sigma, sigma_curve)
-
-    print("alpha check")
-
-    # Adjusting the brightness linearly by beta correction (bias)
-    while not delta(mu, mu_curve):
-        curved = beta(
-            curved, np.sign(mu / mu_curve - 1.0) * np.abs(mu_curve / mu) * mu_curve
-        )
-        mu = np.mean(curved.flatten())
-        print(mu, mu_curve)
-
-    print("beta check")
+    fig = plt.figure(figsize=(12, 8), dpi=300)
+    ax1 = fig.add_subplot(2, 3, 1)
+    ax1.set_title("no corrections")
+    ax1.imshow(scaled, cmap="afmhot")
+    ax2 = fig.add_subplot(2, 3, 2)
+    ax2.set_title("alpha + beta")
+    ax2.imshow(curved, cmap="afmhot")
+    ax3 = fig.add_subplot(2, 3, 3)
+    ax3.set_title("gamma")
+    ax3.imshow(nonlin, cmap="afmhot")
+    ax4 = fig.add_subplot(2, 1, 2)
+    ax4.set_title("brightness histogram")
+    ax4.hist(
+        scaled.flatten(),
+        bins=100,
+        range=(0, scale),
+        alpha=0.5,
+        histtype="step",
+        label="original",
+    )
+    ax4.hist(
+        curved.flatten(),
+        bins=100,
+        range=(0, scale),
+        alpha=0.5,
+        histtype="step",
+        ls="--",
+        label="linear",
+    )
+    ax4.hist(
+        nonlin.flatten(),
+        bins=100,
+        range=(0, scale),
+        alpha=0.5,
+        histtype="step",
+        ls=":",
+        label="nonlinear",
+    )
+    ax4.set_yscale("log")
+    ax4.legend()
+    plt.savefig("JWST_IMAGE_MAKER/figures/eagle_corrections.png")
 
     return curved
 
@@ -158,64 +177,9 @@ def process_file(data):
     return adjusted
 
 
-data = get_files("/JWST_IMAGE_MAKER/data/test_idk.fits")
-image = curve(data[0][0], mean=0.02, std=0.15)
-print(np.min(image.flatten()), np.max(image.flatten()))
-plt.imshow(image)
-plt.show()
+data = get_files("/JWST_IMAGE_MAKER/data/test_eagle.fits")
+image = curve(data[0][0])
 
 
 # im_pil = Image.fromarray(image, mode="F").convert("RGB")
 # im_pil.save("JWST_IMAGE_MAKER/figures/test_figures/eagle.jpg")
-
-# TODO DELETE, TESTING AREA
-
-
-# def plot_test(sp, image, md, sd):
-#     curved = curve(image, mean_div=md, stddev_div=sd)
-#     plt.subplot(sp)
-#     plt.imshow(curved, cmap="bone")
-#     plt.title(
-#         f"mean={np.mean(curved.flatten()):.1f} ({md:.0f} divisions) \n stddev={np.std(curved.flatten()):.1f} ({sd:.0f} divisions)"
-#     )
-#     return curved
-
-
-# data = get_files("/JWST_IMAGE_MAKER/data/test_data_eagle.fits")
-
-# image = data[0][0]
-# scale = 255.0
-# scaled = np.clip(scale * image / np.max(image), 0.0, scale)
-
-# plt.figure(figsize=(16, 8))
-# plt.subplot(241)
-# plt.imshow(scaled, cmap="bone")
-# plt.title(
-#     f"mean={np.mean(scaled.flatten()):.2f} stddev={np.std(scaled.flatten()):.2f}\noriginal"
-# )
-# c1 = plot_test(242, image, 9.0, 12.0)
-# c2 = plot_test(243, image, 8.0, 13.0)
-# c3 = plot_test(244, image, 7.0, 14.0)
-# c4 = plot_test(245, image, 6.0, 15.0)
-# c5 = plot_test(246, image, 5.0, 16.0)
-# c6 = plot_test(247, image, 4.0, 17.0)
-# c7 = plot_test(248, image, 3.0, 18.0)
-# # plt.show()
-
-# images = []
-# count = 1
-# for im in [c1, c2, c3, c4, c5, c6, c7]:
-#     images.append(Image.fromarray(im))
-#     images[-1].save("/figures/test_figures/" + str(count) + ".png")
-#     count += 1
-
-# plt.hist(scaled.flatten(), bins=100, alpha=0.2)
-# plt.hist(c1.flatten(), bins=100, alpha=0.2)
-# plt.hist(c2.flatten(), bins=100, alpha=0.2)
-# plt.hist(c3.flatten(), bins=100, alpha=0.2)
-# plt.hist(c4.flatten(), bins=100, alpha=0.2)
-# plt.hist(c5.flatten(), bins=100, alpha=0.2)
-# plt.hist(c6.flatten(), bins=100, alpha=0.2)
-# plt.hist(c7.flatten(), bins=100, alpha=0.2)
-# plt.yscale("log")
-# plt.show()
