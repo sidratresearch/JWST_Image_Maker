@@ -40,6 +40,9 @@ def make_image(query: bool, save_image: bool, **kwargs):
 
     if query == False:
         filenames: list = kwargs.get("filenames", None)
+        object_name = filenames[
+            0
+        ]  # In the case that no object_name is given, set object_name equal to the first file name. This is necessary for plot saving later
     else:
         filenames = get_query_data(object_name)
 
@@ -49,7 +52,7 @@ def make_image(query: bool, save_image: bool, **kwargs):
 
     processed_data = process_file(file_data)
     plot_data(
-        processed_data, filenames, save_image, plot_method
+        processed_data, filenames, save_image, plot_method, object_name
     )  # this will also save the image
     pass
 

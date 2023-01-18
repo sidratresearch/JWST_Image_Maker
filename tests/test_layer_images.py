@@ -1,6 +1,6 @@
 from JWST_IMAGE_MAKER.importing import get_file
 from JWST_IMAGE_MAKER.processing import process_file
-from JWST_IMAGE_MAKER.plotting import layer_images
+from JWST_IMAGE_MAKER.plotting import layer_images, plot_data
 import numpy as np
 
 
@@ -16,4 +16,14 @@ def test_layer_images():
     ]
     file_data = get_file(filenames)
     processed_data = process_file(file_data)
-    layer_images(processed_data, filenames, save_image)  # this will also save the image
+
+    plot_data(
+        processed_data,
+        filename=filenames,
+        save_image=True,
+        plot_method="average",
+        object_name="wowee",
+    )
+    assert 1 == 1
+
+    # layer_images(processed_data, object_name="test", save_image=True)  # this will also save the image

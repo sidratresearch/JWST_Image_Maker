@@ -110,11 +110,9 @@ def get_MIRI_data(query_result, object_name):
         for name in product_list["filename"]:  # type: ignore
             print("name:", name)
             if "i2d" in name:
-                # downloading file and putting it in the desired folder
-                output_file = Jwst.get_product(file_name=name)
-                testpath = newpath + "./" + name
-                # checking if file already exists in desired path
+                # downloading file and putting it in the desired folder if file doesn't already exist in that path
                 if name not in os.listdir(newpath):
+                    output_file = Jwst.get_product(file_name=name)
                     shutil.move(output_file, newpath)
     pass
 

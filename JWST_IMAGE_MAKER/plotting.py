@@ -12,24 +12,68 @@ Thus, the next steps for improving this module are going to be:
 2. Make layer_image the default option called in main
 3. Add **kwarg to make_image function in main.py that chooses between layering and averaging so that code can still do both in case it needs to.
 """
+#%%Main function that calls other functions based on plot_method specification
 
 
-def plot_data(processed_data, filename, save_image, plot_method):
-    """This module visualizes the processed data and saves it to the users computer if desired.
+def plot_data(
+    processed_data: np.ndarray,
+    filename: list,
+    save_image: bool,
+    plot_method: str,
+    object_name: str,
+):
+    """This is the main module and it visualizes the processed data and saves it to the users computer if desired. 
 
     Args:
         processed_data (np.array): A 2D or 3D numpy array of JWST that has been processed (not exactly sure how yet). The array will be 2D if the user gives a single .fits file and will be 3D otherwise.
         filename (list of strings): contains the names of the data files provided by the user
-        save_image (T/F): Tells the code whether the user wants the figure to be saved to their computer
+        save_image (bool): Tells the code whether the user wants the figure to be saved to their computer
+        plot_method (str): Specifies whether the produced image will be an average of all the data taken using filters or a layered image
+                           where data from each filter is shown using a unique colourmap. Valid string inputs are "Layer","Average".
+                           
+                           Note that the averaging method is very slow as it has to loop over every pixel to check for dark spots (AKA no data spots)
+        object_name(str): name of astronomical object being targeted
     """
-    if plot_method == "Layer":
-        layer_images(processed_data, filename, save_image)
+    if plot_method == "Layer" or plot_method == "layer":
+        print("layer")
+        layer_images(processed_data, object_name, save_image)
 
-    if plot_method == "average":
+    elif plot_method == "Average" or plot_method == "average":
+        print("average")
         avg_method(processed_data, filename, save_image)
 
+    else:
+        print("ERROR: invalid plot_method string given.")
+        print("The only valid inputs are layer, Layer, average, and Average")
+        print("The user input was ", plot_method)
 
-def avg_method(processed_data, filename, save_image):
+
+#%% Layering Method Code
+
+
+def layer_images(
+    processed_data: np.ndarray, object_name: str, save_image: bool
+) -> None:
+    cmap_list = ["bone", "afmhot", "copper"]
+    x = processed_data[0, :, 0]
+    y = processed_data[:, 0, 0]
+    extent = 0, len(x), 0, len(y)
+    print(extent)
+
+    for i in range(len(processed_data[0, 0, :])):
+        Nslices = len(processed_data[0, 0, :])
+        alpha_val = 1 / Nslices  # alpha determines the opacity of each layer
+        plt.imshow(processed_data[:, :, i], cmap=cmap_list[i], alpha=0.5, extent=extent)
+
+    plt.show(block=True)
+    if save_image == True:
+        plt.savefig(object_name + ".pdf", format="pdf", dpi=1200, bbox_inches="tight")
+
+
+#%% Average Flux method
+
+
+def avg_method(processed_data, object_name, save_image):
     stacked_data = stack_images(processed_data)
 
     # Looping over all data files provided by the user (even if they only provide 1) and making a plot of each
@@ -48,13 +92,11 @@ def avg_method(processed_data, filename, save_image):
         plt.imshow(img, vmin=vmin, vmax=vmax, cmap="bone")
         # saving image if desired by user
         if save_image == True:
-            if i < len(processed_data[0, 0, :]):
-                name = os.path.splitext(filename[i])[0].lower()
-
-            else:
-                name = "Flux_Averaged_Image"
-            new_ext = ".pdf"
-            plt.savefig(name + new_ext, format="pdf", dpi=1200, bbox_inches="tight")
+            # if last iteration, save averaged flux pdf
+            if i == len(processed_data[0, 0, :]):
+                name = object_name
+                new_ext = ".pdf"
+                plt.savefig(name + new_ext, format="pdf", dpi=1200, bbox_inches="tight")
 
         if save_image == False:
             plt.show(block=True)
@@ -66,22 +108,6 @@ def avg_method(processed_data, filename, save_image):
         input("Press [enter] to close all figures.")
 
     pass
-
-
-def layer_images(processed_data: np.ndarray, filename: list, save_image: bool) -> None:
-    cmap_list = ["bone", "afmhot", "copper"]
-    x = processed_data[0, :, 0]
-    y = processed_data[:, 0, 0]
-    extent = 0, len(x), 0, len(y)
-    print(extent)
-
-    for i in range(len(processed_data[0, 0, :])):
-        Nslices = len(processed_data[0, 0, :])
-        alpha_val = 1 / Nslices  # alpha determines the opacity of each layer
-        plt.imshow(processed_data[:, :, i], cmap=cmap_list[i], alpha=0.5, extent=extent)
-
-    plt.show(block=True)
-    plt.savefig("Layering_test", format="pdf", dpi=1200, bbox_inches="tight")
 
 
 def stack_images(processed_data):
