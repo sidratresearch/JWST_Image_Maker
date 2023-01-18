@@ -17,7 +17,7 @@ def get_query_data(object_name: str):
     """
     query_result = query(object_name)
     get_MIRI_data(query_result, object_name)
-    filenames: list = os.listdir()
+    filenames: list = os.listdir("Query_Data/" + object_name)
     return filenames
 
 
@@ -65,9 +65,23 @@ def get_MIRI_data(query_result, object_name):
     """
     # All MIRI observation ID's are saved in the miri_obsid list so they can be downloaded
     miri_obsid = []
+
+    # This list will contain strings denoting which filter (i.e F770W) is used to make a given observation. This list is used to
+    # ensure that multiple copies of the same observation are not downloaded
+
+    filters_loaded = []
+
     for i in range(len(query_result)):
-        if "mirimage" in query_result[i][1]:
-            miri_obsid.extend([query_result[i][1]])
+        instrument_name = query_result[i][5]
+        filter = query_result[i][6]
+
+        print("instrument name", instrument_name)
+
+        if instrument_name == "MIRI":
+            if filter not in filters_loaded:
+                # add observation ID to list
+                miri_obsid.extend([query_result[i][1]])
+                filters_loaded.extend([query_result[i][6]])
 
     # Downloading relevant fits files from the MIRI observation ID's
     # The relevant file in the product_list folder is the one containing i2d at the end
@@ -92,6 +106,9 @@ def get_MIRI_data(query_result, object_name):
             if "i2d" in name:
                 # downloading file and putting it in the desired folder
                 output_file = Jwst.get_product(file_name=name)
-                shutil.move(output_file, newpath + output_file)
+                testpath = newpath + "./" + name
+                # checking if file already exists in desired path
+                if name == os.listdir(newpath):
+                    shutil.move(output_file, newpath)
     pass
 

@@ -26,12 +26,17 @@ def make_image(query: bool, save_image: bool, **kwargs):
         
         object_name (str): string denoting the object's name. Must be specified if query=True so that the query can actually occur
 
+        plot_method (str): can be "layer" or "average". Default is layer
+
     Returns:
         This function will never return a variable. It will produce an image and
         save one to the users directory if desired. The code for this can be
         found in the plotting module.
     """
     object_name: str = kwargs.get("object_name", None)
+    plot_method: str = kwargs.get("plot_method", None)
+    if plot_method == None:
+        plot_method = "layer"
 
     if query == False:
         filenames: list = kwargs.get("filenames", None)
@@ -43,7 +48,9 @@ def make_image(query: bool, save_image: bool, **kwargs):
     file_data: np.ndarray = get_file(filenames)
 
     processed_data = process_file(file_data)
-    plot_data(processed_data, filenames, save_image)  # this will also save the image
+    plot_data(
+        processed_data, filenames, save_image, plot_method
+    )  # this will also save the image
     pass
 
 

@@ -42,6 +42,7 @@ def get_file(filename):
 
     # Looping over all files provided by user and saving their data in full_dataset
     for i in range(len(filename)):
+
         check_extension(filename[i])
         # Importing fits file
         fits_data = fits.open(filename[i])
@@ -75,6 +76,7 @@ def zeros_array_generator(filename):
     Returns:
         _type_: _description_
     """
+
     xdims = np.zeros(len(filename))
     ydims = np.zeros(len(filename))
 
@@ -83,6 +85,7 @@ def zeros_array_generator(filename):
 
     # This loop is used to determine the dimensions the empty array should have
     for i in range(len(filename)):
+
         array_data, xdims[i], ydims[i] = check_size(filename[i])
         # checking if arrays have different dimensions, if they do: resize them.
         if i > 0:

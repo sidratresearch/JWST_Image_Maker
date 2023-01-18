@@ -12,12 +12,13 @@ def process_file(images: np.ndarray) -> np.ndarray:
         np.array: array containing flux data adjusted for maximum
         information within middle of displayed spectrum
     """
-
-    adjusted = []
-    for image in images:
-        adjusted.append(curve(image))
-
-    return np.array(adjusted)
+    if images.shape[2] == 1:
+        return np.array(curve(images[:, :, 0]))
+    else:
+        curved = []
+        for i in range(images.shape[2]):
+            curved.append(curve(images[:, :, i]))
+    return np.array(curved)
 
 
 def curve(
@@ -41,9 +42,11 @@ def curve(
     """
 
     # Scaling and clipping the image to account for error pixels
-    scaled = np.clip(scale * image / np.max(image), 0.0, scale)
-    nonzero = scaled[np.where(scaled > 0)]
-    nonmax = nonzero[np.where(nonzero < scale)]
+    scaled = scale * image / np.max(image)
+    nonzero = scaled[np.where(scaled != 0)]
+    nonmax = nonzero[np.where(nonzero < np.max(nonzero))]
+
+    print(np.min(nonmax), np.max(nonmax), p)
 
     # Calculating lower and upper percentiles
     lower, upper = np.percentile(nonmax, p[0] * 100), np.percentile(nonmax, p[1] * 100)
