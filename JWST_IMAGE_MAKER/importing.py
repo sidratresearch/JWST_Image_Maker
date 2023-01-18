@@ -6,7 +6,8 @@ import os
 # path = "JWST_IMAGE_MAKER/JWST_IMAGE_MAKER/data/"
 
 
-def get_file(filename):
+def get_file(filenames):
+    print("filenames", filenames)
     """This function imports the file provided by the user and converts it to a np.array.
     If the given file does not have a .fits extension, the code will send an
     error to the user and will not attempt to open the file.
@@ -20,9 +21,9 @@ def get_file(filename):
         single .fits file given
     """
     # Checking that input filename(s) are given as a list
-    if not isinstance(filename, list):
+    if not isinstance(filenames, list):
         raise TypeError(
-            f"was expecting command to be a list, but got a {type(filename)}"
+            f"was expecting command to be a list, but got a {type(filenames)}"
         )
 
     """
@@ -38,15 +39,16 @@ def get_file(filename):
     wavelength slice
     full_dataset = np.zeros(((xdim, ydim, len(filename))))
     """
-    largest_index, full_dataset = zeros_array_generator(filename)
+    largest_index, full_dataset = zeros_array_generator(filenames)
 
     # Looping over all files provided by user and saving their data in full_dataset
-    for i in range(len(filename)):
-        check_extension(filename[i])
+    for i in range(len(filenames)):
+
+        check_extension(filenames[i])
         # Importing fits file
-        fits_data = fits.open(filename[i])
+        fits_data = fits.open(filenames[i])
         # Converting data from HDUList to np.array
-        array_data = fits_data[1].data
+        array_data = fits_data[1].data  # type:ignore
 
         if i != largest_index:
             array_data_pad = full_dataset[
@@ -63,7 +65,7 @@ def get_file(filename):
     return full_dataset
 
 
-def zeros_array_generator(filename):
+def zeros_array_generator(filenames):
     """This function creates an array of zeros that has x and y dimensions equal
     to the largest (most pixelated) fits file image. This allows arrays of
     different sizes to be resized to the correct value by simply appending zeros
@@ -75,15 +77,17 @@ def zeros_array_generator(filename):
     Returns:
         _type_: _description_
     """
-    xdims = np.zeros(len(filename))
-    ydims = np.zeros(len(filename))
+
+    xdims = np.zeros(len(filenames))
+    ydims = np.zeros(len(filenames))
 
     # stores the index (within the filename array) of the data set with the largest dimensions
     largest_index = 0
 
     # This loop is used to determine the dimensions the empty array should have
-    for i in range(len(filename)):
-        array_data, xdims[i], ydims[i] = check_size(filename[i])
+    for i in range(len(filenames)):
+
+        array_data, xdims[i], ydims[i] = check_size(filenames[i])
         # checking if arrays have different dimensions, if they do: resize them.
         if i > 0:
             if xdims[i] != xdims[i - 1] or ydims[i] != ydims[i - 1]:
@@ -91,14 +95,14 @@ def zeros_array_generator(filename):
                 if xdims[i] > xdims[i - 1] or ydims[i] > ydims[i - 1]:
                     largest_index = i
 
-    fits_data = fits.open(filename[largest_index])
+    fits_data = fits.open(filenames[largest_index])
     # Converting data from HDUList to np.array
-    array_data = fits_data[1].data
+    array_data = fits_data[1].data  # type:ignore
 
     xdim = len(array_data[:, 0])
     ydim = len(array_data[0, :])
 
-    full_dataset = np.zeros(((xdim, ydim, len(filename))))
+    full_dataset = np.zeros(((xdim, ydim, len(filenames))))
 
     return largest_index, full_dataset
 
@@ -135,7 +139,7 @@ def check_size(filename):
     """
     fits_data = fits.open(filename)
     # Converting data from HDUList to np.array
-    array_data = fits_data[1].data
+    array_data = fits_data[1].data  # type:ignore
     xdim = len(array_data[:, 0])
     ydim = len(array_data[0, :])
     return array_data, xdim, ydim

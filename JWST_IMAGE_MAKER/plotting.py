@@ -10,11 +10,11 @@ This module is responsible for plotting the processed data. It can either plot t
 Thus, the next steps for improving this module are going to be:
 1. Adding the save_image feature to layer images
 2. Make layer_image the default option called in main
-2. Add **kwarg to make_image function in main.py that chooses between layering and averaging so that code can still do both in case it needs to
+3. Add **kwarg to make_image function in main.py that chooses between layering and averaging so that code can still do both in case it needs to.
 """
 
 
-def plot_data(processed_data, filename, save_image):
+def plot_data(processed_data, filename, save_image, plot_method):
     """This module visualizes the processed data and saves it to the users computer if desired.
 
     Args:
@@ -22,7 +22,14 @@ def plot_data(processed_data, filename, save_image):
         filename (list of strings): contains the names of the data files provided by the user
         save_image (T/F): Tells the code whether the user wants the figure to be saved to their computer
     """
+    if plot_method == "Layer":
+        layer_images(processed_data, filename, save_image)
 
+    if plot_method == "average":
+        avg_method(processed_data, filename, save_image)
+
+
+def avg_method(processed_data, filename, save_image):
     stacked_data = stack_images(processed_data)
 
     # Looping over all data files provided by the user (even if they only provide 1) and making a plot of each
@@ -50,7 +57,7 @@ def plot_data(processed_data, filename, save_image):
             plt.savefig(name + new_ext, format="pdf", dpi=1200, bbox_inches="tight")
 
         if save_image == False:
-            plt.show(block=False)
+            plt.show(block=True)
             # This pause allows the tester to briefly see the images (it is not really necessary for the code though)
             plt.pause(1)
 
@@ -73,7 +80,7 @@ def layer_images(processed_data: np.ndarray, filename: list, save_image: bool) -
         alpha_val = 1 / Nslices  # alpha determines the opacity of each layer
         plt.imshow(processed_data[:, :, i], cmap=cmap_list[i], alpha=0.5, extent=extent)
 
-    plt.show()
+    plt.show(block=True)
     plt.savefig("Layering_test", format="pdf", dpi=1200, bbox_inches="tight")
 
 

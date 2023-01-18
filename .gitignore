@@ -2,6 +2,8 @@ build
 dist
 JWST_IMAGE_MAKER.egg-info
 
+JWST_IMAGE_MAKER/Query_Data
+
 JWST_IMAGE_MAKER/__pycache__
 
 
