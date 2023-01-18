@@ -1,5 +1,9 @@
 from JWST_IMAGE_MAKER import make_image
 from JWST_IMAGE_MAKER.Astroquery_jwst import get_query_data
+from JWST_IMAGE_MAKER.importing import get_file
+from JWST_IMAGE_MAKER.processing import process_file
+from JWST_IMAGE_MAKER.plotting import layer_images, plot_data
+import numpy as np
 
 
 def test_get_query_data():

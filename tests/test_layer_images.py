@@ -16,12 +16,11 @@ def test_layer_images():
     ]
     file_data = get_file(filenames)
     processed_data = process_file(file_data)
-
     plot_data(
         processed_data,
         filename=filenames,
         save_image=True,
-        plot_method="average",
+        plot_method="layer",
         object_name="wowee",
     )
     assert 1 == 1

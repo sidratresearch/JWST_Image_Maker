@@ -65,12 +65,3 @@ def curve(
     curved = np.clip(scale * np.power(curved / scale, gamma), 0.0, scale)
 
     return curved
-
-
-from importing import get_file
-from matplotlib import pyplot as plt
-
-data = get_file(["JWST_IMAGE_MAKER/data/test_ring.fits"])
-image = process_file(data)
-plt.imshow(image, cmap="afmhot")
-plt.show()

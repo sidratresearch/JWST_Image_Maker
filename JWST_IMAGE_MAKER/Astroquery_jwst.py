@@ -100,7 +100,7 @@ def get_MIRI_data(query_result, object_name):
     print("miri_obsid", miri_obsid)
 
     # Looping over very first observation ID (this is only to make runtime quicker and needs to be updated in future)
-    for ID in miri_obsid[:]:
+    for ID in miri_obsid[:1]:
         product_list = Jwst.get_product_list(observation_id=ID, product_type="science")
 
         if type(product_list) == None:

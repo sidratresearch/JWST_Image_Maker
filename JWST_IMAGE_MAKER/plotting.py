@@ -34,6 +34,17 @@ def plot_data(
                            Note that the averaging method is very slow as it has to loop over every pixel to check for dark spots (AKA no data spots)
         object_name(str): name of astronomical object being targeted
     """
+
+    # reshaping processed data so indexing works properly
+    processed_data = np.reshape(
+        processed_data,
+        [
+            len(processed_data[0, :, 0]),
+            len(processed_data[0, 0, :]),
+            len(processed_data[:, 0, 0]),
+        ],
+    )
+
     if plot_method == "Layer" or plot_method == "layer":
         print("layer")
         layer_images(processed_data, object_name, save_image)
@@ -54,20 +65,29 @@ def plot_data(
 def layer_images(
     processed_data: np.ndarray, object_name: str, save_image: bool
 ) -> None:
-    cmap_list = ["bone", "afmhot", "copper"]
+    cmap_list = ["bone", "afmhot", "copper", "viridis"]
     x = processed_data[0, :, 0]
     y = processed_data[:, 0, 0]
     extent = 0, len(x), 0, len(y)
     print(extent)
 
     for i in range(len(processed_data[0, 0, :])):
+
+        print(
+            "i=",
+            i,
+            "np.shape(processed_data)",
+            np.shape(processed_data),
+            "len(cmap_list)",
+            len(cmap_list),
+        )
         Nslices = len(processed_data[0, 0, :])
         alpha_val = 1 / Nslices  # alpha determines the opacity of each layer
         plt.imshow(processed_data[:, :, i], cmap=cmap_list[i], alpha=0.5, extent=extent)
 
-    plt.show(block=True)
     if save_image == True:
-        plt.savefig(object_name + ".pdf", format="pdf", dpi=1200, bbox_inches="tight")
+        plt.savefig(object_name + ".png", format="png", dpi=1200, bbox_inches="tight")
+    plt.show(block=True)
 
 
 #%% Average Flux method
