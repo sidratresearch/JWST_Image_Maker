@@ -18,6 +18,11 @@ def get_query_data(object_name: str):
     query_result = query(object_name)
     get_MIRI_data(query_result, object_name)
     filenames: list = os.listdir("Query_Data/" + object_name)
+
+    # Ensuring path information is correct for filenames list
+    for i in range(len(filenames)):
+        filenames[i] = "Query_Data/" + object_name + "./" + filenames[i]
+
     return filenames
 
 
@@ -75,8 +80,6 @@ def get_MIRI_data(query_result, object_name):
         instrument_name = query_result[i][5]
         filter = query_result[i][6]
 
-        print("instrument name", instrument_name)
-
         if instrument_name == "MIRI":
             if filter not in filters_loaded:
                 # add observation ID to list
@@ -94,8 +97,10 @@ def get_MIRI_data(query_result, object_name):
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 
+    print("miri_obsid", miri_obsid)
+
     # Looping over very first observation ID (this is only to make runtime quicker and needs to be updated in future)
-    for ID in miri_obsid[:1]:
+    for ID in miri_obsid[:]:
         product_list = Jwst.get_product_list(observation_id=ID, product_type="science")
 
         if type(product_list) == None:
@@ -103,12 +108,13 @@ def get_MIRI_data(query_result, object_name):
 
         # Looping over data products to find file ending in 'i2d.fits'
         for name in product_list["filename"]:  # type: ignore
+            print("name:", name)
             if "i2d" in name:
                 # downloading file and putting it in the desired folder
                 output_file = Jwst.get_product(file_name=name)
                 testpath = newpath + "./" + name
                 # checking if file already exists in desired path
-                if name == os.listdir(newpath):
+                if name not in os.listdir(newpath):
                     shutil.move(output_file, newpath)
     pass
 
