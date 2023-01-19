@@ -73,17 +73,14 @@ from matplotlib import pyplot as plt
 
 def denoise(image: np.ndarray, factor: float = 4 * 10**-7) -> np.ndarray:
     fhat = np.fft.fft2(image)
-    threshold = np.mean(fhat.flatten()) - 2 * np.std(
-        fhat.flatten(),
-    )
-    fhat[np.where(np.abs(fhat) < threshold)[0]] = 0
+    fshift = np.fft.fftshift(fhat)
+    fshift[1500:, 1500:] = 0
+    fhat[1500:, 1500:] = 0
     filtered = np.real(np.fft.ifft2(fhat))
-    plt.imshow(np.real(fhat), cmap="gray")
-    plt.show()
     return filtered
 
 
-data = get_file(["JWST_IMAGE_MAKER/data/test_eagle.fits"])
+data = get_file(["JWST_IMAGE_MAKER/data/test_galaxy2.fits"])
 image = process_file(data)[0]
 filtered = denoise(image)
 plt.figure(figsize=(15, 5))
