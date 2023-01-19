@@ -42,8 +42,6 @@ def curve(
     nonzero = scaled[np.where(scaled != 0)]
     nonmax = nonzero[np.where(nonzero < np.max(nonzero))]
 
-    print(np.min(nonmax), np.max(nonmax), p)
-
     # Calculating lower and upper percentiles
     lower, upper = np.percentile(nonmax, [p[0] * 100, p[1] * 100])
     lower_opt, upper_opt = scale * p[0], scale * p[1]
@@ -66,27 +64,40 @@ def curve(
 
 # Everything below is for fft testing
 
-
-def slim(image: np.ndarray) -> np.ndarray:
-    power = []
-    for xlice in image:
-        n = len(xlice)
-        fhat = np.fft.fft(xlice, n)
-        spectrum = fhat * np.conj(fhat) / n
-        indices = spectrum > 100
-        clean = spectrum * indices
-        fhat = indices * fhat
-        ffilt = np.fft.ifft(fhat)
-        power.append(np.real(spectrum))
-    power = np.array(power)
-    plt.imshow(power)
-    plt.show()
-    return image
-
-
 from importing import get_file
 from matplotlib import pyplot as plt
 
+from scipy.optimize import curve_fit
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+
+
+def denoise(image: np.ndarray, factor: float = 10**-2) -> np.ndarray:
+    smushed = np.copy(image)
+    for i in range(len(smushed)):
+        xlice = smushed[i]
+        fhat = np.fft.fft(xlice)
+        threshold = np.max(fhat) * factor
+        fhat[np.where(np.abs(fhat) < threshold)[0]] = 0
+        ff = np.real(np.fft.ifft(fhat))
+        smushed[i] = ff
+    for j in range(len(smushed[0])):
+        ylice = smushed[:, j]
+        fhat = np.fft.fft(ylice)
+        threshold = np.max(fhat) * factor
+        fhat[np.where(np.abs(fhat) < threshold)[0]] = 0
+        ff = np.real(np.fft.ifft(fhat))
+        for i in range(len(smushed)):
+            smushed[i, j] = ff[i]
+    return smushed
+
+
 data = get_file(["JWST_IMAGE_MAKER/data/test_ring.fits"])
 image = process_file(data)[0]
-slim(image)
+smushed = denoise(image)
+plt.figure(figsize=(10, 5))
+plt.subplot(121)
+plt.imshow(image)
+plt.subplot(122)
+plt.imshow(smushed)
+plt.savefig("JWST_IMAGE_MAKER/figures/denoise_failure.png")

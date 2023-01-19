@@ -7,7 +7,6 @@ import os
 
 
 def get_file(filenames):
-    print("filenames", filenames)
     """This function imports the file provided by the user and converts it to a np.array.
     If the given file does not have a .fits extension, the code will send an
     error to the user and will not attempt to open the file.
