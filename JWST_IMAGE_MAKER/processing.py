@@ -45,7 +45,7 @@ def curve(
     nonmax = nonzero[np.where(nonzero < np.max(nonzero))]
 
     # Calculating lower and upper percentiles
-    lower, upper = np.percentile(nonmax, p[0] * 100), np.percentile(nonmax, p[1] * 100)
+    lower, upper = np.percentile(nonmax, [p[0] * 100, p[1] * 100])
     lower_opt, upper_opt = scale * p[0], scale * p[1]
 
     # Adjusting the brightness linearly by alpha and beta correction
@@ -64,10 +64,26 @@ def curve(
     return curved
 
 
+def slim(image: np.ndarray) -> np.ndarray:
+    power = []
+    for xlice in image:
+        n = len(xlice)
+        fhat = np.fft.fft(xlice, n)
+        spectrum = fhat * np.conj(fhat) / n
+        indices = spectrum > 100
+        clean = spectrum * indices
+        fhat = indices * fhat
+        ffilt = np.fft.ifft(fhat)
+        power.append(np.real(spectrum))
+    power = np.array(power)
+    plt.imshow(power)
+    plt.show()
+    return image
+
+
 from importing import get_file
 from matplotlib import pyplot as plt
 
 data = get_file(["JWST_IMAGE_MAKER/data/test_ring.fits"])
-image = process_file(data)
-plt.imshow(image, cmap="afmhot")
-plt.show()
+image = process_file(data)[0]
+slim(image)
