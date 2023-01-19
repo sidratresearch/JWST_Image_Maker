@@ -72,7 +72,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 
 
-def denoise(image: np.ndarray, factor: float = 10**-2) -> np.ndarray:
+def denoise(image: np.ndarray, factor: float = 4 * 10**-3) -> np.ndarray:
     smushed = np.copy(image)
     for i in range(len(smushed)):
         xlice = smushed[i]
@@ -92,12 +92,17 @@ def denoise(image: np.ndarray, factor: float = 10**-2) -> np.ndarray:
     return smushed
 
 
-data = get_file(["JWST_IMAGE_MAKER/data/test_ring.fits"])
+data = get_file(["JWST_IMAGE_MAKER/data/test_galaxy2.fits"])
 image = process_file(data)[0]
 smushed = denoise(image)
-plt.figure(figsize=(10, 5))
-plt.subplot(121)
-plt.imshow(image)
-plt.subplot(122)
-plt.imshow(smushed)
-plt.savefig("JWST_IMAGE_MAKER/figures/denoise_failure.png")
+plt.figure(figsize=(15, 5))
+plt.subplot(131)
+plt.title("Adjusted Image")
+plt.imshow(image, cmap="copper")
+plt.subplot(132)
+plt.title("Denoised Image")
+plt.imshow(smushed, cmap="copper")
+plt.subplot(133)
+plt.title("Enhanced Differences")
+plt.imshow(curve(image - smushed), cmap="copper")
+plt.savefig("JWST_IMAGE_MAKER/figures/processing/denoise_failure_galaxy2.png")
