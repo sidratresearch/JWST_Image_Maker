@@ -64,4 +64,12 @@ def curve(
     gamma = np.log(scale * 0.341) / np.log(np.std(curved.flatten()))
     curved = np.clip(scale * np.power(curved / scale, gamma), 0.0, scale)
 
+    # # Just for Henry - 0 to 1 makes it brighter, 1+ makes it dimmer, increasing alpha increases the contrast
+
+    # gamma = 1.5
+    # curved = np.clip(scale * np.power(curved / scale, gamma), 0.0, scale)
+    # alpha = 2.5
+    # beta = 0.0
+    # curved = np.clip(alpha * curved + beta, 0.0, scale)  # type:ignore
+
     return curved

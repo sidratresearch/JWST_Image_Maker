@@ -19,9 +19,9 @@ def test_layer_images():
     plot_data(
         processed_data,
         filename=filenames,
-        save_image=True,
+        save_image=False,
         plot_method="layer",
-        object_name="wowee",
+        object_name="alpha_test",
     )
     assert 1 == 1
 
