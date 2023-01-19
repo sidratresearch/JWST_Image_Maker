@@ -5,6 +5,8 @@ def process_file(images: np.ndarray) -> np.ndarray:
     """Adjusts the brightness of each image within each HUD within each .fits so
     that the distribution is optimized within the displayed colour spectrum.
 
+    I like the way it looks if curve is run twice, it's bad practice but looks good!
+
     Args:
         images (np.array): array containing data from JWST, collection of 2D flux values
 
@@ -14,7 +16,7 @@ def process_file(images: np.ndarray) -> np.ndarray:
     """
     curved = []
     for i in range(images.shape[2]):
-        curved.append(curve(images[:, :, i]))
+        curved.append(curve(curve(images[:, :, i])))
     return np.array(curved)
 
 
@@ -52,10 +54,11 @@ def curve(
     curved: np.ndarray = np.clip(alpha * scaled + beta, 0.0, scale)
 
     # Adjusting the brightness nonlinearly by gamma correction
+    # By the ratio between the logarithms of the mean of the image and the scale
     gamma = np.log(np.mean(curved.flatten())) / np.log(scale)
     curved = np.clip(scale * np.power(curved / scale, gamma), 0.0, scale)
 
-    # Adjusting the brightness nonlinearly by gamma correction (optional)
+    # By the ratio between the logarithms of the stddev of the image and the scale
     gamma = np.log(scale * 0.341) / np.log(np.std(curved.flatten()))
     curved = np.clip(scale * np.power(curved / scale, gamma), 0.0, scale)
 
@@ -67,42 +70,30 @@ def curve(
 from importing import get_file
 from matplotlib import pyplot as plt
 
-from scipy.optimize import curve_fit
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
+
+def denoise(image: np.ndarray, factor: float = 4 * 10**-7) -> np.ndarray:
+    fhat = np.fft.fft2(image)
+    threshold = np.mean(fhat.flatten()) - 2 * np.std(
+        fhat.flatten(),
+    )
+    fhat[np.where(np.abs(fhat) < threshold)[0]] = 0
+    filtered = np.real(np.fft.ifft2(fhat))
+    plt.imshow(np.real(fhat), cmap="gray")
+    plt.show()
+    return filtered
 
 
-def denoise(image: np.ndarray, factor: float = 4 * 10**-3) -> np.ndarray:
-    smushed = np.copy(image)
-    for i in range(len(smushed)):
-        xlice = smushed[i]
-        fhat = np.fft.fft(xlice)
-        threshold = np.max(fhat) * factor
-        fhat[np.where(np.abs(fhat) < threshold)[0]] = 0
-        ff = np.real(np.fft.ifft(fhat))
-        smushed[i] = ff
-    for j in range(len(smushed[0])):
-        ylice = smushed[:, j]
-        fhat = np.fft.fft(ylice)
-        threshold = np.max(fhat) * factor
-        fhat[np.where(np.abs(fhat) < threshold)[0]] = 0
-        ff = np.real(np.fft.ifft(fhat))
-        for i in range(len(smushed)):
-            smushed[i, j] = ff[i]
-    return smushed
-
-
-data = get_file(["JWST_IMAGE_MAKER/data/test_galaxy2.fits"])
+data = get_file(["JWST_IMAGE_MAKER/data/test_eagle.fits"])
 image = process_file(data)[0]
-smushed = denoise(image)
+filtered = denoise(image)
 plt.figure(figsize=(15, 5))
 plt.subplot(131)
 plt.title("Adjusted Image")
-plt.imshow(image, cmap="copper")
+plt.imshow(image, cmap="gray")
 plt.subplot(132)
 plt.title("Denoised Image")
-plt.imshow(smushed, cmap="copper")
+plt.imshow(filtered, cmap="gray")
 plt.subplot(133)
 plt.title("Enhanced Differences")
-plt.imshow(curve(image - smushed), cmap="copper")
-plt.savefig("JWST_IMAGE_MAKER/figures/processing/denoise_failure_galaxy2.png")
+plt.imshow(curve(image - filtered), cmap="gray")
+plt.show()
