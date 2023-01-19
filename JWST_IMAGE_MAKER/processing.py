@@ -12,12 +12,9 @@ def process_file(images: np.ndarray) -> np.ndarray:
         np.array: array containing flux data adjusted for maximum
         information within middle of displayed spectrum
     """
-    if images.shape[2] == 1:
-        return np.array(curve(images[:, :, 0]))
-    else:
-        curved = []
-        for i in range(images.shape[2]):
-            curved.append(curve(images[:, :, i]))
+    curved = []
+    for i in range(images.shape[2]):
+        curved.append(curve(images[:, :, i]))
     return np.array(curved)
 
 
@@ -65,6 +62,9 @@ def curve(
     curved = np.clip(scale * np.power(curved / scale, gamma), 0.0, scale)
 
     return curved
+
+
+# Everything below is for fft testing
 
 
 def slim(image: np.ndarray) -> np.ndarray:
