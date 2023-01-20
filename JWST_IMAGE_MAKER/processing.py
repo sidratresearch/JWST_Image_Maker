@@ -69,6 +69,9 @@ def curve(
 
 from importing import get_file
 from matplotlib import pyplot as plt
+from scipy import signal
+
+# Hanning and Hamming functions, look into power spectra cleaning
 
 
 def denoise(image: np.ndarray, factor: float = 4 * 10**-7) -> np.ndarray:
@@ -78,19 +81,3 @@ def denoise(image: np.ndarray, factor: float = 4 * 10**-7) -> np.ndarray:
     fhat[1500:, 1500:] = 0
     filtered = np.real(np.fft.ifft2(fhat))
     return filtered
-
-
-data = get_file(["JWST_IMAGE_MAKER/data/test_galaxy2.fits"])
-image = process_file(data)[0]
-filtered = denoise(image)
-plt.figure(figsize=(15, 5))
-plt.subplot(131)
-plt.title("Adjusted Image")
-plt.imshow(image, cmap="gray")
-plt.subplot(132)
-plt.title("Denoised Image")
-plt.imshow(filtered, cmap="gray")
-plt.subplot(133)
-plt.title("Enhanced Differences")
-plt.imshow(curve(image - filtered), cmap="gray")
-plt.show()
