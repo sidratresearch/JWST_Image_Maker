@@ -56,7 +56,9 @@ def plot_data(
     elif plot_method == "Average" or plot_method == "average":
         avg_method(new_processed_data, object_name, save_image)
 
+    # This is the default method
     elif plot_method == "layer" or plot_method == "Layer":
+        print("12345")
         simple_layer_method(processed_data, new_processed_data, object_name, save_image)
 
     else:
@@ -70,14 +72,13 @@ def plot_data(
 
 def simple_layer_method(processed_data, new_processed_data, object_name, save_image):
     # scales the RGB values assigned to each image
-    scale_factor = [1.5, 0.95, 1]
+    scale_factor = [1.1, 0.9, 1]
     for i, im in enumerate(processed_data):
         tmp_percentile = np.percentile(im.flatten(), [1, 99])
         new_processed_data[:, :, i] = (im - tmp_percentile[0]) / (
             scale_factor[i] * (tmp_percentile[1] - tmp_percentile[0])
         )
 
-    plt.figure(dpi=300)
     plt.imshow(new_processed_data)
     if save_image == True:
         plt.savefig(

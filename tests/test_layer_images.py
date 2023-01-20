@@ -10,9 +10,9 @@ def test_layer_images():
 
     path = "JWST_IMAGE_MAKER/data/"
     filenames = [
-        path + "jw02739-o002_t001_miri_f770w_i2d.fits",
         path + "jw02739-o002_t001_miri_f1500w_i2d.fits",
         path + "jw02739-o002_t001_miri_f1130w_i2d.fits",
+        path + "jw02739-o002_t001_miri_f770w_i2d.fits",
     ]
     file_data = get_file(filenames)
     processed_data = process_file(file_data)
@@ -20,7 +20,7 @@ def test_layer_images():
         processed_data,
         filename=filenames,
         save_image=False,
-        plot_method="simple",
+        plot_method="layer",
         object_name="run1",
     )
     assert 1 == 1

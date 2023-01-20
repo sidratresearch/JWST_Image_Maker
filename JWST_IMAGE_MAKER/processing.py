@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def process_file(images: np.ndarray) -> np.ndarray:
@@ -91,10 +92,3 @@ def slim(image: np.ndarray) -> np.ndarray:
     plt.show()
     return image
 
-
-from importing import get_file
-from matplotlib import pyplot as plt
-
-data = get_file(["JWST_IMAGE_MAKER/data/test_ring.fits"])
-image = process_file(data)[0]
-slim(image)
