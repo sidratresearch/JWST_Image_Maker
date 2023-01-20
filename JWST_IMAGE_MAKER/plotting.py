@@ -80,7 +80,7 @@ def layer_images(
         vmin, vmax = np.percentile(
             img.flatten(), [12, 96]
         )  # 12 and 99 were determined by trial and error
-        alpha_val = 0.33  # alpha determines the opacity of each layer
+        alpha_val = 0.7  # alpha determines the opacity of each layer
         plt.imshow(
             img, vmin=vmin, vmax=vmax, cmap=cmap_list[i], alpha=alpha_val, extent=extent
         )
