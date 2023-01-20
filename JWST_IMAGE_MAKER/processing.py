@@ -12,12 +12,9 @@ def process_file(images: np.ndarray) -> np.ndarray:
         np.array: array containing flux data adjusted for maximum
         information within middle of displayed spectrum
     """
-    if images.shape[2] == 1:
-        return np.array(curve(images[:, :, 0]))
-    else:
-        curved = []
-        for i in range(images.shape[2]):
-            curved.append(curve(images[:, :, i]))
+    curved = []
+    for i in range(images.shape[2]):
+        curved.append(curve(images[:, :, i]))
     return np.array(curved)
 
 
@@ -48,7 +45,7 @@ def curve(
     print(np.min(nonmax), np.max(nonmax), p)
 
     # Calculating lower and upper percentiles
-    lower, upper = np.percentile(nonmax, p[0] * 100), np.percentile(nonmax, p[1] * 100)
+    lower, upper = np.percentile(nonmax, [p[0] * 100, p[1] * 100])
     lower_opt, upper_opt = scale * p[0], scale * p[1]
 
     # Adjusting the brightness linearly by alpha and beta correction
@@ -65,3 +62,31 @@ def curve(
     curved = np.clip(scale * np.power(curved / scale, gamma), 0.0, scale)
 
     return curved
+
+
+# Everything below is for fft testing
+
+
+def slim(image: np.ndarray) -> np.ndarray:
+    power = []
+    for xlice in image:
+        n = len(xlice)
+        fhat = np.fft.fft(xlice, n)
+        spectrum = fhat * np.conj(fhat) / n
+        indices = spectrum > 100
+        clean = spectrum * indices
+        fhat = indices * fhat
+        ffilt = np.fft.ifft(fhat)
+        power.append(np.real(spectrum))
+    power = np.array(power)
+    plt.imshow(power)
+    plt.show()
+    return image
+
+
+from importing import get_file
+from matplotlib import pyplot as plt
+
+data = get_file(["JWST_IMAGE_MAKER/data/test_ring.fits"])
+image = process_file(data)[0]
+slim(image)
