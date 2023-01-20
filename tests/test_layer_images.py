@@ -1,6 +1,6 @@
 from JWST_IMAGE_MAKER.importing import get_file
 from JWST_IMAGE_MAKER.processing import process_file
-from JWST_IMAGE_MAKER.plotting import layer_images, plot_data
+from JWST_IMAGE_MAKER.plotting import alpha_layer_images, plot_data
 import numpy as np
 
 
@@ -19,9 +19,9 @@ def test_layer_images():
     plot_data(
         processed_data,
         filename=filenames,
-        save_image=True,
-        plot_method="layer",
-        object_name="wowee",
+        save_image=False,
+        plot_method="simple",
+        object_name="run1",
     )
     assert 1 == 1
 

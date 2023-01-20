@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
+import matplotlib
 import os
 
 """
@@ -36,22 +37,27 @@ def plot_data(
     """
 
     # reshaping processed data so indexing works properly
-    processed_data = np.reshape(
-        processed_data,
-        [
-            len(processed_data[0, :, 0]),
-            len(processed_data[0, 0, :]),
-            len(processed_data[:, 0, 0]),
-        ],
+    new_processed_data = np.zeros(
+        (
+            (
+                len(processed_data[0, :, 0]),
+                len(processed_data[0, 0, :]),
+                len(processed_data[:, 0, 0]),
+            )
+        )
     )
+    for i in range(len(processed_data[:, 0, 0])):
+        new_processed_data[:, :, i] = processed_data[i, :, :]
 
-    if plot_method == "Layer" or plot_method == "layer":
-        print("layer")
-        layer_images(processed_data, object_name, save_image)
+    # Selecting plotting method used based on user input
+    if plot_method == "Alpha Layer" or plot_method == "alpha layer":
+        alpha_layer_images(new_processed_data, object_name, save_image)
 
     elif plot_method == "Average" or plot_method == "average":
-        print("average")
-        avg_method(processed_data, filename, save_image)
+        avg_method(new_processed_data, object_name, save_image)
+
+    elif plot_method == "layer" or plot_method == "Layer":
+        simple_layer_method(processed_data, new_processed_data, object_name, save_image)
 
     else:
         print("ERROR: invalid plot_method string given.")
@@ -59,34 +65,64 @@ def plot_data(
         print("The user input was ", plot_method)
 
 
-#%% Layering Method Code
+#%% Emulating Mubdi's jupyter notebook plotting improvements
 
 
-def layer_images(
+def simple_layer_method(processed_data, new_processed_data, object_name, save_image):
+    # scales the RGB values assigned to each image
+    scale_factor = [1.5, 0.95, 1]
+    for i, im in enumerate(processed_data):
+        tmp_percentile = np.percentile(im.flatten(), [1, 99])
+        new_processed_data[:, :, i] = (im - tmp_percentile[0]) / (
+            scale_factor[i] * (tmp_percentile[1] - tmp_percentile[0])
+        )
+
+    plt.figure(dpi=300)
+    plt.imshow(new_processed_data)
+    if save_image == True:
+        plt.savefig(
+            object_name + ".png",  # type:ignore
+            format="png",
+            dpi=1200,
+            bbox_inches="tight",
+        )
+    plt.show()
+
+
+#%% Alpha Layering Method Code (written by Henry)
+
+# The main weakness of this function is its dependence on alpha blending. Using alpha bleding to combine the different images leads to an
+# oversaturated final image. Think of stacking two 50% translucent windows on each other: you can still kind of see through them, their opacity does not
+# add linearly as you would think to go to 1.
+
+
+def alpha_layer_images(
     processed_data: np.ndarray, object_name: str, save_image: bool
 ) -> None:
-    cmap_list = ["bone", "afmhot", "copper", "viridis"]
+    # cmap_list = ["Reds_r", "YlGn_r", "BuPu_r"] using premade colourmaps
+    cmap_list = get_RGB_cmaps()  # using homemade RGB maps
     x = processed_data[0, :, 0]
     y = processed_data[:, 0, 0]
     extent = 0, len(x), 0, len(y)
-    print(extent)
 
     for i in range(len(processed_data[0, 0, :])):
-
-        print(
-            "i=",
-            i,
-            "np.shape(processed_data)",
-            np.shape(processed_data),
-            "len(cmap_list)",
-            len(cmap_list),
-        )
         Nslices = len(processed_data[0, 0, :])
-        alpha_val = 1 / Nslices  # alpha determines the opacity of each layer
-        plt.imshow(processed_data[:, :, i], cmap=cmap_list[i], alpha=0.5, extent=extent)
+        img = processed_data[:, :, i]
+        vmin, vmax = np.percentile(
+            img.flatten(), [1, 99]
+        )  # 12 and 99 were determined by trial and error
+        alpha_val = 0.333  # alpha determines the opacity of each layer
+        plt.imshow(
+            img, vmin=vmin, vmax=vmax, cmap=cmap_list[i], alpha=alpha_val, extent=extent
+        )
 
     if save_image == True:
-        plt.savefig(object_name + ".png", format="png", dpi=1200, bbox_inches="tight")
+        plt.savefig(
+            object_name + ".png",  # type:ignore
+            format="png",
+            dpi=1200,
+            bbox_inches="tight",
+        )
     plt.show(block=True)
 
 
@@ -188,3 +224,25 @@ def ignore_darkspots(processed_data, avg_data):
                         # replaces the pixel in the avg_data array with one that is unaffected by dark spots (AKA pixels with a brightness value of zero)
                         avg_data[i, j] = sum / N
     return avg_data
+
+
+def get_RGB_cmaps():
+    redarr = [(0.0, 0, 0.0), (0.5, 0.5, 0.5), (1.0, 1, 1.0)]
+
+    bluearr = [(0.0, 0.0, 0.0), (0.5, 0.5, 0.5), (1.0, 1.0, 1.0)]
+
+    greenarr = [(0.0, 0.0, 0), (0.5, 0.5, 0.5), (1.0, 1, 1)]
+
+    zero_arr = [(0.0, 0.0, 0), (0.5, 0.0, 0.0), (1.0, 0, 0)]
+
+    red_dict = {"red": redarr, "green": zero_arr, "blue": zero_arr}
+    green_dict = {"red": zero_arr, "green": greenarr, "blue": zero_arr}
+    blue_dict = {"red": zero_arr, "green": zero_arr, "blue": bluearr}
+
+    green_map = matplotlib.colors.LinearSegmentedColormap(
+        "MyColormap", green_dict, N=1e3
+    )
+    red_map = matplotlib.colors.LinearSegmentedColormap("MyColormap", red_dict, N=1e3)
+    blue_map = matplotlib.colors.LinearSegmentedColormap("MyColormap", blue_dict, N=1e3)
+    return [red_map, green_map, blue_map]
+
