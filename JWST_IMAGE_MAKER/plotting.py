@@ -50,11 +50,14 @@ def plot_data(
         new_processed_data[:, :, i] = processed_data[i, :, :]
 
     # Selecting plotting method used based on user input
-    if plot_method == "Layer" or plot_method == "layer":
-        layer_images(new_processed_data, object_name, save_image)
+    if plot_method == "Alpha Layer" or plot_method == "alpha layer":
+        alpha_layer_images(new_processed_data, object_name, save_image)
 
     elif plot_method == "Average" or plot_method == "average":
         avg_method(new_processed_data, object_name, save_image)
+
+    elif plot_method == "layer" or plot_method == "Layer":
+        simple_layer_method(processed_data, new_processed_data, object_name, save_image)
 
     else:
         print("ERROR: invalid plot_method string given.")
@@ -62,10 +65,38 @@ def plot_data(
         print("The user input was ", plot_method)
 
 
-#%% Layering Method Code
+#%% Emulating Mubdi's jupyter notebook plotting improvements
 
 
-def layer_images(
+def simple_layer_method(processed_data, new_processed_data, object_name, save_image):
+    # scales the RGB values assigned to each image
+    scale_factor = [1.5, 0.95, 1]
+    for i, im in enumerate(processed_data):
+        tmp_percentile = np.percentile(im.flatten(), [1, 99])
+        new_processed_data[:, :, i] = (im - tmp_percentile[0]) / (
+            scale_factor[i] * (tmp_percentile[1] - tmp_percentile[0])
+        )
+
+    plt.figure(dpi=300)
+    plt.imshow(new_processed_data)
+    if save_image == True:
+        plt.savefig(
+            object_name + ".png",  # type:ignore
+            format="png",
+            dpi=1200,
+            bbox_inches="tight",
+        )
+    plt.show()
+
+
+#%% Alpha Layering Method Code (written by Henry)
+
+# The main weakness of this function is its dependence on alpha blending. Using alpha bleding to combine the different images leads to an
+# oversaturated final image. Think of stacking two 50% translucent windows on each other: you can still kind of see through them, their opacity does not
+# add linearly as you would think to go to 1.
+
+
+def alpha_layer_images(
     processed_data: np.ndarray, object_name: str, save_image: bool
 ) -> None:
     # cmap_list = ["Reds_r", "YlGn_r", "BuPu_r"] using premade colourmaps
@@ -78,16 +109,16 @@ def layer_images(
         Nslices = len(processed_data[0, 0, :])
         img = processed_data[:, :, i]
         vmin, vmax = np.percentile(
-            img.flatten(), [12, 96]
+            img.flatten(), [1, 99]
         )  # 12 and 99 were determined by trial and error
-        alpha_val = 0.7  # alpha determines the opacity of each layer
+        alpha_val = 0.333  # alpha determines the opacity of each layer
         plt.imshow(
             img, vmin=vmin, vmax=vmax, cmap=cmap_list[i], alpha=alpha_val, extent=extent
         )
 
     if save_image == True:
         plt.savefig(
-            object_name + "RGB" + str(alpha_val) + ".png",  # type:ignore
+            object_name + ".png",  # type:ignore
             format="png",
             dpi=1200,
             bbox_inches="tight",
