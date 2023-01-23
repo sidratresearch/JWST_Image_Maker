@@ -1,8 +1,7 @@
 build
 dist
 JWST_IMAGE_MAKER.egg-info
-
-JWST_IMAGE_MAKER/Query_Data
+Query_data
 
 JWST_IMAGE_MAKER/__pycache__
 Mubdi's plotting improvements.ipynb

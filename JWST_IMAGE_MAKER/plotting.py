@@ -30,7 +30,7 @@ def plot_data(
         filename (list of strings): contains the names of the data files provided by the user
         save_image (bool): Tells the code whether the user wants the figure to be saved to their computer
         plot_method (str): Specifies whether the produced image will be an average of all the data taken using filters or a layered image
-                           where data from each filter is shown using a unique colourmap. Valid string inputs are "Layer","Average".
+                           where data from each filter is shown using a unique colourmap. Valid string inputs are "Layer","Average", and "alpha layer". "Layer" is the default.
                            
                            Note that the averaging method is very slow as it has to loop over every pixel to check for dark spots (AKA no data spots)
         object_name(str): name of astronomical object being targeted
@@ -58,7 +58,6 @@ def plot_data(
 
     # This is the default method
     elif plot_method == "layer" or plot_method == "Layer":
-        print("12345")
         simple_layer_method(processed_data, new_processed_data, object_name, save_image)
 
     else:
@@ -75,11 +74,17 @@ def simple_layer_method(processed_data, new_processed_data, object_name, save_im
     scale_factor = [1.1, 0.9, 1]
     for i, im in enumerate(processed_data):
         tmp_percentile = np.percentile(im.flatten(), [1, 99])
+
         new_processed_data[:, :, i] = (im - tmp_percentile[0]) / (
             scale_factor[i] * (tmp_percentile[1] - tmp_percentile[0])
         )
 
-    plt.imshow(new_processed_data)
+    x = new_processed_data[0, :, 0]
+    y = new_processed_data[:, 0, 0]
+    extent = 0, len(x), 0, len(y)
+    fig = plt.imshow(new_processed_data, extent=extent)
+    fig.axes.get_xaxis().set_visible(False)
+    fig.axes.get_yaxis().set_visible(False)
     if save_image == True:
         plt.savefig(
             object_name + ".png",  # type:ignore
@@ -135,7 +140,6 @@ def avg_method(processed_data, object_name, save_image):
 
     # Looping over all data files provided by the user (even if they only provide 1) and making a plot of each
     for i in range(len(processed_data[0, 0, :]) + 1):
-        print(i)
         # If it is the final loop, show the average of the images provided by the user
         if i == len(processed_data[0, 0, :]):
             img = stacked_data

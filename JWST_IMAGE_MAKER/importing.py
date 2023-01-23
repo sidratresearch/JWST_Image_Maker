@@ -7,7 +7,6 @@ import os
 
 
 def get_file(filenames):
-    print("filenames", filenames)
     """This function imports the file provided by the user and converts it to a np.array.
     If the given file does not have a .fits extension, the code will send an
     error to the user and will not attempt to open the file.
@@ -90,10 +89,13 @@ def zeros_array_generator(filenames):
         array_data, xdims[i], ydims[i] = check_size(filenames[i])
         # checking if arrays have different dimensions, if they do: resize them.
         if i > 0:
-            if xdims[i] != xdims[i - 1] or ydims[i] != ydims[i - 1]:
-                # determining the file with the largest dimensions
-                if xdims[i] > xdims[i - 1] or ydims[i] > ydims[i - 1]:
-                    largest_index = i
+            # determining the file with the largest dimensions
+            if xdims[i] > xdims[i - 1] or ydims[i] > ydims[i - 1]:
+                # The line below must be commented for the code to work but I don't understand why, I think the line is logical but it creates errors
+                largest_index = i
+                if i > 1:
+                    if xdims[i] > xdims[i - 2] or ydims[i] > ydims[i - 2]:
+                        largest_index = i
 
     fits_data = fits.open(filenames[largest_index])
     # Converting data from HDUList to np.array

@@ -43,8 +43,6 @@ def curve(
     nonzero = scaled[np.where(scaled != 0)]
     nonmax = nonzero[np.where(nonzero < np.max(nonzero))]
 
-    print(np.min(nonmax), np.max(nonmax), p)
-
     # Calculating lower and upper percentiles
     lower, upper = np.percentile(nonmax, [p[0] * 100, p[1] * 100])
     lower_opt, upper_opt = scale * p[0], scale * p[1]
