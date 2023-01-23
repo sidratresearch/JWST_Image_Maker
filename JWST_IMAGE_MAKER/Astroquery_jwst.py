@@ -102,7 +102,7 @@ def get_data(query_result, object_name):
                     first_ra = query_result[i][8]
                     first_dec = query_result[i][9]
 
-                coord_thresh = 5e-11  # this threshold was determined through trial and error (AKA seeing what produced a well-layered image)
+                coord_thresh = 5e-11  # this threshold was determined through trial and error (AKA seeing what produced a well-layered image), try 2e-12 next
                 if (
                     np.abs(query_result[i][8] - first_ra) < coord_thresh
                     and np.abs(query_result[i][9] - first_dec) < coord_thresh
