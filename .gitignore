@@ -1,5 +1,5 @@
 build
-docs
+
 dist
 .ipynb checkpoints
 .mpy_cache
