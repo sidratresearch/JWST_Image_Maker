@@ -1,5 +1,8 @@
 build
+docs
 dist
+.ipynb checkpoints
+.mpy_cache
 JWST_IMAGE_MAKER.egg-info
 Query_data
 

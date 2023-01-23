@@ -6,13 +6,13 @@ from JWST_IMAGE_MAKER.processing import process_file
 import numpy as np
 
 
-def test_NIRCAM():
-    path = [
-        "Query_Data/M16/jw02739001001_02101_00005_nrcb4_i2d.fits",
-        "Query_Data/M16/jw02739001001_02103_00005_nrcalong_i2d.fits",
-        "Query_Data/M16/jw02739001004_04101_00002_nrcb3_i2d.fits",
-    ]
-    make_image(query=False, save_image=False, filenames=path)
+# def test_NIRCAM():
+#     path = [
+#         "Query_Data/M16/jw02739001001_02101_00005_nrcb4_i2d.fits",
+#         "Query_Data/M16/jw02739001001_02103_00005_nrcalong_i2d.fits",
+#         "Query_Data/M16/jw02739001004_04101_00002_nrcb3_i2d.fits",
+#     ]
+#     make_image(query=False, save_image=False, filenames=path)
 
 
 # def test_queryfalse(monkeypatch):
@@ -30,5 +30,5 @@ def test_NIRCAM():
 #     make_image(query=False, save_image=False, filenames=file_name)
 
 
-# def test_querytrue():
-#     make_image(query=True, save_image=False, object_name="M16")
+def test_querytrue():
+    make_image(query=True, save_image=False, object_name="M16")
