@@ -13,7 +13,8 @@ def make_image(query: bool, save_image: bool, **kwargs):
     other modules within this package.
 
     Args:
-        query (bool): Determines whether the user wants to gather data automatically by inputting their target object's name
+        query (bool): Determines whether the user wants to gather data automatically using Astro-Query and target object's name. If set to False,
+                    the user must pip install JWST_IMAGE_MAKER in a directory that already contains the .fits files that they want to convert into images.
 
         save_image (bool): Specifies whether the user wants to save the image
             to their computer
@@ -24,7 +25,13 @@ def make_image(query: bool, save_image: bool, **kwargs):
             please store as a 1 element list. This must be specified if query=False
 
         
-        object_name (str): string denoting the object's name. Must be specified if query=True so that the query can actually occur
+        object_name (str): string denoting the object's name (e.g. "M16" or "NGC 3132"). This input must be specified if query=True so that the query can actually occur. 
+
+                        Optional feature to be added later
+                          Note that an HTP500 error will be produced if astroquery does not recognize the given input name. 
+                          If this occurs, it is reccommended to download the desired JWST fits files from https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html
+                          and set query to False.
+
 
         plot_method (str): can be "layer", "alpha_layer", or "average". Default is layer
 
@@ -35,6 +42,7 @@ def make_image(query: bool, save_image: bool, **kwargs):
     """
     object_name: str = kwargs.get("object_name", None)
     plot_method: str = kwargs.get("plot_method", None)
+    RA_dec: bool = kwargs.get("RA_dec", None)
     if plot_method == None:
         plot_method = "layer"
 

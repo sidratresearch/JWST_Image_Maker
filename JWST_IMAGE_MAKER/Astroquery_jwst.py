@@ -6,7 +6,7 @@ import shutil
 import os
 
 
-def get_query_data(object_name: str):
+def get_query_data(object_name):
     """_summary_
 
     Args:
@@ -17,7 +17,7 @@ def get_query_data(object_name: str):
     """
     query_result = query(object_name)
     get_MIRI_data(query_result, object_name)
-    filenames: list = os.listdir("Query_Data/" + object_name)
+    filenames: list = os.listdir("Query_Data/" + object_name)  # type:ignore
 
     # Ensuring path information is correct for filenames list
     for i in range(len(filenames)):
@@ -29,7 +29,7 @@ def get_query_data(object_name: str):
 #%%
 
 
-def query(object_name: str):
+def query(object_name):
     """#Querying all JWST data files related to the desired target name
 
     Args:
@@ -38,6 +38,8 @@ def query(object_name: str):
     Output:
         query result (Astropy Table): contains all of the information regarding data on that object
     """
+    # if RA_dec==True:
+    #     ra=np. RA_dec[0]
 
     target_name = object_name
     target_resolver = "ALL"
