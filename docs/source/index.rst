@@ -13,7 +13,7 @@ gathered from NIRCAM (Near Infra-Red Camera) or MIRI (Mid Infra-Red Instrument) 
    :caption: Contents:
 
    SetupAndInstallation
-   Modules
+   Algorithm
    Solutions
 
 

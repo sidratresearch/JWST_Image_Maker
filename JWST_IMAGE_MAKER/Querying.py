@@ -6,7 +6,7 @@ import shutil
 import os
 
 
-def get_query_data(object_name):
+def get_query_data(obj_name):
     """_summary_
 
     Args:
@@ -15,13 +15,15 @@ def get_query_data(object_name):
     Returns:
         _type_: _description_
     """
-    query_result = query(object_name)
-    get_data(query_result, object_name)
+    query_result = query(obj_name)
+    observation_IDs = get_observation_IDs(query_result)
+    download_files(observation_IDs, obj_name)
+
     filenames: list = os.listdir("Query_Data/" + object_name)  # type:ignore
 
     # Ensuring path information is correct for filenames list
     for i in range(len(filenames)):
-        filenames[i] = "Query_Data/" + object_name + "./" + filenames[i]
+        filenames[i] = "Query_Data/" + obj_name + "./" + filenames[i]
 
     return filenames
 
@@ -58,7 +60,7 @@ def query(object_name):
 #%%
 
 
-def get_data(query_result, object_name):
+def get_observation_IDs(query_result):
     """This function downloads the 2D image .fits file ('...i2d.fits') for JWST NIRCAM or MIRI data gathered in the query.
     This function is only looking at MIRI data as NIRCAM files are too large (>2 GB)
 
@@ -90,15 +92,15 @@ def get_data(query_result, object_name):
     for i in range(len(query_result)):
         if i == 0:
             position_bnd_cntr = query_result[0][10]
-            print(
-                "PBC:", float(position_bnd_cntr[33:51]), float(position_bnd_cntr[52:70])
-            )
+            # print(
+            #     "PBC:", float(position_bnd_cntr[33:51]), float(position_bnd_cntr[52:70])
+            # )
 
         instrument_name = query_result[i][5]
         filter = query_result[i][6]
 
         if (
-            instrument_name == "NIRCAM"
+            instrument_name == "NIRCAM" and MIRI == False
         ):  # and 1==0:  # comment out the 1==0 part if you want to use NIRCAM data
             NIRCAM = True
             if filter not in filters_loaded:
@@ -123,10 +125,15 @@ def get_data(query_result, object_name):
                     )
                     < coord_thresh
                 ):
+                    print("NIRCAM loacation thresh satisfied")
 
                     # add observation ID to list
                     obs_ids.extend([query_result[i][1]])
                     filters_loaded.extend([query_result[i][6]])
+
+                    # A maximum of 3 images can currently be layered so don't bother looping if already 3 observation IDs have been stored
+                    if len(obs_ids) == 3:
+                        break
 
         elif NIRCAM == False and instrument_name == "MIRI":
             MIRI = True
@@ -134,8 +141,13 @@ def get_data(query_result, object_name):
                 # add observation ID to list
                 obs_ids.extend([query_result[i][1]])
                 filters_loaded.extend([query_result[i][6]])
+                if len(obs_ids) == 3:
+                    break
+    return obs_ids
 
-    # Downloading relevant fits files from the MIRI observation ID's
+
+def download_files(obs_ids, object_name):
+    # Downloading relevant fits files from  observation ID's
     # The relevant file in the product_list folder is the one containing i2d at the end
     # (these are 2D images, for more info see https://jwst-pipeline.readthedocs.io/en/stable/jwst/data_products/science_products.html#i2d)
 
@@ -159,6 +171,7 @@ def get_data(query_result, object_name):
                 # downloading file and putting it in the desired folder if file doesn't already exist in that path
                 if name not in os.listdir(newpath):
                     output_file = Jwst.get_product(file_name=name)
+                    print("filed being moved into proper directory")
                     shutil.move(output_file, newpath)
     pass
 
