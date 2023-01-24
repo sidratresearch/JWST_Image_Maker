@@ -10,7 +10,7 @@ import numpy as np
 
 def make_image(query: bool, save_image: bool, **kwargs):
     """This function creates an image from raw JWST data by calling all of the
-    other modules within this package.
+    other modules within the package.
 
     Args:
         query (bool): Determines whether the user wants to gather data automatically using Astro-Query and target object's name. If set to False,
@@ -19,26 +19,16 @@ def make_image(query: bool, save_image: bool, **kwargs):
         save_image (bool): Specifies whether the user wants to save the image
             to their computer
 
-    Kwargs:
-        filename (list of strings): list containing the name(s) of the fits
-            file(s) used to construct an image. If only one .fits file is given,
-            please store as a 1 element list. This must be specified if query=False
-
+    Optional Parameters:
+        filename (list of strings): list containing the name(s) of the fits file(s) used to construct an image. Even if only one .fits file is given, it should be stored as a 1 element list. filename must be specified if query=False
         
         object_name (str): string denoting the object's name (e.g. "M16" or "NGC 3132"). This input must be specified if query=True so that the query can actually occur. 
 
-                        Optional feature to be added later
-                          Note that an HTP500 error will be produced if astroquery does not recognize the given input name. 
-                          If this occurs, it is reccommended to download the desired JWST fits files from https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html
-                          and set query to False.
-
-
-        plot_method (str): can be "layer", "alpha_layer", or "average". Default is layer
+        plot_method (str): This argument specifies how separate images will be combined into 1 image. This is necessary as both the MIRI and NIRCAM instrument take images with different wavelength filters on top. Thus, to get a complete picture, this software combines images with multiple different filters. The valid inputs are "layer" (where the images are stacked on one another to form a single image), "alpha_layer" (where the images are combined using alpha-blending), or "average" (where the flux at each pixel in the overall image is the average of all the images). Default is layer. 
 
     Returns:
-        This function will never return a variable. It will produce an image and
-        save one to the users directory if desired. The code for this can be
-        found in the plotting module.
+        Nothing. There is no variable output for this package. However, it will produce an image and
+        save one to the users directory if desired. 
     """
     object_name: str = kwargs.get("object_name", None)
     plot_method: str = kwargs.get("plot_method", None)
@@ -66,6 +56,13 @@ def make_image(query: bool, save_image: bool, **kwargs):
 
 
 def checking_inputs(query: bool, filenames: list, object_name: str) -> None:
+    """This function ensures that the user has provided the necessary inputs required for the package to perform.
+
+    Args:
+        query (bool): see main.make_image description
+        filenames (list): see main.make_image description
+        object_name (str): see main.make_image description
+    """
     if query == True and type(object_name) != str:
         print(
             "ERROR: If query=True, then object_name must be given as a string. It is currently",
@@ -79,13 +76,3 @@ def checking_inputs(query: bool, filenames: list, object_name: str) -> None:
         )
 
     pass
-
-
-# Testing the code:
-
-# file_name = [
-#     "jw02739-o002_t001_miri_f770w_i2d.fits",
-#     "jw02739-o002_t001_miri_f1500w_i2d.fits",
-#     "jw02739-o002_t001_miri_f1130w_i2d.fits",
-# ]
-# make_image(file_name, save_image=False)
