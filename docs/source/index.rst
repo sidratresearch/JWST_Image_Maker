@@ -5,21 +5,17 @@
 
 Welcome to JWST IMAGE MAKER's documentation!
 ============================================
-
-.. automodule:: JWST_IMAGE_MAKER.main
-    :members:
-
-.. automodule:: JWST_IMAGE_MAKER.plotting
-    :members:
+This software package allows a user to create and save images from data gathered by the James Webb Space Telescope (JWST). This data is in the form of a two dimensional .fits file
+gathered from NIRCAM (Near Infra-Red Camera) or MIRI (Mid Infra-Red Instrument) on the JWST.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-   GettingImages
+   SetupAndInstallation
+   Modules
+   Solutions
 
-
-This is my documentation
 
 
 Indices and tables

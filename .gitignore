@@ -5,6 +5,7 @@ dist
 .mpy_cache
 JWST_IMAGE_MAKER.egg-info
 Query_data
+jw02733001001_02105_00008_nrcb1_i2d.fits
 
 JWST_IMAGE_MAKER/__pycache__
 Mubdi's plotting improvements.ipynb

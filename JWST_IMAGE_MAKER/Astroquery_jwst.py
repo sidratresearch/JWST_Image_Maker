@@ -85,8 +85,14 @@ def get_data(query_result, object_name):
 
     first_ra = 0  # this initialization is necessary to ensure the RA and dec of the first fits file selected is not supercded by subsequent iterations in the for loop
     first_dec = 0
+    first_position_bnd_cntr = 0
 
     for i in range(len(query_result)):
+        if i == 0:
+            position_bnd_cntr = query_result[0][10]
+            print(
+                "PBC:", float(position_bnd_cntr[33:51]), float(position_bnd_cntr[52:70])
+            )
 
         instrument_name = query_result[i][5]
         filter = query_result[i][6]
@@ -97,15 +103,25 @@ def get_data(query_result, object_name):
             NIRCAM = True
             if filter not in filters_loaded:
 
-                # checking RA and Dec of image taken to ensure the different .fits files gathered are for the same region with a galaxy
+                # checking RA, Dec and position bounds center of image taken to ensure the different .fits files gathered are for the same region with a galaxy
                 if first_ra == 0 and first_dec == 0:
                     first_ra = query_result[i][8]
                     first_dec = query_result[i][9]
+                    first_position_bnd_cntr = query_result[i][10]
 
-                coord_thresh = 5e-11  # this threshold was determined through trial and error (AKA seeing what produced a well-layered image), try 2e-12 next
+                coord_thresh = 5e-5  # this threshold was determined through trial and error (AKA seeing what produced a well-layered image), try 2e-12 next
+
+                current_position_bnd_center = query_result[i][10]
                 if (
-                    np.abs(query_result[i][8] - first_ra) < coord_thresh
-                    and np.abs(query_result[i][9] - first_dec) < coord_thresh
+                    (
+                        np.abs(query_result[i][8] - first_ra) < coord_thresh
+                        and np.abs(query_result[i][9] - first_dec) < coord_thresh
+                    )
+                    and np.abs(
+                        float(current_position_bnd_center[33:47])
+                        - float(first_position_bnd_cntr[33:47])  # type:ignore
+                    )
+                    < coord_thresh
                 ):
 
                     # add observation ID to list
