@@ -16,6 +16,10 @@ gathered from NIRCAM (Near Infra-Red Camera) or MIRI (Mid Infra-Red Instrument) 
    Algorithm
    Solutions
 
+.. image:: Example_Plot.png
+  :width: 700
+  :alt: Alternative text
+
 
 
 Indices and tables

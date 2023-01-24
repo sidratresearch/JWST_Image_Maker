@@ -8,9 +8,9 @@ import numpy as np
 
 def test_NIRCAM():
     path = [
-        "Query_Data/M16/jw02739001001_02101_00005_nrcb4_i2d.fits",
-        "Query_Data/M16/jw02739001001_02103_00005_nrcalong_i2d.fits",
-        "Query_Data/M16/jw02739001004_04101_00002_nrcb3_i2d.fits",
+        "Query_Data/M16/jw02739001003_02101_00002_nrcb3_i2d.fits",
+        "Query_Data/M16/jw02739001003_02105_00002_nrcb3_i2d.fits",
+        "Query_Data/M16/jw02739001003_02101_00002_nrcb3_i2d.fits",
     ]
     make_image(query=False, save_image=False, filenames=path)
 

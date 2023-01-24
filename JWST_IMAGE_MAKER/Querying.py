@@ -23,6 +23,7 @@ def get_query_data(obj_name):
 
     # Ensuring path information is correct for filenames list
     for i in range(len(filenames)):
+        print("filenames loop activated")
         filenames[i] = "Query_Data/" + obj_name + "./" + filenames[i]
 
     return filenames
@@ -90,11 +91,8 @@ def get_observation_IDs(query_result):
     first_position_bnd_cntr = 0
 
     for i in range(len(query_result)):
-        if i == 0:
-            position_bnd_cntr = query_result[0][10]
-            # print(
-            #     "PBC:", float(position_bnd_cntr[33:51]), float(position_bnd_cntr[52:70])
-            # )
+        if i % 10 == 0:
+            print("query loop activated")
 
         instrument_name = query_result[i][5]
         filter = query_result[i][6]
@@ -160,6 +158,8 @@ def download_files(obs_ids, object_name):
 
     # Looping over very first observation ID (this is only to make runtime quicker and needs to be updated to 3 in future)
     for ID in obs_ids[:3]:
+        print("product list loop activated")
+
         product_list = Jwst.get_product_list(observation_id=ID, product_type="science")
 
         if type(product_list) == None:
@@ -168,6 +168,7 @@ def download_files(obs_ids, object_name):
         # Looping over data products to find file ending in 'i2d.fits'
         for name in product_list["filename"]:  # type: ignore
             if "i2d" in name:
+                print("downloading loop activated")
                 # downloading file and putting it in the desired folder if file doesn't already exist in that path
                 if name not in os.listdir(newpath):
                     output_file = Jwst.get_product(file_name=name)

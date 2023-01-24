@@ -37,6 +37,10 @@ def plot_data(
     """
 
     # reshaping processed data so indexing works properly
+
+    # for file in filename:
+    #     wavelength=file[]
+
     new_processed_data = np.zeros(
         (
             (
@@ -69,7 +73,20 @@ def plot_data(
 #%% Emulating Mubdi's jupyter notebook plotting improvements
 
 
-def simple_layer_method(processed_data, new_processed_data, object_name, save_image):
+def simple_layer_method(
+    processed_data: np.ndarray,
+    new_processed_data: np.ndarray,
+    object_name: str,
+    save_image: bool,
+):
+    """_summary_
+
+    Args:
+        processed_data (np.ndarray): _description_
+        new_processed_data (np.ndarray): _description_
+        object_name (str): _description_
+        save_image (bool): _description_
+    """
     # scales the RGB values assigned to each image
     scale_factor = [1.1, 0.9, 1]
     for i, im in enumerate(processed_data):
@@ -105,6 +122,13 @@ def simple_layer_method(processed_data, new_processed_data, object_name, save_im
 def alpha_layer_images(
     processed_data: np.ndarray, object_name: str, save_image: bool
 ) -> None:
+    """_summary_
+
+    Args:
+        processed_data (np.ndarray): _description_
+        object_name (str): _description_
+        save_image (bool): _description_
+    """
     # cmap_list = ["Reds_r", "YlGn_r", "BuPu_r"] using premade colourmaps
     cmap_list = get_RGB_cmaps()  # using homemade RGB maps
     x = processed_data[0, :, 0]
@@ -135,7 +159,14 @@ def alpha_layer_images(
 #%% Average Flux method
 
 
-def avg_method(processed_data, object_name, save_image):
+def avg_method(processed_data: np.ndarray, object_name: str, save_image: bool):
+    """_summary_
+
+    Args:
+        processed_data (np.ndarray): _description_
+        object_name (str): _description_
+        save_image (bool): _description_
+    """
     stacked_data = stack_images(processed_data)
 
     # Looping over all data files provided by the user (even if they only provide 1) and making a plot of each
@@ -171,7 +202,15 @@ def avg_method(processed_data, object_name, save_image):
     pass
 
 
-def stack_images(processed_data):
+def stack_images(processed_data: np.ndarray):
+    """_summary_
+
+    Args:
+        processed_data (np.ndarray): _description_
+
+    Returns:
+        _type_: _description_
+    """
     # Generating basic stacked image by taking the average of the pixels across the slices in the processed_data array.
     # Note that each slice in the processed_data array refers to data from a different wavelength filter (and thus different .fits file)
     sum_data = np.zeros((len(processed_data[:, 0, 0]), len(processed_data[0, :, 0])))
