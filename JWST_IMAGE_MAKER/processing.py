@@ -78,6 +78,8 @@ from importing import get_file
 from matplotlib import pyplot as plt
 from scipy import signal
 
+# Hanning and Hamming functions, look into power spectra cleaning
+
 
 def denoise(image: np.ndarray, factor: float = 4 * 10**-7) -> np.ndarray:
     fhat = np.fft.fft2(image)
