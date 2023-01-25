@@ -1,4 +1,0 @@
-test_eagle.fits filter=lfs diff=lfs merge=lfs -text
-test_ring.fits filter=lfs diff=lfs merge=lfs -text
-test_galaxy.fits filter=lfs diff=lfs merge=lfs -text
-test_galaxy2.fits filter=lfs diff=lfs merge=lfs -text

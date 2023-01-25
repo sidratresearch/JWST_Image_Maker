@@ -1,12 +1,16 @@
-JWST_IMAGE_MAKER/data/test_data_eagle.fits filter=lfs diff=lfs merge=lfs -text
-JWST_IMAGE_MAKER/data/jw02739-o002_t001_miri_f770w_i2d.fits filter=lfs diff=lfs merge=lfs -text
-JWST_IMAGE_MAKER/data/jw02739-o002_t001_miri_f1500w_i2d.fits filter=lfs diff=lfs merge=lfs -text
-JWST_IMAGE_MAKER/data/jw02739-o002_t001_miri_f1130w_i2d.fits filter=lfs diff=lfs merge=lfs -text
-
-# These are the NIRCAM images (they are much larger than the miri images above)
-JWST_IMAGE_MAKER/data/jw02739-o001_t001_nircam_clear-f187n_i2d.fits filter=lfs diff=lfs merge=lfs -text
-JWST_IMAGE_MAKER/data/jw02739-o001_t001_nircam_clear-f200w_i2d.fits filter=lfs diff=lfs merge=lfs -text
-
-
-
-
+# Test data
+JWST_IMAGE_MAKER/data/eagle/fits/jw02739-o002_t001_miri_f1130w_i2d.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/eagle/fits/jw02739-o002_t001_miri_f1500w_i2d.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/eagle/fits/jw02739-o002_t001_miri_f770w_i2d.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/eagle/pdf/jw02739-o002_t001_miri_f1130w_i2d.pdf filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/eagle/pdf/jw02739-o002_t001_miri_f1500w_i2d.pdf filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/eagle/pdf/jw02739-o002_t001_miri_f770w_i2d.pdf filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/test/eagle.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/test/galaxy.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/test/galaxy2.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/test/mock_fits_file.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/test/ring.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/test/test.dat filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/query/M16/jw02739002001_02105_00003_mirimage_i2d.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/query/M16/jw02739002002_02101_00006_mirimage_i2d.fits filter=lfs diff=lfs merge=lfs -text
+JWST_IMAGE_MAKER/data/query/M16/jw02739002004_02103_00005_mirimage_i2d.fits filter=lfs diff=lfs merge=lfs -text
