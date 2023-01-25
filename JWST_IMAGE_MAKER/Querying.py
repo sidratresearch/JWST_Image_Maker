@@ -19,7 +19,7 @@ def get_query_data(obj_name):
     observation_IDs = get_observation_IDs(query_result)
     download_files(observation_IDs, obj_name)
 
-    filenames: list = os.listdir("Query_Data/" + object_name)  # type:ignore
+    filenames: list = os.listdir("Query_Data/" + obj_name)  # type:ignore
 
     # Ensuring path information is correct for filenames list
     for i in range(len(filenames)):
@@ -84,6 +84,7 @@ def get_observation_IDs(query_result):
     NIRCAM = (
         False  # this variable is just used to specify whether NIRCAM data was accessed
     )
+
     MIRI = False
 
     first_ra = 0  # this initialization is necessary to ensure the RA and dec of the first fits file selected is not supercded by subsequent iterations in the for loop
@@ -98,50 +99,71 @@ def get_observation_IDs(query_result):
         filter = query_result[i][6]
 
         if (
-            instrument_name == "NIRCAM" and MIRI == False
+            instrument_name == "NIRCAM" and MIRI == False and 1 == 0
         ):  # and 1==0:  # comment out the 1==0 part if you want to use NIRCAM data
             NIRCAM = True
             if filter not in filters_loaded:
-
-                # checking RA, Dec and position bounds center of image taken to ensure the different .fits files gathered are for the same region with a galaxy
-                if first_ra == 0 and first_dec == 0:
-                    first_ra = query_result[i][8]
-                    first_dec = query_result[i][9]
-                    first_position_bnd_cntr = query_result[i][10]
-
-                coord_thresh = 5e-5  # this threshold was determined through trial and error (AKA seeing what produced a well-layered image), try 2e-12 next
-
-                current_position_bnd_center = query_result[i][10]
-                if (
-                    (
-                        np.abs(query_result[i][8] - first_ra) < coord_thresh
-                        and np.abs(query_result[i][9] - first_dec) < coord_thresh
-                    )
-                    and np.abs(
-                        float(current_position_bnd_center[33:47])
-                        - float(first_position_bnd_cntr[33:47])  # type:ignore
-                    )
-                    < coord_thresh
-                ):
-                    print("NIRCAM loacation thresh satisfied")
-
-                    # add observation ID to list
-                    obs_ids.extend([query_result[i][1]])
-                    filters_loaded.extend([query_result[i][6]])
-
-                    # A maximum of 3 images can currently be layered so don't bother looping if already 3 observation IDs have been stored
-                    if len(obs_ids) == 3:
-                        break
+                obs_ids, filters_loaded = check_data_coords(
+                    first_ra, first_dec, query_result, i, obs_ids, filters_loaded
+                )
+                # A maximum of 3 images can currently be layered so don't bother looping if already 3 observation IDs have been stored
+                if len(obs_ids) == 3:
+                    break
 
         elif NIRCAM == False and instrument_name == "MIRI":
             MIRI = True
             if filter not in filters_loaded:
-                # add observation ID to list
-                obs_ids.extend([query_result[i][1]])
-                filters_loaded.extend([query_result[i][6]])
+                obs_ids, filters_loaded = check_data_coords(
+                    first_ra, first_dec, query_result, i, obs_ids, filters_loaded
+                )
+
                 if len(obs_ids) == 3:
                     break
     return obs_ids
+
+
+def check_data_coords(
+    first_ra, first_dec, query_result, i: int, obs_ids: list, filters_loaded: list
+):
+    """ Checking RA, Dec and position bounds center of image taken to ensure the different .fits files gathered are for the same region with a galaxy
+
+    Args:
+        first_ra (_type_): _description_
+        first_dec (_type_): _description_
+        query_result (_type_): _description_
+        i (int): _description_
+        obs_ids (list): _description_
+        filters_loaded (list): _description_
+
+    Returns:
+        _type_: _description_
+    """
+
+    if first_ra == 0 and first_dec == 0:
+        first_ra = query_result[i][8]
+        first_dec = query_result[i][9]
+        first_position_bnd_cntr = query_result[i][10]
+
+    coord_thresh = 5e-9  # this threshold was determined through trial and error (AKA seeing what produced a well-layered image), try 2e-12 next
+
+    current_position_bnd_center = query_result[i][10]
+    if (
+        (
+            np.abs(query_result[i][8] - first_ra) < coord_thresh
+            and np.abs(query_result[i][9] - first_dec) < coord_thresh
+        )
+        and np.abs(
+            float(current_position_bnd_center[33:47])
+            - float(first_position_bnd_cntr[33:47])  # type:ignore
+        )
+        < coord_thresh
+    ):
+        print("Coord thresh satisfied")
+
+        # add observation ID to list
+        obs_ids.extend([query_result[i][1]])
+        filters_loaded.extend([query_result[i][6]])
+    return obs_ids, filters_loaded
 
 
 def download_files(obs_ids, object_name):

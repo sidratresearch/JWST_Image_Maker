@@ -153,7 +153,7 @@ def alpha_layer_images(
             dpi=1200,
             bbox_inches="tight",
         )
-    plt.show(block=True)
+    plt.show()
 
 
 #%% Average Flux method

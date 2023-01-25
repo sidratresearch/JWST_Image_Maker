@@ -8,6 +8,6 @@ import numpy as np
 
 def test_get_query_data():
     # RA_dec=True
-    astro_object = "NGC 2070"
+    astro_object = "M16"
     filenames = get_query_data(astro_object)
     assert type(filenames) == list

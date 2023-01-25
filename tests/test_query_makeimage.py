@@ -8,11 +8,11 @@ import numpy as np
 
 def test_NIRCAM():
     path = [
-        "Query_Data/M16/jw02739001003_02101_00002_nrcb3_i2d.fits",
-        "Query_Data/M16/jw02739001003_02105_00002_nrcb3_i2d.fits",
-        "Query_Data/M16/jw02739001003_02101_00002_nrcb3_i2d.fits",
+        "Query_Data/HCG 92/jw02732006002_02103_00005_mirimage_i2d.fits",
+        "Query_Data/HCG 92/jw02732006002_02105_00006_mirimage_i2d.fits",
+        "Query_Data/HCG 92/jw02732006002_02105_00006_mirimage_i2d.fits",
     ]
-    make_image(query=False, save_image=False, filenames=path)
+    make_image(query=False, save_image=False, filenames=path, plot_method="layer")
 
 
 # def test_queryfalse(monkeypatch):
