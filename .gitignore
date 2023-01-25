@@ -1,24 +1,19 @@
+# Package
 build
-
 dist
-.ipynb checkpoints
-.mpy_cache
 JWST_IMAGE_MAKER.egg-info
-Query_data
-jw02733001001_02105_00008_nrcb1_i2d.fits
-
 JWST_IMAGE_MAKER/__pycache__
-Mubdi's plotting improvements.ipynb
-Mubdi's plotting improvements-checkpoint.ipynb
-Henry_scrap.ipynb
-Henry_scrap-checkpoint.ipynb
-Mubdi's plotting improvements.ipynb
-Mubdi's plotting improvements-checkpoint.ipynb
-Henry_scrap.ipynb
-Henry_scrap-checkpoint.ipynb
-
-
 JWST_IMAGE_MAKER/tests/__pycache__
 
-JWST_IMAGE_MAKER/data/jw02739-o001_t001_nircam_clear-f187n_i2d.fits
-JWST_IMAGE_MAKER/data/jw02739-o001_t001_nircam_clear-f200w_i2d.fits 
+# Jupyter notebooks
+.ipynb checkpoints
+.mpy_cache
+Mubdi's plotting improvements.ipynb
+Mubdi's plotting improvements-checkpoint.ipynb
+Henry_scrap.ipynb
+Henry_scrap-checkpoint.ipynb
+
+# Data
+jw02733001001_02105_00008_nrcb1_i2d.fits
+
+
