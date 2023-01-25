@@ -80,14 +80,14 @@ def curve(
 # https://numpy.org/doc/stable/reference/generated/numpy.hamming.html
 # https://docs.scipy.org/doc/scipy/reference/signal.html
 
-from importing import get_file
-from matplotlib import pyplot as plt
-from scipy import signal
+# from importing import get_file
+# from matplotlib import pyplot as plt
+# from scipy import signal
 
 # Hanning and Hamming functions, look into power spectra cleaning
 
 
-def denoise(image: np.ndarray, factor: float = 4 * 10**-7) -> np.ndarray:
+def denoise(image: np.ndarray, factor: float = 4 * 10 ** -7) -> np.ndarray:
     fhat = np.fft.fft2(image)
     fshift = np.copy(fhat)
     d, r = 1, 0.6
