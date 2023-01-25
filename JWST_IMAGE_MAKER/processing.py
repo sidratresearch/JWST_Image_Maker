@@ -65,32 +65,47 @@ def curve(
     return curved
 
 
-# Everything below is for fft testing
+# Everything below is for fft testing, consider it unimplemented
+
+# REFERENCE
+# https://www.eso.org/~ohainaut/images/imageProc.html
+# https://iopscience.iop.org/article/10.3847/1538-3881/aaddff/pdf
+# https://numpy.org/doc/stable/reference/generated/numpy.hanning.html
+# https://numpy.org/doc/stable/reference/generated/numpy.hamming.html
+# https://docs.scipy.org/doc/scipy/reference/signal.html
 
 from importing import get_file
 from matplotlib import pyplot as plt
+from scipy import signal
 
 
 def denoise(image: np.ndarray, factor: float = 4 * 10**-7) -> np.ndarray:
     fhat = np.fft.fft2(image)
-    fshift = np.fft.fftshift(fhat)
-    fshift[1500:, 1500:] = 0
-    fhat[1500:, 1500:] = 0
-    filtered = np.real(np.fft.ifft2(fhat))
+    fshift = np.copy(fhat)
+    d, r = 1, 0.6
+    fshift2 = np.zeros((int(fshift.shape[0] / 2), int(fshift.shape[1] / 2)))
+    fshift2[
+        d : int(fshift.shape[0] / 2 - d), d : int(fshift.shape[1] / 2 - d)
+    ] = fshift[d : int(fshift.shape[0] / 2 - d), d : int(fshift.shape[1] / 2 - d)]
+    fshift2[
+        int(fshift.shape[0] / 2 * (1 - r)) : int(fshift.shape[0] / 2 * r),
+        int(fshift.shape[1] / 2 * (1 - r)) : int(fshift.shape[1] / 2 * r),
+    ] = 0
+    filtered = np.fft.ifft2(fshift2).real
+
+    plt.figure(figsize=(10, 5))
+    plt.subplot(121)
+    plt.title("used spectrum")
+    plt.imshow(curve(fshift2.real), cmap="gray")
+    plt.subplot(122)
+    plt.title("filtered image")
+    plt.imshow(curve(filtered), cmap="gray")
+    plt.show()
+    # plt.savefig("JWST_IMAGE_MAKER/figures/processing/denoising/square/eagle.png")
     return filtered
 
 
-data = get_file(["JWST_IMAGE_MAKER/data/test_galaxy2.fits"])
-image = process_file(data)[0]
-filtered = denoise(image)
-plt.figure(figsize=(15, 5))
-plt.subplot(131)
-plt.title("Adjusted Image")
-plt.imshow(image, cmap="gray")
-plt.subplot(132)
-plt.title("Denoised Image")
-plt.imshow(filtered, cmap="gray")
-plt.subplot(133)
-plt.title("Enhanced Differences")
-plt.imshow(curve(image - filtered), cmap="gray")
-plt.show()
+# Projection: astropy WCS
+# Then you'll have unaligned multiple frames with WCS coordinates
+# Then rebin/regrid to have everything on the same frame to be able to stack
+# scipy.ndimage.map_coordinates
