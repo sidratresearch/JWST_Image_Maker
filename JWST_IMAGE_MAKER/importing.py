@@ -93,9 +93,9 @@ def zeros_array_generator(filenames):
             if xdims[i] > xdims[i - 1] or ydims[i] > ydims[i - 1]:
                 # The line below must be commented for the code to work but I don't understand why, I think the line is logical but it creates errors
                 largest_index = i
-                if i > 1:
-                    if xdims[i] > xdims[i - 2] or ydims[i] > ydims[i - 2]:
-                        largest_index = i
+            if i > 1:
+                if xdims[i] > xdims[i - 2] or ydims[i] > ydims[i - 2]:
+                    largest_index = i
 
     fits_data = fits.open(filenames[largest_index])
     # Converting data from HDUList to np.array
