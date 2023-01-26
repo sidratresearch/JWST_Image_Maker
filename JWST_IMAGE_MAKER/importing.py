@@ -6,7 +6,7 @@ import os
 # path = "JWST_IMAGE_MAKER/JWST_IMAGE_MAKER/data/"
 
 
-def get_file(filenames):
+def get_file(filenames: list):
     """This function imports the file provided by the user and converts it to a np.array.
     If the given file does not have a .fits extension, the code will send an
     error to the user and will not attempt to open the file.
@@ -25,28 +25,18 @@ def get_file(filenames):
             f"was expecting command to be a list, but got a {type(filenames)}"
         )
 
-    """
-    # Checking the extension and size of the first filename given by the user
-    # Note: this code assumes all given .fits files have the same size
-    
-    #check_extension(filename[0])  
-    #xdim, ydim = check_size(filename[0])
-    
-
     # Creating array that can store the data for ALL of the .fits files provided
     # This array will be 3D to ensure it can store the x-y photon data for each
-    wavelength slice
-    full_dataset = np.zeros(((xdim, ydim, len(filename))))
-    """
+
     largest_index, full_dataset = zeros_array_generator(filenames)
 
-    # Looping over all files provided by user and saving their data in full_dataset
+    # Looping over all files provided by user and saving their data in full_dataset (padding data if necessary)
     for i in range(len(filenames)):
 
         check_extension(filenames[i])
         # Importing fits file
         fits_data = fits.open(filenames[i])
-        # Converting data from HDUList to np.array
+        # Converting data from HDUList to np.array (and padding the data with zeros if necessary)
         array_data = fits_data[1].data  # type:ignore
 
         if i != largest_index:
@@ -64,17 +54,18 @@ def get_file(filenames):
     return full_dataset
 
 
-def zeros_array_generator(filenames):
+def zeros_array_generator(filenames: list):
     """This function creates an array of zeros that has x and y dimensions equal
     to the largest (most pixelated) fits file image. This allows arrays of
     different sizes to be resized to the correct value by simply appending zeros
     in the right places
 
     Args:
-        filename (_type_): _description_
+        filename (list of stings): list of all fits filenames
 
     Returns:
-        _type_: _description_
+        largest_index (int): the index (within filenames) of the fits file wih the largest dimensions
+        full_dataset (np.ndarray): array of zeros with the same size as the largest fits file
     """
 
     xdims = np.zeros(len(filenames))
@@ -109,7 +100,7 @@ def zeros_array_generator(filenames):
     return largest_index, full_dataset
 
 
-def check_extension(filename):
+def check_extension(filename: str):
     """This function checks the extension of a provided data file to ensure it is a .fits
 
     Args:
@@ -130,7 +121,7 @@ def check_extension(filename):
         sys.exit()  # tells code to stop running
 
 
-def check_size(filename):
+def check_size(filename: str):
     """This function checks the dimensions of a .fits file
 
     Args:
