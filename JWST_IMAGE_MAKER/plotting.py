@@ -55,35 +55,36 @@ def plot_data(
         correct_shape_processed_data[:, :, i] = processed_data[i, :, :]
 
     # regridding images (i.e aligning them properly in space)
-    correct_shape_processed_data = regrid_images(correct_shape_processed_data, filename)
+    regridded_processed_data = regrid_images(correct_shape_processed_data, filename)
 
     old_shape_pd = np.zeros(
         (
             (
-                len(correct_shape_processed_data[0, :, 0]),
                 len(correct_shape_processed_data[0, 0, :]),
                 len(correct_shape_processed_data[:, 0, 0]),
+                len(correct_shape_processed_data[0, :, 0]),
             )
         )
     )
-    for i in range(len(processed_data[0, 0, :])):
-        old_shape_pd[i, :, :] = processed_data[:, :, i]
+    for i in range(len(processed_data[:, 0, 0])):
+        old_shape_pd[i, :, :] = regridded_processed_data[:, :, i]
+
+    print("1", np.shape(old_shape_pd), np.shape(processed_data))
+    print(
+        "2", np.shape(correct_shape_processed_data), np.shape(regridded_processed_data)
+    )
 
     # Selecting plotting method used based on user input
     if plot_method == "Alpha Layer" or plot_method == "alpha layer":
-        alpha_layer_images(correct_shape_processed_data, object_name, save_image)
+        alpha_layer_images(regridded_processed_data, object_name, save_image)
 
     elif plot_method == "Average" or plot_method == "average":
-        avg_method(correct_shape_processed_data, object_name, save_image)
+        avg_method(regridded_processed_data, object_name, save_image)
 
     # This is the default method
     elif plot_method == "layer" or plot_method == "Layer":
         simple_layer_method(
-            processed_data,
-            correct_shape_processed_data,
-            object_name,
-            save_image,
-            filename,
+            old_shape_pd, regridded_processed_data, object_name, save_image, filename,
         )
 
     else:
