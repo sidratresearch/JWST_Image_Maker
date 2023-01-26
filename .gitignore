@@ -171,9 +171,12 @@ Mubdi's plotting improvements-checkpoint.ipynb
 Henry_scrap.ipynb
 Henry_scrap-checkpoint.ipynb
 regridding.ipynb
+regrid2.py
+regridding_testalign.ipynb
 
 # Data
 jw02733001001_02105_00008_nrcb1_i2d.fits
+jw02739002004_02105_00002_mirimage_i2d.fits
 ./data
 
 

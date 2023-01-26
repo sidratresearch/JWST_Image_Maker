@@ -163,6 +163,7 @@ def check_data_coords(
         # add observation ID to list
         obs_ids.extend([query_result[i][1]])
         filters_loaded.extend([query_result[i][6]])
+        print(filters_loaded)
     return obs_ids, filters_loaded
 
 

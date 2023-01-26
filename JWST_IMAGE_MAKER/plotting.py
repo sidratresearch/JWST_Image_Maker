@@ -1,7 +1,11 @@
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from JWST_IMAGE_MAKER.Regridding import regrid_images
 from PIL import Image
 import numpy as np
 import matplotlib
+from astropy.io import fits
+import glob
 import os
 
 """
@@ -38,10 +42,7 @@ def plot_data(
 
     # reshaping processed data so indexing works properly
 
-    # for file in filename:
-    #     wavelength=file[]
-
-    new_processed_data = np.zeros(
+    correct_shape_processed_data = np.zeros(
         (
             (
                 len(processed_data[0, :, 0]),
@@ -51,18 +52,39 @@ def plot_data(
         )
     )
     for i in range(len(processed_data[:, 0, 0])):
-        new_processed_data[:, :, i] = processed_data[i, :, :]
+        correct_shape_processed_data[:, :, i] = processed_data[i, :, :]
+
+    # regridding images (i.e aligning them properly in space)
+    correct_shape_processed_data = regrid_images(correct_shape_processed_data, filename)
+
+    old_shape_pd = np.zeros(
+        (
+            (
+                len(correct_shape_processed_data[0, :, 0]),
+                len(correct_shape_processed_data[0, 0, :]),
+                len(correct_shape_processed_data[:, 0, 0]),
+            )
+        )
+    )
+    for i in range(len(processed_data[0, 0, :])):
+        old_shape_pd[i, :, :] = processed_data[:, :, i]
 
     # Selecting plotting method used based on user input
     if plot_method == "Alpha Layer" or plot_method == "alpha layer":
-        alpha_layer_images(new_processed_data, object_name, save_image)
+        alpha_layer_images(correct_shape_processed_data, object_name, save_image)
 
     elif plot_method == "Average" or plot_method == "average":
-        avg_method(new_processed_data, object_name, save_image)
+        avg_method(correct_shape_processed_data, object_name, save_image)
 
     # This is the default method
     elif plot_method == "layer" or plot_method == "Layer":
-        simple_layer_method(processed_data, new_processed_data, object_name, save_image)
+        simple_layer_method(
+            processed_data,
+            correct_shape_processed_data,
+            object_name,
+            save_image,
+            filename,
+        )
 
     else:
         print("ERROR: invalid plot_method string given.")
@@ -78,6 +100,7 @@ def simple_layer_method(
     new_processed_data: np.ndarray,
     object_name: str,
     save_image: bool,
+    filenames: list,
 ):
     """_summary_
 
@@ -99,9 +122,16 @@ def simple_layer_method(
     x = new_processed_data[0, :, 0]
     y = new_processed_data[:, 0, 0]
     extent = 0, len(x), 0, len(y)
+
+    filters_list = get_filter_info(filenames)
+
     fig = plt.imshow(new_processed_data, extent=extent)
     fig.axes.get_xaxis().set_visible(False)
     fig.axes.get_yaxis().set_visible(False)
+    red_patch = mpatches.Patch(color="red", label=filters_list[0])
+    greenpatch = mpatches.Patch(color="green", label=filters_list[1])
+    bluepatch = mpatches.Patch(color="blue", label=filters_list[2])
+    plt.legend(handles=[red_patch, bluepatch, greenpatch], loc="lower left")
     if save_image == True:
         plt.savefig(
             object_name + ".png",  # type:ignore
@@ -109,7 +139,21 @@ def simple_layer_method(
             dpi=1200,
             bbox_inches="tight",
         )
+
     plt.show()
+
+
+fnames = glob.glob("Query_Data/M16/*")
+
+filter_names_list = []
+
+
+def get_filter_info(filenames: list):
+    headers = [fits.getheader(x, ext=0) for x in filenames]
+    for i in range(len(filenames)):
+        filter_names_list.append(headers[i].get("Filter"))
+
+    return filter_names_list
 
 
 #%% Alpha Layering Method Code (written by Henry)

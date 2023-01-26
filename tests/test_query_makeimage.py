@@ -4,15 +4,12 @@ import time
 from JWST_IMAGE_MAKER.importing import get_file
 from JWST_IMAGE_MAKER.processing import process_file
 import numpy as np
+import glob
 
 
 def test_NIRCAM():
-    path = [
-        "Query_Data/HCG 92/jw02732006002_02103_00005_mirimage_i2d.fits",
-        "Query_Data/HCG 92/jw02732006002_02105_00006_mirimage_i2d.fits",
-        "Query_Data/HCG 92/jw02732006002_02105_00006_mirimage_i2d.fits",
-    ]
-    make_image(query=False, save_image=False, filenames=path, plot_method="layer")
+    fname_list = glob.glob("Query_Data/M16/*")
+    make_image(query=False, save_image=False, filenames=fname_list, plot_method="layer")
     assert 1 == 1
 
 
