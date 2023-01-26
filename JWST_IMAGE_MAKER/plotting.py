@@ -71,13 +71,13 @@ def simple_layer_method(
     save_image: bool,
     filenames: list,
 ):
-    """_summary_
+    """Stacks the images on top of each other without using alpha-blending.
 
     Args:
-        processed_data (np.ndarray): _description_
-        new_processed_data (np.ndarray): _description_
-        object_name (str): _description_
-        save_image (bool): _description_
+        processed_data (np.ndarray): JWST data array with shape (N,:,:) where N is the number of data files
+        new_processed_data (np.ndarray): JWST data array with shape (:,:,N) where N is the number of data files
+        object_name (str): name of astronomical object
+        save_image (bool): identifies whetehr the user wants a copy of the image saved to their local drive
     """
     # scales the RGB values assigned to each image
     scale_factor = [1.1, 0.9, 1]
@@ -93,6 +93,8 @@ def simple_layer_method(
 
 #
 def plotting_script(new_processed_data, filenames, save_image):
+    """Contains all of the plotting code necessary to make attractive images and save them
+    """
     x = new_processed_data[0, :, 0]
     y = new_processed_data[:, 0, 0]
     extent = 0, len(x), 0, len(y)
@@ -118,6 +120,14 @@ def plotting_script(new_processed_data, filenames, save_image):
 
 
 def get_filter_info(filenames: list):
+    """Retrieves the wavelength filter value from the header of a given fits file
+
+    Args:
+        filenames (list): list of all fits filenames
+
+    Returns:
+        list: all of the names of the filters used in collecting the observations
+    """
     filter_names_list = []
     headers = [fits.getheader(x, ext=0) for x in filenames]
     for i in range(len(filenames)):
@@ -127,7 +137,10 @@ def get_filter_info(filenames: list):
 
 
 def reshaping_data(processed_data, filename):
-    # reshaping processed data so indexing works properly
+    """Reshapes the processed_data so that indexing works properly after regridding
+
+
+    """
 
     correct_shape_processed_data = np.zeros(
         (
@@ -159,23 +172,19 @@ def reshaping_data(processed_data, filename):
     return regridded_processed_data, old_shape_pd
 
 
-#%% Alpha Layering Method Code (written by Henry)
-
-# The main weakness of this function is its dependence on alpha blending. Using alpha bleding to combine the different images leads to an
-# oversaturated final image. Think of stacking two 50% translucent windows on each other: you can still kind of see through them, their opacity does not
-# add linearly as you would think to go to 1.
+#%% Alpha Layering Method Code
 
 
 def alpha_layer_images(
     processed_data: np.ndarray, object_name: str, save_image: bool
 ) -> None:
-    """_summary_
+    """Uses a layering method that involves alpha blending.
 
-    Args:
-        processed_data (np.ndarray): _description_
-        object_name (str): _description_
-        save_image (bool): _description_
+     Using alpha blending to combine the different images leads to an oversaturated final image. Think of stacking two 50% translucent windows on each other: you can still kind of see through them, their opacity does not add linearly as you would think to go to 1.
+
+
     """
+
     # cmap_list = ["Reds_r", "YlGn_r", "BuPu_r"] using premade colourmaps
     cmap_list = get_RGB_cmaps()  # using homemade RGB maps
     x = processed_data[0, :, 0]
@@ -207,12 +216,12 @@ def alpha_layer_images(
 
 
 def avg_method(processed_data: np.ndarray, object_name: str, save_image: bool):
-    """_summary_
+    """Takes the average of the 3 images and displays that
 
     Args:
-        processed_data (np.ndarray): _description_
-        object_name (str): _description_
-        save_image (bool): _description_
+        processed_data (np.ndarray): array storing the processed JWST data
+        object_name (str): name of astronomical object
+        save_image (bool): describes whether user wants to save image or not
     """
     stacked_data = stack_images(processed_data)
 
@@ -250,14 +259,7 @@ def avg_method(processed_data: np.ndarray, object_name: str, save_image: bool):
 
 
 def stack_images(processed_data: np.ndarray):
-    """_summary_
 
-    Args:
-        processed_data (np.ndarray): _description_
-
-    Returns:
-        _type_: _description_
-    """
     # Generating basic stacked image by taking the average of the pixels across the slices in the processed_data array.
     # Note that each slice in the processed_data array refers to data from a different wavelength filter (and thus different .fits file)
     sum_data = np.zeros((len(processed_data[:, 0, 0]), len(processed_data[0, :, 0])))
@@ -269,23 +271,27 @@ def stack_images(processed_data: np.ndarray):
     # Taking the average of that sum
     avg_data = sum_data / (len(processed_data[0, 0, :]) + 1)
 
-    avg_data = ignore_darkspots(processed_data, avg_data)
+    # avg_data = ignore_darkspots(processed_data, avg_data)
 
     return avg_data
 
 
 def ignore_darkspots(processed_data, avg_data):
     """    This function does the following:
-    If a pixel in one of the pictures has a value of zero, do not let that contribute to the average
+
+    a. Takes forever to run!!! Like a truly insane amount of time
+
+    b. If a pixel in one of the pictures has a value of zero, do not let that contribute to the average
     i.e if the pixel at index [12,1011] has a value of zero in observations from wavelengths of 770 and 1130 microns,
     only use the information from 1500 micron observation
 
     The logic behind this is that the zero values are dark spots due to instrumentation error, it doesn't actually mean there is zero
     flux at that wavelength. Thus, this error shouldn't skew my averaged flux.
 
+    
+
     Args:
-        processed_data (np.array): A 2D or 3D numpy array of JWST that has been processed (not exactly sure how yet).
-        The array will be 2D if the user gives a single .fits file and will be 3D otherwise.
+        processed_data (np.array): A 2D or 3D numpy array of JWST that has been processed (not exactly sure how yet). The array will be 2D if the user gives a single .fits file and will be 3D otherwise.
 
         avg_data (np.array): a 2D array generated by taking the average of the (potentially) 3D processed_data array
 

@@ -24,8 +24,7 @@ def process_file(images: np.ndarray) -> np.ndarray:
 def curve(
     image: np.ndarray, scale: float = 255.0, p: tuple = (0.1, 0.999)
 ) -> np.ndarray:
-    """Adjusts the brightness of an image so that the distribution is
-     well-spread in the context of being visualized by a 1D colour space.
+    """Adjusts the brightness of an image so that the distribution is well-spread in the context of being visualized by a 1D colour space.
 
     First spreads image distribution over entire brightness spectrum
     [0, ..., scale] based on ratios between desired and initial percentiles.
