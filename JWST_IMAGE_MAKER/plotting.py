@@ -10,12 +10,7 @@ import os
 
 """
 This module is responsible for plotting the processed data. It can either plot the average of multiple data sets from different filters
-(along with their separate images) or it can plot a layered image. Ultimately, the code should use the layering technique with a customized colour map.
-
-Thus, the next steps for improving this module are going to be:
-1. Adding the save_image feature to layer images
-2. Make layer_image the default option called in main
-3. Add **kwarg to make_image function in main.py that chooses between layering and averaging so that code can still do both in case it needs to.
+(along with their separate images) or it can plot a layered image. 
 """
 #%%Main function that calls other functions based on plot_method specification
 
@@ -39,39 +34,8 @@ def plot_data(
                            Note that the averaging method is very slow as it has to loop over every pixel to check for dark spots (AKA no data spots)
         object_name(str): name of astronomical object being targeted
     """
-
-    # reshaping processed data so indexing works properly
-
-    correct_shape_processed_data = np.zeros(
-        (
-            (
-                len(processed_data[0, :, 0]),
-                len(processed_data[0, 0, :]),
-                len(processed_data[:, 0, 0]),
-            )
-        )
-    )
-    for i in range(len(processed_data[:, 0, 0])):
-        correct_shape_processed_data[:, :, i] = processed_data[i, :, :]
-
-    # regridding images (i.e aligning them properly in space)
-    regridded_processed_data = regrid_images(correct_shape_processed_data, filename)
-
-    old_shape_pd = np.zeros(
-        (
-            (
-                len(correct_shape_processed_data[0, 0, :]),
-                len(correct_shape_processed_data[:, 0, 0]),
-                len(correct_shape_processed_data[0, :, 0]),
-            )
-        )
-    )
-    for i in range(len(processed_data[:, 0, 0])):
-        old_shape_pd[i, :, :] = regridded_processed_data[:, :, i]
-
-    print("1", np.shape(old_shape_pd), np.shape(processed_data))
-    print(
-        "2", np.shape(correct_shape_processed_data), np.shape(regridded_processed_data)
+    regridded_processed_data, old_shape_processed_data = reshaping_data(
+        processed_data, filename
     )
 
     # Selecting plotting method used based on user input
@@ -84,7 +48,11 @@ def plot_data(
     # This is the default method
     elif plot_method == "layer" or plot_method == "Layer":
         simple_layer_method(
-            old_shape_pd, regridded_processed_data, object_name, save_image, filename,
+            old_shape_processed_data,
+            regridded_processed_data,
+            object_name,
+            save_image,
+            filename,
         )
 
     else:
@@ -120,6 +88,11 @@ def simple_layer_method(
             scale_factor[i] * (tmp_percentile[1] - tmp_percentile[0])
         )
 
+    plotting_script(new_processed_data, filenames, save_image)
+
+
+#
+def plotting_script(new_processed_data, filenames, save_image):
     x = new_processed_data[0, :, 0]
     y = new_processed_data[:, 0, 0]
     extent = 0, len(x), 0, len(y)
@@ -144,17 +117,46 @@ def simple_layer_method(
     plt.show()
 
 
-fnames = glob.glob("Query_Data/M16/*")
-
-filter_names_list = []
-
-
 def get_filter_info(filenames: list):
+    filter_names_list = []
     headers = [fits.getheader(x, ext=0) for x in filenames]
     for i in range(len(filenames)):
         filter_names_list.append(headers[i].get("Filter"))
 
     return filter_names_list
+
+
+def reshaping_data(processed_data, filename):
+    # reshaping processed data so indexing works properly
+
+    correct_shape_processed_data = np.zeros(
+        (
+            (
+                len(processed_data[0, :, 0]),
+                len(processed_data[0, 0, :]),
+                len(processed_data[:, 0, 0]),
+            )
+        )
+    )
+    for i in range(len(processed_data[:, 0, 0])):
+        correct_shape_processed_data[:, :, i] = processed_data[i, :, :]
+
+    # regridding images (i.e aligning them properly in space)
+    regridded_processed_data = regrid_images(correct_shape_processed_data, filename)
+
+    old_shape_pd = np.zeros(
+        (
+            (
+                len(correct_shape_processed_data[0, 0, :]),
+                len(correct_shape_processed_data[:, 0, 0]),
+                len(correct_shape_processed_data[0, :, 0]),
+            )
+        )
+    )
+    for i in range(len(processed_data[:, 0, 0])):
+        old_shape_pd[i, :, :] = regridded_processed_data[:, :, i]
+
+    return regridded_processed_data, old_shape_pd
 
 
 #%% Alpha Layering Method Code (written by Henry)
