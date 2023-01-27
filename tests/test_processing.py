@@ -29,6 +29,6 @@ def test_process_file(noise, size):
 
 
 def test_process_file_list(noise):
-    images = [noise, noise, noise]
+    images = np.array([noise, noise, noise])
     processed = processing.process_file(images)
     assert len(processed) == 3
