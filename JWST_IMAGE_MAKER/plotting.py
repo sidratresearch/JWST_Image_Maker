@@ -269,7 +269,7 @@ def stack_images(processed_data: np.ndarray):
         sum_data = processed_data[:, :, i] + sum_data
 
     # Taking the average of that sum
-    avg_data = sum_data / (len(processed_data[0, 0, :]) + 1)
+    avg_data = sum_data / (len(processed_data[0, 0, :]) + 1)  # type:ignore
 
     # avg_data = ignore_darkspots(processed_data, avg_data)
 
