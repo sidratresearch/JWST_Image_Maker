@@ -8,21 +8,30 @@ from scipy import ndimage
 
 # main function
 def regrid_images(new_processed_data: np.ndarray, filenames: list):
-    im_arr: np.ndarray = new_processed_data
+    """This function aligns different images in space based on their WCS coordinates. It aligns them by regridding the images and putting each image at the proper RA-dec pixel on an image
+
+    Args:
+        new_processed_data (np.ndarray): a 3D array containing the JWST data for 3 separate observations
+        filenames (list): list of filenames for the different images
+
+    Returns:
+        np.ndarray: the reprojected version of the input arrays
+    """
+
+    # Get the headers and WCS coordinates for each observation
     headers = [fits.getheader(x, ext=1) for x in filenames]
     wcs_list = [wcs.WCS(x) for x in headers]
-    print(len(wcs_list))
-    wcs_corners_list = []
 
+    # Gathering the RA-dec information for each corner of each observation
+    wcs_corners_list = []
     for i in range(len(filenames)):
         wcs_corners_list.append(
-            get_wcs_all_corners(im_arr[:, :, i], wcs_list[i])
-        )  # type:ignore
+            get_wcs_all_corners(new_processed_data[:, :, i], wcs_list[i])
+        )
 
-    wcs_corners_arr = np.array(
-        wcs_corners_list
-    )  # array that holds the RA,dec of all 4 corners in each data set
-    print(np.shape(wcs_corners_arr))
+    wcs_corners_arr = np.array(wcs_corners_list)
+
+    # Storing the minimum and maximum RA and dec in order to make a grid large enough to accomadate each of the 3 seprate images
     min_ra = np.min(wcs_corners_arr[:, :, 0])
     min_dec = np.min(wcs_corners_arr[:, :, 1])
 
@@ -34,17 +43,16 @@ def regrid_images(new_processed_data: np.ndarray, filenames: list):
         np.linspace(min_dec, max_dec, len(new_processed_data[:, 0])),
     )
 
-    im0 = im_arr[:, :, 0]
-    px_list = np.meshgrid(np.arange(im0.shape[0]), np.arange(im0.shape[1]))
-    radec_list = wcs_list[0].all_pix2world(px_list[0], px_list[1], 0)
+    # Using astropy.allworld2pix to map all of the different coordinate systems to a common grid
+    im0 = new_processed_data[:, :, 0]
     im0_pixcoord = wcs_list[0].all_world2pix(wcs_grid[0], wcs_grid[1], 0)
     reproj_im_0 = ndimage.map_coordinates(im0, im0_pixcoord)
 
-    im1 = im_arr[:, :, 1]
+    im1 = new_processed_data[:, :, 1]
     im1_pixcoord = wcs_list[1].all_world2pix(wcs_grid[0], wcs_grid[1], 0)
     reproj_im_1 = ndimage.map_coordinates(im1, im1_pixcoord)
 
-    im2 = im_arr[:, :, 2]
+    im2 = new_processed_data[:, :, 2]
     im2_pixcoord = wcs_list[2].all_world2pix(wcs_grid[0], wcs_grid[1], 0)
     reproj_im_2 = ndimage.map_coordinates(im2, im2_pixcoord)
 

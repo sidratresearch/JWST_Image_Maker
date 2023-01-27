@@ -16,6 +16,8 @@ def get_query_data(obj_name):
     Returns:
         list: A list of the filenames downloaded through this querying
     """
+    print("Querying MAST database for JWST observations of ", obj_name)
+
     query_result = query(obj_name)
     observation_IDs = get_observation_IDs(query_result)
     download_files(observation_IDs, obj_name)
@@ -24,7 +26,7 @@ def get_query_data(obj_name):
 
     # Ensuring path information is correct for filenames list
     for i in range(len(filenames)):
-        print("filenames loop activated")
+
         filenames[i] = "Query_Data/" + obj_name + "./" + filenames[i]
 
     return filenames
@@ -71,6 +73,7 @@ def get_observation_IDs(query_result):
     Returns:
         list: a list of all relevant observation IDs
     """
+
     # All relevant observation ID's are saved in the miri_obsid list so they can be downloaded. The first choice is NIRCAM data as it contains the most high definition data. If
     # NIRCAM data is unavailable, MIRI data is searched for
     obs_ids = []
@@ -89,8 +92,6 @@ def get_observation_IDs(query_result):
     first_dec = 0
 
     for i in range(len(query_result)):
-        if i % 10 == 0:
-            print("query loop activated")
 
         instrument_name = query_result[i][5]
         filter = query_result[i][6]
@@ -155,12 +156,10 @@ def check_data_coords(
         )
         < coord_thresh
     ):
-        print("Coord thresh satisfied")
 
         # add observation ID to list
         obs_ids.extend([query_result[i][1]])
         filters_loaded.extend([query_result[i][6]])
-        print(filters_loaded)
     return obs_ids, filters_loaded
 
 
@@ -186,8 +185,6 @@ def download_files(obs_ids, object_name):
 
     # Looping over very first observation ID (this is only to make runtime quicker and needs to be updated to 3 in future)
     for ID in obs_ids[:3]:
-        print("product list loop activated")
-
         product_list = Jwst.get_product_list(observation_id=ID, product_type="science")
 
         if type(product_list) == None:
@@ -196,11 +193,9 @@ def download_files(obs_ids, object_name):
         # Looping over data products to find file ending in 'i2d.fits'
         for name in product_list["filename"]:  # type: ignore
             if "i2d" in name:
-                print("downloading loop activated")
                 # downloading file and putting it in the desired folder if file doesn't already exist in that path
                 if name not in os.listdir(newpath):
                     output_file = Jwst.get_product(file_name=name)
-                    print("filed being moved into proper directory")
                     shutil.move(output_file, newpath)
     pass
 

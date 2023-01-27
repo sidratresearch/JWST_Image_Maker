@@ -27,7 +27,6 @@ def get_file(filenames: list):
 
     # Creating array that can store the data for ALL of the .fits files provided
     # This array will be 3D to ensure it can store the x-y photon data for each
-
     largest_index, full_dataset = zeros_array_generator(filenames)
 
     # Looping over all files provided by user and saving their data in full_dataset (padding data if necessary)

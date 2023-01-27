@@ -34,6 +34,8 @@ def plot_data(
                            Note that the averaging method is very slow as it has to loop over every pixel to check for dark spots (AKA no data spots)
         object_name(str): name of astronomical object being targeted
     """
+    print("Plotting beautiful figures")
+
     regridded_processed_data, old_shape_processed_data = reshaping_data(
         processed_data, filename
     )
@@ -88,11 +90,11 @@ def simple_layer_method(
             scale_factor[i] * (tmp_percentile[1] - tmp_percentile[0])
         )
 
-    plotting_script(new_processed_data, filenames, save_image)
+    plotting_script(new_processed_data, filenames, save_image, object_name)
 
 
 #
-def plotting_script(new_processed_data, filenames, save_image):
+def plotting_script(new_processed_data, filenames, save_image, object_name):
     """Contains all of the plotting code necessary to make attractive images and save them
     """
     x = new_processed_data[0, :, 0]

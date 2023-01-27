@@ -3,11 +3,11 @@ from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent
 
-VERSION = "0.1.5"
+VERSION = "0.1.8"
 PACKAGE_NAME = "JWST_IMAGE_MAKER"
 AUTHOR = "Henry White and Hansen Jiang"
 AUTHOR_EMAIL = "henrywhite@sidratresearch.com, hansen@sidratresearch.com"
-URL = "https://github.com/henrywhite2727/JWST_Image_Maker"
+URL = "https://github.com/sidratresearch/JWST_Image_Maker"
 
 LICENSE = "Apache License 2.0"
 DESCRIPTION = "Creates images from raw JWST data"
