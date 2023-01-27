@@ -246,10 +246,10 @@ def avg_method(processed_data: np.ndarray, object_name: str, save_image: bool):
                 new_ext = ".pdf"
                 plt.savefig(name + new_ext, format="pdf", dpi=1200, bbox_inches="tight")
 
-        if save_image == False:
-            plt.show(block=True)
-            # This pause allows the tester to briefly see the images (it is not really necessary for the code though)
-            plt.pause(1)
+    if save_image == False:
+        plt.show(block=True)
+        # This pause allows the tester to briefly see the images (it is not really necessary for the code though)
+        plt.pause(1)
 
     # Putting in a user input so that images stay visible for as long as the user wants
     if save_image == False:

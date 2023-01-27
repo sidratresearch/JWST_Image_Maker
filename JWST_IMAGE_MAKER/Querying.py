@@ -97,7 +97,7 @@ def get_observation_IDs(query_result):
 
         if (
             instrument_name == "NIRCAM" and MIRI == False and 1 == 0
-        ):  # comment out the 1==0 part if you want to use NIRCAM data
+        ):  # the 1==0 part is used so that NIRCAM is never chosen (as it takes so long to download)
             NIRCAM = True
             if filter not in filters_loaded:
                 obs_ids, filters_loaded = check_data_coords(
@@ -180,7 +180,7 @@ def download_files(obs_ids, object_name):
     """
 
     # Creating a new folder for 'i2d.fits' data from query
-    newpath = "./Query_Data/" + object_name
+    newpath = "./Query_Data/" + object_name + "./"
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 
