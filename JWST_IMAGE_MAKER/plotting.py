@@ -111,6 +111,7 @@ def plotting_script(new_processed_data, filenames, save_image, object_name):
     bluepatch = mpatches.Patch(color="blue", label=filters_list[2])
     plt.legend(handles=[red_patch, bluepatch, greenpatch], loc="lower left")
     if save_image == True:
+        print("Saving beautiful JWST image to local disk.")
         plt.savefig(
             object_name + ".png",  # type:ignore
             format="png",
