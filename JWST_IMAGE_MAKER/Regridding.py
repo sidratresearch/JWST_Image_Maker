@@ -31,6 +31,31 @@ def regrid_images(new_processed_data: np.ndarray, filenames: list):
 
     wcs_corners_arr = np.array(wcs_corners_list)
 
+    # # Take the following lines out once troubleshooting is done
+    # filter_names_list = []
+    # headers = [fits.getheader(x, ext=0) for x in filenames]
+    # for i in range(len(filenames)):
+    #     filter_names_list.append(headers[i].get("Filter"))
+
+    # # corner_arr_copy=np.copy(wcs_corners_arr)
+    # # saved_corner_array=corner_arr_copy.reshape(corner_arr_copy.shape[0], -1)
+    # np.savetxt("corners_array.dat", wcs_corners_arr.flatten())
+
+    # for i in range(3):
+    #     print(
+    #         "For",
+    #         filter_names_list[i],
+    #         "the first corner is located at ",
+    #         wcs_corners_arr[i, 1, :],
+    #     )
+    #     plt.figure(1)
+    #     plt.plot(
+    #         wcs_corners_arr[i, :, 0],
+    #         wcs_corners_arr[i, :, 1],
+    #         label=filter_names_list[i],
+    #     )
+    #     plt.legend()
+
     # Storing the minimum and maximum RA and dec in order to make a grid large enough to accomadate each of the 3 seprate images
     min_ra = np.min(wcs_corners_arr[:, :, 0])
     min_dec = np.min(wcs_corners_arr[:, :, 1])
@@ -45,26 +70,25 @@ def regrid_images(new_processed_data: np.ndarray, filenames: list):
 
     # Using astropy.allworld2pix to map all of the different coordinate systems to a common grid
     im0 = new_processed_data[:, :, 0]  # this image contains new_processed_data
-    im0_pixcoord = wcs_list[0].all_world2pix(wcs_grid[0], wcs_grid[1], 0)
+    im0_pixcoord = wcs_list[0].all_world2pix(wcs_grid[0], wcs_grid[1], 0.0)
     reproj_im_0 = ndimage.map_coordinates(im0, im0_pixcoord)
 
     im1 = new_processed_data[:, :, 1]
-    im1_pixcoord = wcs_list[1].all_world2pix(wcs_grid[0], wcs_grid[1], 0)
+    im1_pixcoord = wcs_list[1].all_world2pix(wcs_grid[0], wcs_grid[1], 0.0)
     reproj_im_1 = ndimage.map_coordinates(im1, im1_pixcoord)
 
     im2 = new_processed_data[:, :, 2]
-    im2_pixcoord = wcs_list[2].all_world2pix(wcs_grid[0], wcs_grid[1], 0)
+    im2_pixcoord = wcs_list[2].all_world2pix(wcs_grid[0], wcs_grid[1], 0.0)
     reproj_im_2 = ndimage.map_coordinates(im2, im2_pixcoord)
 
     reproj_array = np.stack([reproj_im_0, reproj_im_1, reproj_im_2], axis=-1)
-
     return reproj_array
 
 
 # helper functions
 def get_all_corner_px(im):
     max_y, max_x = im.shape
-    return [[0, 0], [max_y, 0], [max_y, max_x], [0, max_x]]
+    return [[0, 0], [0, max_x], [max_y, max_x], [max_y, 0]]
 
 
 def get_wcs_all_corners(im, wcs):

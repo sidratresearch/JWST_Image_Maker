@@ -25,7 +25,7 @@ def plot_data(
     """This is the main module and it visualizes the processed data and saves it to the users computer if desired. 
 
     Args:
-        processed_data (np.array): A 2D or 3D numpy array of JWST that has been processed (not exactly sure how yet). The array will be 2D if the user gives a single .fits file and will be 3D otherwise.
+        processed_data (np.array):  Data containing the processed JWST data for the desired fits file(s)
         filename (list of strings): contains the names of the data files provided by the user
         save_image (bool): Tells the code whether the user wants the figure to be saved to their computer
         plot_method (str): Specifies whether the produced image will be an average of all the data taken using filters or a layered image
@@ -163,9 +163,9 @@ def reshaping_data(processed_data, filename):
     old_shape_pd = np.zeros(
         (
             (
-                len(correct_shape_processed_data[0, 0, :]),
-                len(correct_shape_processed_data[:, 0, 0]),
-                len(correct_shape_processed_data[0, :, 0]),
+                len(processed_data[:, 0, 0]),
+                len(processed_data[0, :, 0]),
+                len(processed_data[0, 0, :]),
             )
         )
     )
@@ -201,6 +201,7 @@ def alpha_layer_images(
             img.flatten(), [1, 99]
         )  # 12 and 99 were determined by trial and error
         alpha_val = 0.333  # alpha determines the opacity of each layer
+        plt.figure(2)
         plt.imshow(
             img, vmin=vmin, vmax=vmax, cmap=cmap_list[i], alpha=alpha_val, extent=extent
         )

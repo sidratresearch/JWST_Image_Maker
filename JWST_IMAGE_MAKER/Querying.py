@@ -184,7 +184,10 @@ def download_files(obs_ids, object_name):
         os.makedirs(newpath)
 
     # Looping over very first observation ID (this is only to make runtime quicker and needs to be updated to 3 in future)
+    i = 0
     for ID in obs_ids[:3]:
+        i += 1
+        print("Downloading file", i + 1, "of", len(obs_ids))
         product_list = Jwst.get_product_list(observation_id=ID, product_type="science")
 
         if type(product_list) == None:
