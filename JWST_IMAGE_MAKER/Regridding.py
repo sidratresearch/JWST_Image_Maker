@@ -44,7 +44,7 @@ def regrid_images(new_processed_data: np.ndarray, filenames: list):
     )
 
     # Using astropy.allworld2pix to map all of the different coordinate systems to a common grid
-    im0 = new_processed_data[:, :, 0]
+    im0 = new_processed_data[:, :, 0]  # this image contains new_processed_data
     im0_pixcoord = wcs_list[0].all_world2pix(wcs_grid[0], wcs_grid[1], 0)
     reproj_im_0 = ndimage.map_coordinates(im0, im0_pixcoord)
 
