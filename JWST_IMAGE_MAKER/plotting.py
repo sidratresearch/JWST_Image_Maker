@@ -187,7 +187,9 @@ def reshaping_data(processed_data, filename):
 
     # regridding images (i.e aligning them properly in space) if more than one image is given
     if len(filename) > 1:
-        regridded_processed_data = regrid_images(correct_shape_processed_data, filename)
+        regridded_processed_data = regrid_images(
+            correct_shape_processed_data, filename
+        )  # type:ignore
 
     else:
         regridded_processed_data = correct_shape_processed_data
@@ -201,6 +203,8 @@ def reshaping_data(processed_data, filename):
             )
         )
     )
+    print(np.shape(old_shape_pd), "old")
+    print(np.shape(regridded_processed_data), "regrid")
     for i in range(len(processed_data[:, 0, 0])):
         old_shape_pd[i, :, :] = regridded_processed_data[:, :, i]
 

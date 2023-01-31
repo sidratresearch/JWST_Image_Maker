@@ -107,7 +107,7 @@ def get_observation_IDs(query_result, multi_image):
                 # The following statements ensure the users get the number of images they asked for
                 if multi_image == False:
                     break
-                elif i == 3:
+                elif len(obs_ids) == 3:
                     break
 
         elif NIRCAM == False and instrument_name == "MIRI":
@@ -120,7 +120,7 @@ def get_observation_IDs(query_result, multi_image):
                 # The following statements ensure the users get the number of images they asked for
                 if multi_image == False:
                     break
-                elif i == 3:
+                elif len(obs_ids) == 3:
                     break
     return obs_ids
 
@@ -188,13 +188,12 @@ def download_files(obs_ids, object_name):
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 
-    # Looping over very first observation ID (this is only to make runtime quicker and needs to be updated to 3 in future)
     i = 0
-    for ID in obs_ids[:3]:
-
-        print("Downloading file", i + 1, "of", len(obs_ids))
-        product_list = Jwst.get_product_list(observation_id=ID, product_type="science")
+    for ID in obs_ids:
         i += 1
+        print("Downloading file", i, "of", len(obs_ids))
+        product_list = Jwst.get_product_list(observation_id=ID, product_type="science")
+
         if type(product_list) == None:
             break
 
