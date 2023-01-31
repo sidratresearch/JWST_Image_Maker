@@ -34,7 +34,7 @@ def plot_data(
                            Note that the averaging method is very slow as it has to loop over every pixel to check for dark spots (AKA no data spots)
         object_name(str): name of astronomical object being targeted
     """
-    print("Plotting beautiful figures")
+    print("Plotting beautiful figure")
 
     regridded_processed_data, old_shape_processed_data = reshaping_data(
         processed_data, filename
