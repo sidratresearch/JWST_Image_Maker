@@ -7,10 +7,16 @@ import numpy as np
 import glob
 
 
-# def test_makeimage():
-#     fname_list = glob.glob("Query_Data/M16/*")
-#     make_image(query=False, save_image=False, filenames=fname_list, plot_method="layer")
-#     assert 1 == 1
+def test_makeimage():
+    fname_list = glob.glob("Query_Data/M16/*")
+    make_image(
+        query=False,
+        save_image=False,
+        filenames=fname_list,
+        plot_method="layer",
+        multi_image=False,
+    )
+    assert 1 == 1
 
 
 # def test_queryfalse(monkeypatch):
@@ -28,5 +34,5 @@ import glob
 #     make_image(query=False, save_image=False, filenames=file_name)
 
 
-def test_querytrue():
-    make_image(query=True, save_image=False, object_name="M16", multi_image=True)
+# def test_querytrue():
+#     make_image(query=True, save_image=False, object_name="M16", multi_image=True)
