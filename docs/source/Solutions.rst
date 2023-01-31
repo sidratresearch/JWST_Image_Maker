@@ -3,16 +3,15 @@ Solutions to Common Problems
 
 While the software itself is COMPLETELY flawless, the user may run into issues that are their OWN fault and do not reflect at all on any (nonexistent) mistakes made by the designers of this package. Here are some solutions to these problems:
 
-#. HTTP500 error
+#. **HTTP500 error: astroquery does not recognize the given input name**
 
-     Note that an HTP500 error will be produced if astroquery does not recognize the given input name. 
      If this occurs, it is reccommended to download the desired JWST fits files from https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html
-     and set query to False.
+     and set query to False within the make_image() function.
 
-#. No files downloaded after querying
+#. **list index out of range**
 
-    jhsdbvfcljs
+    This will occur if the query failed to find any data that matched the object name, please follow the steps above to resolve this.
 
-#. Mast token required for querying
+#. **Mast token required for querying**
 
-    lsadhblhdb
+    This requires a user profile on MAST to resolve. For more information, please visit: https://auth.mast.stsci.edu/info 

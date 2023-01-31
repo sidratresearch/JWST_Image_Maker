@@ -20,6 +20,8 @@ def get_query_data(obj_name, multi_image):
 
     query_result = query(obj_name)
     observation_IDs = get_observation_IDs(query_result, multi_image)
+    if len(observation_IDs) == 0:
+        print("ERROR: query failed to find data related to the object:", obj_name)
     download_files(observation_IDs, obj_name)
 
     filenames: list = os.listdir("Query_Data/" + obj_name)  # type:ignore
@@ -122,6 +124,7 @@ def get_observation_IDs(query_result, multi_image):
                     break
                 elif len(obs_ids) == 3:
                     break
+
     return obs_ids
 
 
