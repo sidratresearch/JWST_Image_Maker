@@ -203,8 +203,6 @@ def reshaping_data(processed_data, filename):
             )
         )
     )
-    print(np.shape(old_shape_pd), "old")
-    print(np.shape(regridded_processed_data), "regrid")
     for i in range(len(processed_data[:, 0, 0])):
         old_shape_pd[i, :, :] = regridded_processed_data[:, :, i]
 
