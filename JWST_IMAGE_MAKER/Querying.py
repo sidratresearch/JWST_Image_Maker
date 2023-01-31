@@ -6,7 +6,7 @@ import shutil
 import os
 
 
-def get_query_data(obj_name):
+def get_query_data(obj_name, multi_image):
     """This is the main function used to query the MAST repository for any JWST data for a given astronomical object. It will 
     download the files into a directory with the same name as obj_nam in the directory (Query Data)
 
@@ -19,7 +19,7 @@ def get_query_data(obj_name):
     print("Querying MAST database for JWST observations of ", obj_name)
 
     query_result = query(obj_name)
-    observation_IDs = get_observation_IDs(query_result)
+    observation_IDs = get_observation_IDs(query_result, multi_image)
     download_files(observation_IDs, obj_name)
 
     filenames: list = os.listdir("Query_Data/" + obj_name)  # type:ignore
@@ -64,7 +64,7 @@ def query(object_name):
 #%%
 
 
-def get_observation_IDs(query_result):
+def get_observation_IDs(query_result, multi_image):
     """Sorts through the query result and saves a list of observation IDs for MIRI or NIRCAM data taken by the JWST while looking at the astronomical object desired by the user. 
 
     Args:
@@ -104,8 +104,10 @@ def get_observation_IDs(query_result):
                 obs_ids, filters_loaded = check_data_coords(
                     first_ra, first_dec, query_result, i, obs_ids, filters_loaded
                 )
-                # A maximum of 3 images can currently be layered so don't bother looping if already 3 observation IDs have been stored
-                if len(obs_ids) == 3:
+                # The following statements ensure the users get the number of images they asked for
+                if multi_image == False:
+                    break
+                elif i == 3:
                     break
 
         elif NIRCAM == False and instrument_name == "MIRI":
@@ -115,7 +117,10 @@ def get_observation_IDs(query_result):
                     first_ra, first_dec, query_result, i, obs_ids, filters_loaded
                 )
 
-                if len(obs_ids) == 3:
+                # The following statements ensure the users get the number of images they asked for
+                if multi_image == False:
+                    break
+                elif i == 3:
                     break
     return obs_ids
 

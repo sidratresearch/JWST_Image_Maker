@@ -3,6 +3,9 @@ from JWST_IMAGE_MAKER.Querying import get_query_data
 from JWST_IMAGE_MAKER.processing import process_file
 from JWST_IMAGE_MAKER.plotting import plot_data
 import numpy as np
+import warnings
+
+warnings.filterwarnings("ignore")
 
 # make_image is the function that the user will call
 # This function will then call all of the other modules
@@ -26,13 +29,19 @@ def make_image(query: bool, save_image: bool, **kwargs):
 
         plot_method (str): This argument specifies how separate images will be combined into 1 image. This is necessary as both the MIRI and NIRCAM instrument take images with different wavelength filters on top. Thus, to get a complete picture, this software combines images with multiple different filters. The valid inputs are "layer" (where the images are stacked on one another to form a single image), "alpha_layer" (where the images are combined using alpha-blending), or "average" (where the flux at each pixel in the overall image is the average of all the images). Default is layer. 
 
+        multi_image (bool): Specifies whether the user wants to see a layered image by stacking observations from multiple wavelengths. If false, this package will output an image from a single observation using a single wavelength filter
+
     Returns:
         Nothing. There is no variable output for this package. However, it will produce an image and
         save one to the users directory if desired. 
     """
+    multi_image: bool = kwargs.get("multi_image", None)
     object_name: str = kwargs.get("object_name", None)
     plot_method: str = kwargs.get("plot_method", None)
     RA_dec: bool = kwargs.get("RA_dec", None)
+    if multi_image == None:
+        multi_image = False
+
     if plot_method == None:
         plot_method = "layer"
 
@@ -42,7 +51,7 @@ def make_image(query: bool, save_image: bool, **kwargs):
             0
         ]  # In the case that no object_name is given, set object_name equal to the first file name. This is necessary for plot saving later
     else:
-        filenames = get_query_data(object_name)
+        filenames = get_query_data(object_name, multi_image)
 
     checking_inputs(query, filenames, object_name)
 

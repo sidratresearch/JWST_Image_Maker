@@ -89,13 +89,41 @@ def simple_layer_method(
         new_processed_data[:, :, i] = (im - tmp_percentile[0]) / (
             scale_factor[i] * (tmp_percentile[1] - tmp_percentile[0])
         )
+    if len(filenames) > 1:
+        plotting_script_RGB(new_processed_data, filenames, save_image, object_name)
 
-    plotting_script(new_processed_data, filenames, save_image, object_name)
+    else:
+        plotting_script(new_processed_data, filenames, save_image, object_name)
 
 
-#
 def plotting_script(new_processed_data, filenames, save_image, object_name):
     """Contains all of the plotting code necessary to make attractive images and save them
+    """
+    x = new_processed_data[0, :, 0]
+    y = new_processed_data[:, 0, 0]
+    extent = 0, len(x), 0, len(y)
+
+    filters_list = get_filter_info(filenames)
+
+    fig = plt.imshow(new_processed_data, extent=extent, cmap="bone")
+    fig.axes.get_xaxis().set_visible(False)
+    fig.axes.get_yaxis().set_visible(False)
+    black_patch = mpatches.Patch(color="black", label=filters_list[0])
+    plt.legend(handles=[black_patch], loc="lower left")
+    if save_image == True:
+        print("Saving beautiful JWST image to local disk.")
+        plt.savefig(
+            object_name + ".png",  # type:ignore
+            format="png",
+            dpi=1200,
+            bbox_inches="tight",
+        )
+
+    plt.show()
+
+
+def plotting_script_RGB(new_processed_data, filenames, save_image, object_name):
+    """Contains all of the plotting code necessary to make layered RGB images of multiple wavelengths and save them
     """
     x = new_processed_data[0, :, 0]
     y = new_processed_data[:, 0, 0]
@@ -157,8 +185,12 @@ def reshaping_data(processed_data, filename):
     for i in range(len(processed_data[:, 0, 0])):
         correct_shape_processed_data[:, :, i] = processed_data[i, :, :]
 
-    # regridding images (i.e aligning them properly in space)
-    regridded_processed_data = regrid_images(correct_shape_processed_data, filename)
+    # regridding images (i.e aligning them properly in space) if more than one image is given
+    if len(filename) > 1:
+        regridded_processed_data = regrid_images(correct_shape_processed_data, filename)
+
+    else:
+        regridded_processed_data = correct_shape_processed_data
 
     old_shape_pd = np.zeros(
         (

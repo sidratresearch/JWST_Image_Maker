@@ -28,5 +28,5 @@ def test_makeimage():
 #     make_image(query=False, save_image=False, filenames=file_name)
 
 
-# def test_querytrue():
-#     make_image(query=True, save_image=False, object_name="M16")
+def test_querytrue():
+    make_image(query=True, save_image=False, object_name="M17")
