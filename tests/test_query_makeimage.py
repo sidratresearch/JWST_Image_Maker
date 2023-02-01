@@ -8,7 +8,7 @@ import glob
 
 
 def test_makeimage():
-    fname_list = glob.glob("Query_Data/M16/*")
+    fname_list = glob.glob("Query_Data/HCG 92/*")
     make_image(
         query=False,
         save_image=False,
@@ -35,4 +35,4 @@ def test_makeimage():
 
 
 def test_querytrue():
-    make_image(query=True, save_image=False, object_name="NGC3132")
+    make_image(query=True, save_image=False, object_name="HCG 92")

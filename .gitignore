@@ -183,3 +183,7 @@ jw02739002001_02107_00002_mirimage_i2d.fits
 
 # Don't store sandbox
 Sandbox/
+
+#Random stuff
+JWST_IMAGE_MAKER/SQL_Practice.py
+test_db.db
