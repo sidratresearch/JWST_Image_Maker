@@ -97,6 +97,7 @@ def get_observation_IDs(query_result, multi_image):
 
         instrument_name = query_result[i][5]
         filter = query_result[i][6]
+        ob_id = query_result[i][1]
 
         if (
             instrument_name == "NIRCAM" and MIRI == False and 1 == 0
