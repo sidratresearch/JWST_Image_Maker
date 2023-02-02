@@ -134,9 +134,16 @@ def plotting_script_RGB(new_processed_data, filenames, save_image, object_name):
     fig = plt.imshow(new_processed_data, extent=extent)
     fig.axes.get_xaxis().set_visible(False)
     fig.axes.get_yaxis().set_visible(False)
-    red_patch = mpatches.Patch(color="red", label=filters_list[0])
-    greenpatch = mpatches.Patch(color="green", label=filters_list[1])
-    bluepatch = mpatches.Patch(color="blue", label=filters_list[2])
+    red_patch = mpatches.Patch(
+        color="red", label="$ \lambda_{\gamma} $=" + filters_list[0][1:-1] + "$\mu m $"
+    )
+    greenpatch = mpatches.Patch(
+        color="green",
+        label="$ \lambda_{\gamma} $=" + filters_list[1][1:-1] + "$\mu m $",
+    )
+    bluepatch = mpatches.Patch(
+        color="blue", label="$ \lambda_{\gamma} $=" + filters_list[2][1:-1] + "$\mu m $"
+    )
     plt.legend(handles=[red_patch, bluepatch, greenpatch], loc="lower left")
     if save_image == True:
         print("Saving beautiful JWST image to local disk.")

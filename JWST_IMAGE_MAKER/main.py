@@ -38,7 +38,6 @@ def make_image(query: bool, save_image: bool, **kwargs):
     multi_image: bool = kwargs.get("multi_image", None)
     object_name: str = kwargs.get("object_name", None)
     plot_method: str = kwargs.get("plot_method", None)
-    RA_dec: bool = kwargs.get("RA_dec", None)
     if multi_image == None:
         multi_image = False
 
@@ -74,13 +73,13 @@ def checking_inputs(query: bool, filenames: list, object_name: str) -> None:
     """
     if query == True and type(object_name) != str:
         print(
-            "ERROR: If query=True, then object_name must be given as a string. It is currently",
+            "ERROR: If query=True, then object_name must be given as a string. It is currently type:",
             type(object_name),
         )
 
     if query == False and type(filenames) != list:
         print(
-            "ERROR: If query=True, then filenames must be given as a list. It is currently",
+            "ERROR: If query=True, then filenames must be given as a list. It is currently type:",
             type(filenames),
         )
 

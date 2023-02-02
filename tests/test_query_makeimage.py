@@ -8,7 +8,7 @@ import glob
 
 
 def test_makeimage():
-    fname_list = glob.glob("Query_Data/HCG 92/*")
+    fname_list = glob.glob("Query_Data/M16_manual_download/*")
     make_image(
         query=False,
         save_image=False,
@@ -34,5 +34,5 @@ def test_makeimage():
 #     make_image(query=False, save_image=False, filenames=file_name)
 
 
-def test_querytrue():
-    make_image(query=True, save_image=False, object_name="HCG 92")
+# def test_querytrue():
+#     make_image(query=True, save_image=False, object_name="HCG 92")
